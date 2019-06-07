@@ -24,6 +24,22 @@ mixin _$FabStore on _FabStore, Store {
     _$selectedAtom.reportChanged();
   }
 
+  final _$selectedChildAtom = Atom(name: '_FabStore.selectedChild');
+
+  @override
+  int get selectedChild {
+    _$selectedChildAtom.reportObserved();
+    return super.selectedChild;
+  }
+
+  @override
+  set selectedChild(int value) {
+    _$selectedChildAtom.context
+        .checkIfStateModificationsAreAllowed(_$selectedChildAtom);
+    super.selectedChild = value;
+    _$selectedChildAtom.reportChanged();
+  }
+
   final _$_FabStoreActionController = ActionController(name: '_FabStore');
 
   @override
@@ -31,6 +47,16 @@ mixin _$FabStore on _FabStore, Store {
     final _$actionInfo = _$_FabStoreActionController.startAction();
     try {
       return super.setSelected(c);
+    } finally {
+      _$_FabStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic setSelectedChild(int c) {
+    final _$actionInfo = _$_FabStoreActionController.startAction();
+    try {
+      return super.setSelectedChild(c);
     } finally {
       _$_FabStoreActionController.endAction(_$actionInfo);
     }

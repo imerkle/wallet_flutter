@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wallet_flutter/stores/coin.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
 import 'components/DrawerWidget.dart';
@@ -23,18 +22,10 @@ Map<int, Color> color = {
   900: primaryColor,
 };
 
-class MyApp extends StatelessWidget {  
-  initialize(){
-    mainStore.coinStore.setCoins([
-      Coin("BTC", "BTC"),
-      Coin("LTC", "BTC"),
-      Coin("ETH", "ETH"),
-    ]);
-  }
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    initialize();
     
     return MultiProvider(
       providers: [

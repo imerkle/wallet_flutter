@@ -8,10 +8,16 @@ class FabStore = _FabStore with _$FabStore;
 
 
 abstract class _FabStore implements Store {
+  
   @observable
   int selected = 0;
+  @observable
+  int selectedChild = 0;
 
   @action setSelected(int c){
     selected = c;
+  }
+  @action setSelectedChild(int c){
+    selectedChild = c;
   }
 }

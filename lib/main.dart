@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:wallet_flutter/stores/coin.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
-import 'components/DrawerFabs.dart';
+import 'components/DrawerWidget.dart';
 
 void main() => runApp(MyApp());
 
@@ -68,7 +68,7 @@ class MyHomePage extends StatelessWidget {
           title: Text(title),
         ),
         drawer: Drawer(
-          child: DrawerFabs(),
+          child: DrawerWidget(),
         ),
         body: Center(
           child: Column(

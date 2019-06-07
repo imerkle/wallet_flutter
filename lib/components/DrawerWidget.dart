@@ -63,7 +63,7 @@ class Fabs extends StatelessWidget{
     );
   }
 }
-class DrawerFabs extends StatelessWidget{
+class DrawerWidget extends StatelessWidget{
   @override
   Widget build(context){
     return Column(

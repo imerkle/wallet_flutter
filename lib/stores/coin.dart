@@ -8,8 +8,9 @@ class CoinStore = _CoinStore with _$CoinStore;
 
 
 class Coin{
-  Coin(this.ticker);
+  Coin(this.ticker, this.name);
   String ticker;
+  String name;
 }
 
 class CoinBase{
@@ -21,11 +22,11 @@ abstract class _CoinStore implements Store {
   @observable
   List<CoinBase> coinbase = [
     CoinBase("BTC", [
-      Coin("BTC"),
-      Coin("LTC"),
+      Coin("BTC", "Bitcoin"),
+      Coin("LTC", "Litecoin"),
     ]),
     CoinBase("ETH", [
-      Coin("ETH"),
+      Coin("ETH", "Ethereum"),
     ]),    
   ];
 }

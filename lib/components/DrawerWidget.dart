@@ -73,23 +73,25 @@ class DrawerList extends StatelessWidget{
   Widget build(context){
     final coinStore = Provider.of<MainStore>(context).coinStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
-
+    
     return Observer(
       builder: (_) {
-        var coins = coinStore.coinbase[fabStore.selected].coins;
+        var selectedChild = fabStore.selectedChild;
+        var selected = fabStore.selected;
+        var coins = coinStore.coinbase[selected].coins;
         return  ListView.builder(
           itemCount: coins.length,
           itemBuilder: (context, i) {
-            return 
-            GestureDetector(
-              onTap: () => fabStore.setSelectedChild(i),
+            return Container(
+              color: i == selectedChild ? Color.fromRGBO(67, 67, 67, 1) : Colors.transparent,
               child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(cryptoIconUrl(coins[i].ticker, color: "black", size: 128)),
-                  maxRadius: 15,
+                  title: Text(coins[i].ticker),
+                  subtitle: Text(coins[i].name),
+                  onTap: () {
+                    fabStore.setSelectedChild(i);
+                  },                
+                  selected: i == selectedChild,
                 ),
-                title: Text(coins[i].ticker),
-              ),
             );
           }
         );
@@ -100,6 +102,10 @@ class DrawerList extends StatelessWidget{
 class DrawerWidget extends StatelessWidget{
   @override
   Widget build(context){
+
+    final coinStore = Provider.of<MainStore>(context).coinStore;
+    final fabStore = Provider.of<MainStore>(context).fabStore;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -113,7 +119,27 @@ class DrawerWidget extends StatelessWidget{
                 child: Fabs(),
               ),
               Expanded(
-                child: DrawerList(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Container(
+                    color: Theme.of(context).primaryColor,
+                      padding: EdgeInsets.all(20),
+                      child: Observer(
+                        builder: (_) {
+                          return Text(
+                            coinStore.coinbase[fabStore.selected].coins[0].name,
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              fontSize: 20,
+                            )
+                          );
+                        }
+                      )
+                    ),
+                    Expanded(child: DrawerList()),
+                  ],
+                ),
               )
             ], 
           ),

@@ -9,6 +9,7 @@ void main() => runApp(MyApp());
 final mainStore = new MainStore();
 
 final primaryColor = const Color.fromRGBO(32, 34, 37, 1);
+final primaryPurple = const Color.fromRGBO(107, 128, 197, 1);
 Map<int, Color> color = { 
   50: Color.fromRGBO(42, 44, 49, .1),
   100: Color.fromRGBO(42, 44, 49, .2),

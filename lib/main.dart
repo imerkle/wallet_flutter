@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
-import 'components/DrawerWidget.dart';
+import 'widgets/DrawerWidget.dart';
 
 void main() => runApp(MyApp());
 

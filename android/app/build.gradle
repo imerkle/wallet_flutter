@@ -29,7 +29,9 @@ android {
     compileSdkVersion 28
 
     sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+        main {
+            java.srcDirs += 'src/main/kotlin'
+        }        
     }
 
     lintOptions {
@@ -52,7 +54,7 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
-    }
+    }  
 }
 
 flutter {

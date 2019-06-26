@@ -1,0 +1,20 @@
+[package]
+name = "androidwallet"
+version = "0.1.0"
+authors = ["slim <dsslimshaddy@gmail.com>"]
+edition = "2018"
+build = "build.rs"
+
+[lib]
+name = "wallet"
+crate-type = ["cdylib"]
+
+[dependencies]
+log = "0.4.6"
+log-panics = "2.0"
+android_logger = "0.8"
+
+[build-dependencies]
+bindgen = "0.49.0"
+rust_swig = "0.3.0"
+walkdir = "2.2.7"

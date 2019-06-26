@@ -19,14 +19,7 @@ class CoinBase{
   List<Coin> coins;
 }
 abstract class _CoinStore implements Store {
+  _CoinStore(this.coinbase);
   @observable
-  List<CoinBase> coinbase = [
-    CoinBase("BTC", [
-      Coin("BTC", "Bitcoin"),
-      Coin("LTC", "Litecoin"),
-    ]),
-    CoinBase("ETH", [
-      Coin("ETH", "Ethereum"),
-    ]),    
-  ];
+  List<CoinBase> coinbase;
 }

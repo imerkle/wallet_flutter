@@ -5,7 +5,7 @@ static INCLUDE_SYS_H: [&str; 1] = ["jni.h"];
 static RUST_SRC_DIR: &str = "src";
 static ANDROID_BASE_DIR: &str = "../android";
 static ANDROID_PACKAGE_ID: &str = "com.example.wallet_flutter";
-
+ 
 
 // =========================================================
 // This script is portable; copy and paste it into your own

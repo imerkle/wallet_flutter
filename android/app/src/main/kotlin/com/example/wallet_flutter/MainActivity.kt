@@ -11,10 +11,11 @@ class MainActivity: FlutterActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     GeneratedPluginRegistrant.registerWith(this)
+    RustJNI()
     MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
       // TODO
-      var foo = Session();
-      result.success(foo.add_and1(5));
+      //var foo = Session();
+      //result.success(foo.add_and1(5));
     }
   }
 }

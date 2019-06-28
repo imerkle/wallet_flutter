@@ -1,15 +1,11 @@
 [target.aarch64-linux-android]
-linker = "aarch64-linux-android-gcc"
-runner = "./run-on-adroid.sh"
+ar = "/home/slim/Android/Sdk/ndk-bundle/toolchains/arm64/bin/aarch64-linux-android-ar"
+linker = "/home/slim/Android/Sdk/ndk-bundle/toolchains/arm64/bin/aarch64-linux-android-clang"
 
-[target.arm-linux-androideabi]
-linker = "arm-linux-androideabi-gcc"
-runner = "./run-on-adroid.sh"
+[target.armv7-linux-androideabi]
+ar = "/home/slim/Android/Sdk/ndk-bundle/toolchains/arm/bin/arm-linux-androideabi-ar"
+linker = "/home/slim/Android/Sdk/ndk-bundle/toolchains/arm/bin/arm-linux-androideabi-clang"
 
 [target.i686-linux-android]
-linker = "i686-linux-android-gcc"
-runner = "./run-on-adroid.sh"
-
-[target.x86_64-linux-android]
-linker = "x86_64-linux-android-gcc"
-runner = "./run-on-adroid.sh"
+ar = "/home/slim/Android/Sdk/ndk-bundle/toolchains/x86/bin/i686-linux-android-ar"
+linker = "/home/slim/Android/Sdk/ndk-bundle/toolchains/x86/bin/i686-linux-android-clang"

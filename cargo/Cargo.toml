@@ -1,15 +1,16 @@
 [package]
-name = "androidwallet"
+name = "walletjni"
 version = "0.1.0"
 authors = ["slim <dsslimshaddy@gmail.com>"]
 edition = "2018"
 build = "build.rs"
 
 [lib]
-name = "wallet"
+name = "walletjni"
 crate-type = ["cdylib"]
 
 [dependencies]
+wallet = { path = "../../wallet" }
 log = "0.4.6"
 log-panics = "2.0"
 android_logger = "0.8"

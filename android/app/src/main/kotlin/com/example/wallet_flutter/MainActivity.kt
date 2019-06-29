@@ -14,8 +14,6 @@ class MainActivity: FlutterActivity() {
     RustJNI()
     MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
       // TODO
-      //var foo = Session();
-      //result.success(foo.add_and1(5));
     }
   }
 }

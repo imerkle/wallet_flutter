@@ -14,6 +14,7 @@ class MainActivity: FlutterActivity() {
     RustJNI()
     MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
       // TODO
+      result.success(C.get_seed("connect ritual news sand rapid scale behind swamp damp brief explain ankle",""))
     }
   }
 }

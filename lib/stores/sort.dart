@@ -40,6 +40,6 @@ abstract class _SortStore implements Store {
   }
 }
 Future<void> callrust() async {
-    final int result = await platform.invokeMethod('blabla');
-    debugPrint(result.toString());
+    final String result = await platform.invokeMethod('blabla');
+    debugPrint(result);
 }

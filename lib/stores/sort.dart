@@ -40,6 +40,6 @@ abstract class _SortStore implements Store {
   }
 }
 Future<void> callrust() async {
-    final String result = await platform.invokeMethod('blabla');
-    debugPrint(result);
+    final String seed_hex = await platform.invokeMethod('get_seed',{"mnemonic": "", "password": ""});
+    debugPrint(seed_hex);
 }

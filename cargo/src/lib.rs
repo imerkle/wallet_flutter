@@ -19,7 +19,12 @@ impl C{
         C{}
     }
     fn get_seed(mnemonic: String, password: String)-> String{
-        let seed = util::bip32::generate_seed(Some(&mnemonic), Some(&password));
+        let mnemonic: Option<&str> =  if mnemonic.len() == 0 { 
+            None
+        }else{
+            Some(&mnemonic)
+        };
+        let seed = util::bip32::generate_seed(mnemonic, Some(&password));
         hex::encode(seed.as_bytes())
     }
 }

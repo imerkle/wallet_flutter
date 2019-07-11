@@ -13,8 +13,9 @@ class MainActivity: FlutterActivity() {
     GeneratedPluginRegistrant.registerWith(this)
     RustJNI()
     MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
-      // TODO
-      result.success(C.get_seed("connect ritual news sand rapid scale behind swamp damp brief explain ankle",""))
+      if (call.method == "get_seed") {
+        result.success(C.get_seed(call.argument("mnemonic"), call.argument("password")))
+      }
     }
   }
 }

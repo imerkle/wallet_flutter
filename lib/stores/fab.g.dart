@@ -13,31 +13,34 @@ mixin _$FabStore on _FabStore, Store {
 
   @override
   int get selected {
+    _$selectedAtom.context.enforceReadPolicy(_$selectedAtom);
     _$selectedAtom.reportObserved();
     return super.selected;
   }
 
   @override
   set selected(int value) {
-    _$selectedAtom.context.checkIfStateModificationsAreAllowed(_$selectedAtom);
-    super.selected = value;
-    _$selectedAtom.reportChanged();
+    _$selectedAtom.context.conditionallyRunInAction(() {
+      super.selected = value;
+      _$selectedAtom.reportChanged();
+    }, _$selectedAtom, name: '${_$selectedAtom.name}_set');
   }
 
   final _$selectedChildAtom = Atom(name: '_FabStore.selectedChild');
 
   @override
   int get selectedChild {
+    _$selectedChildAtom.context.enforceReadPolicy(_$selectedChildAtom);
     _$selectedChildAtom.reportObserved();
     return super.selectedChild;
   }
 
   @override
   set selectedChild(int value) {
-    _$selectedChildAtom.context
-        .checkIfStateModificationsAreAllowed(_$selectedChildAtom);
-    super.selectedChild = value;
-    _$selectedChildAtom.reportChanged();
+    _$selectedChildAtom.context.conditionallyRunInAction(() {
+      super.selectedChild = value;
+      _$selectedChildAtom.reportChanged();
+    }, _$selectedChildAtom, name: '${_$selectedChildAtom.name}_set');
   }
 
   final _$_FabStoreActionController = ActionController(name: '_FabStore');

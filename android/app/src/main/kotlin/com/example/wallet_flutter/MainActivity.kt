@@ -13,8 +13,8 @@ class MainActivity: FlutterActivity() {
     GeneratedPluginRegistrant.registerWith(this)
     RustJNI()
     MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
-      if (call.method == "get_seed") {
-        result.success(C.get_seed(call.argument("mnemonic"), call.argument("password")))
+      when(call.method) {
+        "get_seed" -> result.success(C.get_seed(call.argument("mnemonic"), call.argument("password")))
       }
     }
   }

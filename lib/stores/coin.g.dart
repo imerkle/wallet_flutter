@@ -13,14 +13,16 @@ mixin _$CoinStore on _CoinStore, Store {
 
   @override
   List<CoinBase> get coinbase {
+    _$coinbaseAtom.context.enforceReadPolicy(_$coinbaseAtom);
     _$coinbaseAtom.reportObserved();
     return super.coinbase;
   }
 
   @override
   set coinbase(List<CoinBase> value) {
-    _$coinbaseAtom.context.checkIfStateModificationsAreAllowed(_$coinbaseAtom);
-    super.coinbase = value;
-    _$coinbaseAtom.reportChanged();
+    _$coinbaseAtom.context.conditionallyRunInAction(() {
+      super.coinbase = value;
+      _$coinbaseAtom.reportChanged();
+    }, _$coinbaseAtom, name: '${_$coinbaseAtom.name}_set');
   }
 }

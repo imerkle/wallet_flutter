@@ -18,7 +18,7 @@ class CoinBase{
   String ticker;
   List<Coin> coins;
 }
-abstract class _CoinStore implements Store {
+abstract class _CoinStore with Store {
   _CoinStore(this.coinbase);
   @observable
   List<CoinBase> coinbase;

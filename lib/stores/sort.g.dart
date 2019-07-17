@@ -13,16 +13,17 @@ mixin _$SortStore on _SortStore, Store {
 
   @override
   List<Sortable> get sortables {
+    _$sortablesAtom.context.enforceReadPolicy(_$sortablesAtom);
     _$sortablesAtom.reportObserved();
     return super.sortables;
   }
 
   @override
   set sortables(List<Sortable> value) {
-    _$sortablesAtom.context
-        .checkIfStateModificationsAreAllowed(_$sortablesAtom);
-    super.sortables = value;
-    _$sortablesAtom.reportChanged();
+    _$sortablesAtom.context.conditionallyRunInAction(() {
+      super.sortables = value;
+      _$sortablesAtom.reportChanged();
+    }, _$sortablesAtom, name: '${_$sortablesAtom.name}_set');
   }
 
   final _$_SortStoreActionController = ActionController(name: '_SortStore');

@@ -7,7 +7,7 @@ part 'fab.g.dart';
 class FabStore = _FabStore with _$FabStore;
 
 
-abstract class _FabStore implements Store {
+abstract class _FabStore with Store {
   
   @observable
   int selected = 0;

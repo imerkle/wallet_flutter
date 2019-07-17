@@ -6,7 +6,7 @@ part 'main.g.dart';
 
 class MainStore = _MainStore with _$MainStore;
 
-abstract class _MainStore implements Store {
+abstract class _MainStore with Store {
   CoinStore coinStore = new CoinStore([
     CoinBase("BTC", [
       Coin("BTC", "Bitcoin"),

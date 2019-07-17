@@ -16,7 +16,7 @@ class Sortable {
   bool direction;
 }
 const platform = const MethodChannel('flutter.dev/rust');
-abstract class _SortStore implements Store {
+abstract class _SortStore with Store {
   _SortStore(this.sortables);
   @observable
   List<Sortable> sortables;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
+import 'screens/wallet.dart';
 import 'widgets/DrawerWidget.dart';
 
 void main() => runApp(MyApp());
@@ -66,6 +67,7 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Wallet(),
             ],
           ),
         ),

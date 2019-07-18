@@ -46,7 +46,7 @@ mixin _$FabStore on _FabStore, Store {
   final _$_FabStoreActionController = ActionController(name: '_FabStore');
 
   @override
-  dynamic setSelected(int c) {
+  void setSelected(int c) {
     final _$actionInfo = _$_FabStoreActionController.startAction();
     try {
       return super.setSelected(c);
@@ -56,7 +56,7 @@ mixin _$FabStore on _FabStore, Store {
   }
 
   @override
-  dynamic setSelectedChild(int c) {
+  void setSelectedChild(int c) {
     final _$actionInfo = _$_FabStoreActionController.startAction();
     try {
       return super.setSelectedChild(c);

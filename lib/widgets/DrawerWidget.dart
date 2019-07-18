@@ -9,7 +9,9 @@ import 'Fabs.dart';
 
 
 class DrawerList extends StatelessWidget{
-  
+  DrawerList(this.sortStore);
+  SortStore sortStore;
+
   @override
   Widget build(context){
     final coinStore = Provider.of<MainStore>(context).coinStore;
@@ -20,6 +22,9 @@ class DrawerList extends StatelessWidget{
         var selectedChild = fabStore.selectedChild;
         var selected = fabStore.selected;
         var coins = coinStore.coinbase[selected].coins;
+        if (sortStore.sortables[0].direction == false){
+          coins = coins.reversed.toList();
+        }
         return  ListView.builder(
           itemCount: coins.length,
           itemBuilder: (context, i) {
@@ -41,14 +46,16 @@ class DrawerList extends StatelessWidget{
   }
 }
 
+
 class DrawerWidget extends StatelessWidget{
+  
+  final SortStore sortStore = new SortStore([Sortable("Coin", true, true), Sortable("Price", false, true)]);
+
   @override
   Widget build(context){
 
     final coinStore = Provider.of<MainStore>(context).coinStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
-
-    SortStore sortStore = new SortStore([Sortable("Coin", true, true)]);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -80,21 +87,28 @@ class DrawerWidget extends StatelessWidget{
                         }
                       )
                     ),
-                    Row(
-                      children: sortStore.sortables.asMap().map((i, item) => MapEntry(i,
-                          SortWidget(
-                            title: item.title,
-                            direction: item.direction,
-                            active: item.active,
-                            onTap: (){
-                              debugPrint('hello $i');
-                              sortStore.activate(i);
-                            },
-                          ),
-                        ),
-                      ).values.toList(),
+                    Observer(
+                      builder: (_) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: sortStore.sortables.asMap().map((i, item) => MapEntry(i,
+                              Expanded(
+                                flex: 1,
+                                child: SortWidget(
+                                  title: item.title,
+                                  direction: sortStore.sortables[i].direction,
+                                  active: item.active,
+                                  onTap: (){
+                                    sortStore.activate(i);
+                                  },
+                                ),
+                              ),
+                            ),
+                          ).values.toList(),
+                        );
+                      }
                     ),
-                    Expanded(child: DrawerList()),
+                    Expanded(child: DrawerList(sortStore)),
                   ],
                 ),
               )

@@ -18,10 +18,11 @@ class Sortable {
 const platform = const MethodChannel('flutter.dev/rust');
 abstract class _SortStore with Store {
   _SortStore(this.sortables);
-  @observable
-  List<Sortable> sortables;
+  
+  List<Sortable> sortables = [];
 
-  @action activate(int index){
+  @action 
+  void activate(int index){
     callrust();
     if(sortables[index].active == true){
       this.changeDirection(index);
@@ -35,7 +36,9 @@ abstract class _SortStore with Store {
       }
     }
   }
-  @action changeDirection(int index){
+
+  @action
+  void changeDirection(int index){
     sortables[index].direction = !sortables[index].direction;
   }
 }

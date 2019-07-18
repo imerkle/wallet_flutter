@@ -14,10 +14,12 @@ abstract class _FabStore with Store {
   @observable
   int selectedChild = 0;
 
-  @action setSelected(int c){
+  @action 
+  void setSelected(int c){
     selected = c;
   }
-  @action setSelectedChild(int c){
+  @action 
+  void setSelectedChild(int c){
     selectedChild = c;
   }
 }

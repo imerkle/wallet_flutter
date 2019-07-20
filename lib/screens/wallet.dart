@@ -23,52 +23,78 @@ class Wallet extends StatelessWidget{
     var x = coinStore.coinbase[selectedChild].coins[selected];
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-        child: Wrap(
-          runSpacing: 30,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("${x.ticker} balance".toUpperCase(), style: ts1),
-                    Text("0", style: ts2),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("USD value".toUpperCase(), style: ts1),
-                    Text("\$0", style: ts2),
-                  ],
-                ),
-              ],
-            ),
-            TextField(
-              readOnly: true,
-              controller: TextEditingController(text: 'AddressXYZXYZ'),
-              style: TextStyle(color: Colors.grey),
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Your ${x.ticker} Address',
-                suffixIcon: IconButton(
-                  icon: Icon(Icons.content_copy),
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: "AddressXYZXYZ"));
-                  }
+        child: SingleChildScrollView(
+          child: Wrap(
+            runSpacing: 30,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("${x.ticker} balance".toUpperCase(), style: ts1),
+                      Text("0", style: ts2),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("USD value".toUpperCase(), style: ts1),
+                      Text("\$0", style: ts2),
+                    ],
+                  ),
+                ],
+              ),
+              TextField(
+                readOnly: true,
+                controller: TextEditingController(text: 'AddressXYZXYZ'),
+                style: TextStyle(color: Colors.grey),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Your ${x.ticker} Address',
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.content_copy),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: "AddressXYZXYZ"));
+                    }
+                  ),
                 ),
               ),
-            ),
-            Text(
-              AppLocalizations.of(context).tr('send_tx').toUpperCase(),
-              style:  TextStyle(
-                color: Color(0xffbec0c4),
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-              )
-            ),
-          ],
+              Text(
+                AppLocalizations.of(context).tr('send_tx').toUpperCase(),
+                style:  TextStyle(
+                  color: Color(0xffbec0c4),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                )
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Recieving Address',
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.content_paste),
+                    onPressed: () {
+                      Clipboard.getData("text/plain");
+                    }
+                  ),
+                ),
+              ),     
+              TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: '${x.ticker} Amount',
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.content_paste),
+                    onPressed: () {
+                      Clipboard.getData("text/plain");
+                    }
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
     );
   }

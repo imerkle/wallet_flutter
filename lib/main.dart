@@ -63,14 +63,7 @@ class MyHomePage extends StatelessWidget {
         drawer: Drawer(
           child: DrawerWidget(),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Wallet(),
-            ],
-          ),
-        ),
+        body: Wallet(),
       ),
     );
   }

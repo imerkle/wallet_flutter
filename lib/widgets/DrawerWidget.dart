@@ -47,9 +47,22 @@ class DrawerList extends StatelessWidget{
 }
 
 
-class DrawerWidget extends StatelessWidget{
+class DrawerWidget extends StatefulWidget{
   
-  final SortStore sortStore = new SortStore([Sortable("Coin", true, true), Sortable("Price", false, true)]);
+  @override
+  _DrawerWidgetState createState() => _DrawerWidgetState();
+}
+
+class _DrawerWidgetState extends State<DrawerWidget> {
+  final SortStore sortStore = new SortStore();
+
+  @override
+  void initState() {
+
+    sortStore.sortables.add(Sortable("Coin", true, true));
+    sortStore.sortables.add(Sortable("Price", false, true));
+    super.initState();
+  }
 
   @override
   Widget build(context){
@@ -96,7 +109,7 @@ class DrawerWidget extends StatelessWidget{
                                 flex: 1,
                                 child: SortWidget(
                                   title: item.title,
-                                  direction: sortStore.sortables[i].direction,
+                                  direction: item.direction,
                                   active: item.active,
                                   onTap: (){
                                     sortStore.activate(i);

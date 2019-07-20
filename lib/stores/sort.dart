@@ -17,9 +17,9 @@ class Sortable {
 }
 const platform = const MethodChannel('flutter.dev/rust');
 abstract class _SortStore with Store {
-  _SortStore(this.sortables);
+  //_SortStore(this.sortables);
   
-  List<Sortable> sortables = [];
+  ObservableList<Sortable> sortables = ObservableList<Sortable>();
 
   @action 
   void activate(int index){
@@ -28,18 +28,24 @@ abstract class _SortStore with Store {
       this.changeDirection(index);
     }else{
       for (int i=0; i<sortables.length; i++) {
+        var x = sortables[i];
         if(i != index){
-          sortables[i].active = false;
+          x.active = false;
         }else{
-          sortables[i].active = true;
+          x.active = true;
         }
+        sortables.removeAt(i);
+        sortables.insert(i, x);        
       }
     }
   }
 
   @action
   void changeDirection(int index){
-    sortables[index].direction = !sortables[index].direction;
+    var x = sortables[index];
+    x.direction = !x.direction;
+    sortables.removeAt(index);
+    sortables.insert(index, x);
   }
 }
 Future<void> callrust() async {

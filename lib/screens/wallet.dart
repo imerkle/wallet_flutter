@@ -1,9 +1,13 @@
-
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/stores/main.dart';
+
+
+const double tsize = 20;
+const ts1 = TextStyle(fontSize: tsize);
+const ts2 = TextStyle(fontSize: tsize, fontWeight: FontWeight.bold);
 
 class Wallet extends StatelessWidget{
 
@@ -17,27 +21,26 @@ class Wallet extends StatelessWidget{
     var selected = fabStore.selected;
 
     var x = coinStore.coinbase[selectedChild].coins[selected];
-
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
         child: Wrap(
-          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //crossAxisAlignment: CrossAxisAlignment.stretch,
-          runSpacing: 20,
+          runSpacing: 30,
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("${x.ticker} balance"),
-                    Text("0"),
+                    Text("${x.ticker} balance".toUpperCase(), style: ts1),
+                    Text("0", style: ts2),
                   ],
                 ),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("USD balance"), //change to fiat store later
-                    Text("\$0"),
+                    Text("USD value".toUpperCase(), style: ts1),
+                    Text("\$0", style: ts2),
                   ],
                 ),
               ],
@@ -57,7 +60,14 @@ class Wallet extends StatelessWidget{
                 ),
               ),
             ),
-            Text("Send Transaction"),
+            Text(
+              AppLocalizations.of(context).tr('send_tx').toUpperCase(),
+              style:  TextStyle(
+                color: Color(0xffbec0c4),
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              )
+            ),
           ],
         ),
     );

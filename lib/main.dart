@@ -1,11 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
 import 'screens/wallet.dart';
 import 'widgets/DrawerWidget.dart';
 
-void main() => runApp(MyApp());
+
+void main() => runApp(EasyLocalization(child: MyApp()));
 
 final mainStore = new MainStore();
 
@@ -28,22 +31,39 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     
-    
+    var data = EasyLocalizationProvider.of(context).data;
     return MultiProvider(
       providers: [
         Provider<MainStore>(builder: (_) => mainStore)
       ],
-      child:  MaterialApp(
-        title: 'Wallet',
-        theme: ThemeData(
-          primarySwatch: MaterialColor(0xFF2F3136, color),
-          primaryColor: primaryColor,
-          accentColor: Colors.white,
-          brightness: Brightness.dark,
+      child:  EasyLocalizationProvider(
+        data: data,
+        child: MaterialApp(
+          title: 'Wallet',
+          theme: ThemeData(
+            primarySwatch: MaterialColor(0xFF2F3136, color),
+            primaryColor: primaryColor,
+            accentColor: Colors.white,
+            brightness: Brightness.dark,
+          ),
+          home: MyHomePage(title: 'Home'),
+
+
+          localizationsDelegates: [
+            EasylocaLizationDelegate(
+              locale: data.locale ?? Locale('en', 'US'),
+              path: 'lang'
+            ),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: [
+              const Locale('en', 'US'),
+              const Locale('sk', 'SK'),
+          ],
         ),
-        home: MyHomePage(title: 'Home'),
       )
-    );    
+    );
   }
 }
 

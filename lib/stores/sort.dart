@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:flutter/services.dart';
 
@@ -23,7 +22,6 @@ abstract class _SortStore with Store {
 
   @action 
   void activate(int index){
-    callrust();
     if(sortables[index].active == true){
       this.changeDirection(index);
     }else{
@@ -47,8 +45,4 @@ abstract class _SortStore with Store {
     sortables.removeAt(index);
     sortables.insert(index, x);
   }
-}
-Future<void> callrust() async {
-    final String seed_hex = await platform.invokeMethod('get_seed',{"mnemonic": "", "password": ""});
-    debugPrint(seed_hex);
 }

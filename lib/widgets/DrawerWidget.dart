@@ -2,20 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:provider/provider.dart';
-import 'package:wallet_flutter/stores/sort.dart';
 import 'package:wallet_flutter/widgets/SortWidget.dart';
 
 import 'Fabs.dart';
 
 
 class DrawerList extends StatelessWidget{
-  DrawerList(this.sortStore);
-  SortStore sortStore;
 
   @override
   Widget build(context){
     final coinStore = Provider.of<MainStore>(context).coinStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
+    final sortStore = Provider.of<MainStore>(context).sortStore;
     
     return Observer(
       builder: (_) {
@@ -46,29 +44,14 @@ class DrawerList extends StatelessWidget{
   }
 }
 
-
-class DrawerWidget extends StatefulWidget{
-  
-  @override
-  _DrawerWidgetState createState() => _DrawerWidgetState();
-}
-
-class _DrawerWidgetState extends State<DrawerWidget> {
-  final SortStore sortStore = new SortStore();
-
-  @override
-  void initState() {
-
-    sortStore.sortables.add(Sortable("Coin", true, true));
-    sortStore.sortables.add(Sortable("Price", false, true));
-    super.initState();
-  }
+class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(context){
 
     final coinStore = Provider.of<MainStore>(context).coinStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
+    final sortStore = Provider.of<MainStore>(context).sortStore;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -121,7 +104,7 @@ class _DrawerWidgetState extends State<DrawerWidget> {
                         );
                       }
                     ),
-                    Expanded(child: DrawerList(sortStore)),
+                    Expanded(child: DrawerList()),
                   ],
                 ),
               )

@@ -82,6 +82,7 @@ class Wallet extends StatelessWidget{
                 ),
               ),     
               TextField(
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: '${x.ticker} Amount',
@@ -90,6 +91,18 @@ class Wallet extends StatelessWidget{
                     onPressed: () {
                       Clipboard.getData("text/plain");
                     }
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: RaisedButton(
+                  onPressed: () {},
+                  padding: EdgeInsets.all(15),
+                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                  child: Text(
+                    'Send',
+                    style: TextStyle(fontSize: 20)
                   ),
                 ),
               ),

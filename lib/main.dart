@@ -13,21 +13,19 @@ void main() => runApp(EasyLocalization(child: MyApp()));
 final mainStore = new MainStore();
 
 final primaryColor = const Color.fromRGBO(32, 34, 37, 1);
-final primaryPurple = const Color.fromRGBO(107, 128, 197, 1);
-Map<int, Color> color = { 
-  50: Color.fromRGBO(42, 44, 49, .1),
-  100: Color.fromRGBO(42, 44, 49, .2),
-  200: Color.fromRGBO(42, 44, 49, .3),
-  300: Color.fromRGBO(42, 44, 49, .4),
-  400: Color.fromRGBO(42, 44, 49, .5),
-  500: Color.fromRGBO(42, 44, 49, .6),
-  600: Color.fromRGBO(42, 44, 49, .7),
-  700: Color.fromRGBO(42, 44, 49, .8),
-  800: Color.fromRGBO(42, 44, 49, .9),
-  900: primaryColor,
-};
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    mainStore.initPrep();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     
@@ -41,14 +39,12 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Wallet',
           theme: ThemeData(
-            primarySwatch: MaterialColor(0xFF2F3136, color),
-            primaryColor: primaryColor,
+            primarySwatch: Colors.blue,
+            //primaryColor: primaryColor,
             accentColor: Colors.white,
             brightness: Brightness.dark,
           ),
           home: MyHomePage(title: 'Home'),
-
-
           localizationsDelegates: [
             EasylocaLizationDelegate(
               locale: data.locale ?? Locale('en', 'US'),

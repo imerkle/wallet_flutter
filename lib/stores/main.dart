@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wallet_flutter/models/coin_list.dart';
 import 'package:wallet_flutter/models/wallet.dart';
 import 'package:wallet_flutter/models/wallet_list.dart';
 import 'package:wallet_flutter/stores/sort.dart';
@@ -38,7 +39,7 @@ abstract class _MainStore with Store {
   }
 }
 Future<List<Wallet>> initWalletIfAbsent() async {
-    storage.deleteAll();
+    //storage.deleteAll();
     const String key = "wallets";
     String walletsJson = await storage.read(key: key);
       
@@ -48,12 +49,19 @@ Future<List<Wallet>> initWalletIfAbsent() async {
       mnemonic = bip39.generateMnemonic();
       String seedHex = bip39.mnemonicToSeedHex(mnemonic);
 
-      Wallet w = new Wallet(0, seedHex, mnemonic);
+      var x = await platform.invokeMethod('get_wallets',{"mnemonic": mnemonic});
+      
+      Wallet w = new Wallet(id: 0, seedHex: seedHex, mnemonic: mnemonic, coins: CoinList.fromJson(jsonDecode(x)).coins);
       wList.add(w);
       storage.write(key: key, value: jsonEncode(wList));
+      debugPrint(wList[0].coins[0].private_key);
     }else{
       wList = WalletList.fromJson(jsonDecode(walletsJson)).wallets;
+      //debugPrint(wList[0].coins[0].private_key);
     }
     return wList;
 }
 
+abstract class A{
+  String private_key;
+}

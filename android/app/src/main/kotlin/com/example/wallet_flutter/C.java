@@ -4,13 +4,25 @@ package com.example.wallet_flutter;
 
 public final class C {
 
-    public C()  {
+    public C(String a0)  {
 
-        mNativeObj = init();
+        mNativeObj = init(a0);
     }
-    private static native long init() ;
+    private static native long init(String a0) ;
 
-    public static native String get_seed(String a0, String a1) ;
+    public final String private_key()  {
+
+        return do_private_key(mNativeObj);
+    }
+    private static native String do_private_key(long me) ;
+
+    public final String public_key()  {
+
+        return do_public_key(mNativeObj);
+    }
+    private static native String do_public_key(long me) ;
+
+    public static native C [] get_wallets(String a0) ;
 
     public synchronized void delete() {
         if (mNativeObj != 0) {

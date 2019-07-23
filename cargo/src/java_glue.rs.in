@@ -1,7 +1,8 @@
 use crate::{android_c_headers::*, C};
-use wallet::{util};
 foreigner_class!(class C {
     self_type C;
-    constructor C::new() -> C;
-    static_method C::get_seed(mnemonic: String, password: String) -> String;
+    constructor C::new(mnemonic: String) -> C;
+    method C::private_key(&self) -> &str;
+    method C::public_key(&self) -> &str;
+    static_method C::get_wallets(mnemonic: String) -> Vec<C>;
 });

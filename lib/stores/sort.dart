@@ -7,7 +7,6 @@ part 'sort.g.dart';
 // This is the class used by rest of your codebase
 class SortStore = _SortStore with _$SortStore;
 
-
 class Sortable {
   Sortable(this.title, this.active, this.direction);
   String title;

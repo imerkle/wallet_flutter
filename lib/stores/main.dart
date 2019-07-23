@@ -57,7 +57,6 @@ Future<List<Wallet>> initWalletIfAbsent() async {
       debugPrint(wList[0].coins[0].private_key);
     }else{
       wList = WalletList.fromJson(jsonDecode(walletsJson)).wallets;
-      //debugPrint(wList[0].coins[0].private_key);
     }
     return wList;
 }

@@ -11,7 +11,7 @@ import kotlinx.serialization.json.JSON
 
 
 @Serializable
-data class Wallet(val private_key: String, val public_key: String)
+data class Wallet(val private_key: String, val public_key: String, val wif: String, val address: String)
 
 class MainActivity: FlutterActivity() {
   private val CHANNEL = "flutter.dev/rust"  
@@ -22,11 +22,10 @@ class MainActivity: FlutterActivity() {
     MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
       when(call.method) {
         "get_wallets" -> {
-          var xy = C(call.argument("mnemonic"))
           var x = C.get_wallets(call.argument("mnemonic"))
           var myList: MutableList<Wallet> = mutableListOf<Wallet>()
           for(y in x){
-            myList.add(Wallet(y.private_key(), y.public_key()))
+            myList.add(Wallet(y.private_key(), y.public_key(), y.wif(), y.address()))
           }
           val jsonList = JSON.stringify(Wallet.serializer().list, myList)
           result.success(jsonList)

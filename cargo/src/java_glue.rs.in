@@ -1,8 +1,10 @@
 use crate::{android_c_headers::*, C};
 foreigner_class!(class C {
     self_type C;
-    constructor C::new(mnemonic: String) -> C;
+    constructor C::new() -> C;
     method C::private_key(&self) -> &str;
     method C::public_key(&self) -> &str;
+    method C::wif(&self) -> &str;
+    method C::address(&self) -> &str;
     static_method C::get_wallets(mnemonic: String) -> Vec<C>;
 });

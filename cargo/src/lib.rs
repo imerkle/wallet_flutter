@@ -16,21 +16,31 @@ use wallet::{
         crypto::{SeedOrVect},
         bip32::{self, Node, CurveName},
     },
+    coin::{Coin},
 };
 
+#[derive(Default)]
 struct C{
     private_key: String,
     public_key: String,    
+    wif: String,
+    address: String,
 }
 impl C{
-    fn new(mnemonic: String)-> C{
-        C{private_key: "".to_string(), public_key: "".to_string()}
+    fn new()-> C{
+        C{..Default::default()}
     }
     fn private_key(&self) -> &str{
         &self.private_key
     }
     fn public_key(&self) -> &str{
         &self.public_key
+    }
+    fn wif(&self) -> &str{
+        &self.wif
+    }
+    fn address(&self) -> &str{
+        &self.address
     }
     fn get_wallets(mnemonic: String) -> Vec<C>{
         
@@ -46,7 +56,10 @@ impl C{
 
             let pkey = descendant_node.get_private_key();
             let pubkey = descendant_node.get_public_key();
-            C{private_key: pkey, public_key: pubkey}
+            let coin = Coin::new(descendant_node.private_key, descendant_node.public_key, "btc");
+            ;
+            
+            C{private_key: pkey, public_key: pubkey, wif: coin.to_wif(), address: coin.to_address() }
         }).collect::<Vec<_>>()
     }
 }

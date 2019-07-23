@@ -4,11 +4,11 @@ package com.example.wallet_flutter;
 
 public final class C {
 
-    public C(String a0)  {
+    public C()  {
 
-        mNativeObj = init(a0);
+        mNativeObj = init();
     }
-    private static native long init(String a0) ;
+    private static native long init() ;
 
     public final String private_key()  {
 
@@ -21,6 +21,18 @@ public final class C {
         return do_public_key(mNativeObj);
     }
     private static native String do_public_key(long me) ;
+
+    public final String wif()  {
+
+        return do_wif(mNativeObj);
+    }
+    private static native String do_wif(long me) ;
+
+    public final String address()  {
+
+        return do_address(mNativeObj);
+    }
+    private static native String do_address(long me) ;
 
     public static native C [] get_wallets(String a0) ;
 

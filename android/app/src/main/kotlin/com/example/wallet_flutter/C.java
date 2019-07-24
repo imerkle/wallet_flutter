@@ -34,6 +34,12 @@ public final class C {
     }
     private static native String do_address(long me) ;
 
+    public final String ticker()  {
+
+        return do_ticker(mNativeObj);
+    }
+    private static native String do_ticker(long me) ;
+
     public static native C [] get_wallets(String a0) ;
 
     public synchronized void delete() {

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
@@ -70,17 +71,25 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        //backgroundColor: Theme.of(context).primaryColor,
-        appBar: AppBar(
-          title: Text(title),
-        ),
-        drawer: Drawer(
-          child: DrawerWidget(),
-        ),
-        body: Wallet(),
-      ),
-    );
+      final walletStore = Provider.of<MainStore>(context).walletStore;
+      return Observer(
+        builder: (_) {
+          if(walletStore.wList.length == 0){
+            return Container();
+          }else{
+            return SafeArea(
+              child: Scaffold(
+                //backgroundColor: Theme.of(context).primaryColor,
+                appBar: AppBar(
+                  title: Text(title),
+                ),
+                drawer: Drawer(
+                  child: DrawerWidget(),
+                ),
+                body: Wallet(),
+              ),
+            );            
+          }
+      });
   }
 }

@@ -1,5 +1,4 @@
 import 'package:mobx/mobx.dart';
-import 'package:flutter/services.dart';
 
 // Include generated file
 part 'sort.g.dart';
@@ -13,7 +12,6 @@ class Sortable {
   bool active;
   bool direction;
 }
-const platform = const MethodChannel('flutter.dev/rust');
 abstract class _SortStore with Store {
   //_SortStore(this.sortables);
   

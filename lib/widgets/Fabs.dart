@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet_flutter/stores/wallet.dart';
 
 
 final double iconSize = 45;
@@ -18,10 +19,11 @@ final cryptoColors = {
 class Fabs extends StatelessWidget{
   @override
   Widget build(context){
-    final coinStore = Provider.of<MainStore>(context).coinStore;
+    final walletStore = Provider.of<MainStore>(context).walletStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
+
     return ListView.builder(
-      itemCount: coinStore.coinbase.length,
+      itemCount: walletStore.wList[0].coinbaseList.length,
       itemBuilder: (context, i) {
         return Observer(
           builder: (_) {
@@ -48,9 +50,9 @@ class Fabs extends StatelessWidget{
                         height: iconSize,
                         width: iconSize,
                         decoration: BoxDecoration(
-                          color: cryptoColors[coinStore.coinbase[i].ticker],
+                          color: cryptoColors[walletStore.wList[0].coinbaseList[i].ticker],
                           image: DecorationImage(
-                            image: NetworkImage(cryptoIconUrl(coinStore.coinbase[i].ticker)),
+                            image: NetworkImage(cryptoIconUrl(walletStore.wList[0].coinbaseList[i].ticker)),
                             fit: BoxFit.cover
                           ),
                           //shape: BoxShape.circle,

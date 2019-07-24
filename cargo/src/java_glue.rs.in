@@ -6,5 +6,6 @@ foreigner_class!(class C {
     method C::public_key(&self) -> &str;
     method C::wif(&self) -> &str;
     method C::address(&self) -> &str;
+    method C::ticker(&self) -> &str;
     static_method C::get_wallets(mnemonic: String) -> Vec<C>;
 });

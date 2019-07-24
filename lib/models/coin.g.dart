@@ -12,6 +12,7 @@ Coin _$CoinFromJson(Map<String, dynamic> json) {
     private_key: json['private_key'] as String,
     wif: json['wif'] as String,
     address: json['address'] as String,
+    ticker: json['ticker'] as String,
   );
 }
 
@@ -20,4 +21,5 @@ Map<String, dynamic> _$CoinToJson(Coin instance) => <String, dynamic>{
       'private_key': instance.private_key,
       'wif': instance.wif,
       'address': instance.address,
+      'ticker': instance.ticker,
     };

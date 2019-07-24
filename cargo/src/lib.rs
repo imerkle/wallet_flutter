@@ -17,6 +17,7 @@ use wallet::{
         bip32::{self, Node, CurveName},
     },
     coin::{Coin},
+    hex,
 };
 
 #[derive(Default)]
@@ -25,41 +26,31 @@ struct C{
     public_key: String,    
     wif: String,
     address: String,
+    ticker: String,
+    /*
+    If Make changes to this structure then modify
+    1) java_glue.rs.in
+    2) MainActivity.kt -> Wallet Class, and callling reference
+    3) models/coin.dart class
+    */
 }
 impl C{
-    fn new()-> C{
-        C{..Default::default()}
-    }
-    fn private_key(&self) -> &str{
-        &self.private_key
-    }
-    fn public_key(&self) -> &str{
-        &self.public_key
-    }
-    fn wif(&self) -> &str{
-        &self.wif
-    }
-    fn address(&self) -> &str{
-        &self.address
-    }
-    fn get_wallets(mnemonic: String) -> Vec<C>{
+    pub fn new()-> C{ C{..Default::default()} }
+    pub fn private_key(&self) -> &str{ &self.private_key }
+    pub fn public_key(&self) -> &str{ &self.public_key }
+    pub fn wif(&self) -> &str{ &self.wif }
+    pub fn address(&self) -> &str{ &self.address }
+    pub fn ticker(&self) -> &str{ &self.ticker }
+    pub fn get_wallets(mnemonic: String) -> Vec<C>{
         
         let seed = bip32::generate_seed(Some(&mnemonic), None);
         let node = Node::new(&SeedOrVect::Seed(seed), CurveName::Secp256k1, b"Bitcoin seed");
 
-        let codes: Vec<u32> = vec![0];
-        
-        codes.iter().map(|&x|{
-            let path = format!("m/44'/{}'/0'/0/0", x);
+        let tickers: Vec<&str> = vec!["btc","eth"];
+        tickers.iter().enumerate().map(|(_i, &ticker)|{
+            let coin = Coin::new(&ticker, None, None,Some(node.clone()));
 
-            let descendant_node = bip32::derive_descendant_by_path(node.clone(), CurveName::Secp256k1, &path).unwrap(); 
-
-            let pkey = descendant_node.get_private_key();
-            let pubkey = descendant_node.get_public_key();
-            let coin = Coin::new(descendant_node.private_key, descendant_node.public_key, "btc");
-            ;
-            
-            C{private_key: pkey, public_key: pubkey, wif: coin.to_wif(), address: coin.to_address() }
+            C{private_key: hex::encode(&coin.private_key), public_key: hex::encode(&coin.public_key.to_vec()), wif: coin.to_wif(), address: coin.to_address(), ticker: ticker.to_uppercase().to_string() }
         }).collect::<Vec<_>>()
     }
 }

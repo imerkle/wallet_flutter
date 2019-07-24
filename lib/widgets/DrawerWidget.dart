@@ -6,12 +6,15 @@ import 'package:wallet_flutter/widgets/SortWidget.dart';
 
 import 'Fabs.dart';
 
+String getName(String ticker){
+  return ticker;
+}
 
 class DrawerList extends StatelessWidget{
 
   @override
   Widget build(context){
-    final coinStore = Provider.of<MainStore>(context).coinStore;
+    final walletStore = Provider.of<MainStore>(context).walletStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
     final sortStore = Provider.of<MainStore>(context).sortStore;
     
@@ -19,7 +22,7 @@ class DrawerList extends StatelessWidget{
       builder: (_) {
         var selectedChild = fabStore.selectedChild;
         var selected = fabStore.selected;
-        var coins = coinStore.coinbase[selected].coins;
+        var coins = walletStore.wList[0].coinbaseList[selected].coins;
         if (sortStore.sortables[0].direction == false){
           coins = coins.reversed.toList();
         }
@@ -30,7 +33,7 @@ class DrawerList extends StatelessWidget{
               color: i == selectedChild ? Color.fromRGBO(67, 67, 67, 1) : Colors.transparent,
               child: ListTile(
                   title: Text(coins[i].ticker),
-                  subtitle: Text(coins[i].name),
+                  subtitle: Text(getName(coins[i].ticker)),
                   onTap: () {
                     fabStore.setSelectedChild(i);
                   },                
@@ -49,9 +52,10 @@ class DrawerWidget extends StatelessWidget {
   @override
   Widget build(context){
 
-    final coinStore = Provider.of<MainStore>(context).coinStore;
+    final walletStore = Provider.of<MainStore>(context).walletStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
     final sortStore = Provider.of<MainStore>(context).sortStore;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -74,7 +78,7 @@ class DrawerWidget extends StatelessWidget {
                       child: Observer(
                         builder: (_) {
                           return Text(
-                            coinStore.coinbase[fabStore.selected].coins[0].name,
+                            getName(walletStore.wList[0].coinbaseList[fabStore.selected].coins[0].ticker),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontSize: 20,

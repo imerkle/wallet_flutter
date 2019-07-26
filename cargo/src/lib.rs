@@ -14,9 +14,9 @@ pub use crate::java_glue::*;
 use wallet::{
     util::{
         crypto::{SeedOrVect},
-        bip32::{self, Node, CurveName},
+        bip32::{self, Node, CurveName, SK_BYTES, PK_BYTES},
     },
-    coin::{Coin},
+    coin::{Coin, Outputs},
     hex,
 };
 
@@ -52,5 +52,21 @@ impl C{
 
             C{private_key: hex::encode(&coin.private_key), public_key: hex::encode(&coin.public_key.to_vec()), wif: coin.to_wif(), address: coin.to_address(), ticker: ticker.to_uppercase().to_string() }
         }).collect::<Vec<_>>()
+    }
+    pub fn gen_send_transaction(ticker: &str, private_key: String, public_key: String, outputs: Vec<Outputs>) -> String{
+        let private_key = hex::decode(private_key).unwrap();
+        let public_key = &hex::decode(public_key).unwrap();
+
+        let mut array = [0; SK_BYTES];
+        let bytes = &private_key[..array.len()];
+        array.copy_from_slice(bytes); 
+
+        let mut array2 = [0; PK_BYTES];
+        let bytes = &public_key[..array2.len()];
+        array2.copy_from_slice(bytes); 
+
+
+        let c = Coin::new(ticker, Some(array), Some(array2), None);
+        c.gen_send_transaction(outputs)    
     }
 }

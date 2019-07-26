@@ -1,4 +1,9 @@
 use crate::{android_c_headers::*, C};
+
+use wallet::{
+    coin::{Outputs},
+};
+
 foreigner_class!(class C {
     self_type C;
     constructor C::new() -> C;
@@ -8,4 +13,8 @@ foreigner_class!(class C {
     method C::address(&self) -> &str;
     method C::ticker(&self) -> &str;
     static_method C::get_wallets(mnemonic: String) -> Vec<C>;
+});
+foreigner_class!(class Outputs {
+    self_type Outputs;
+    constructor Outputs::new(address: String, value: u64) -> Outputs;    
 });

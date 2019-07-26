@@ -21,6 +21,14 @@ class MainActivity: FlutterActivity() {
     RustJNI()
     MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
       when(call.method) {
+        "get_send_transaction" -> {
+          var addresses: Array<String>  = call.argument("addresses")
+          var values: Array<Int> = call.argument("values")
+          val outputs = mutableListOf<Outputs>()
+          for((key,value) in addresses){
+            outputs.add(Outputs(value, values[key]))
+          }
+        }
         "get_wallets" -> {
           var x = C.get_wallets(call.argument("mnemonic"))
           var myList: MutableList<Wallet> = mutableListOf<Wallet>()

@@ -14,6 +14,7 @@ wallet = { path = "../../wallet" }
 log = "0.4.6"
 log-panics = "2.0"
 android_logger = "0.8"
+openssl = { version = "0.10", features = ["vendored"] }
 
 [build-dependencies]
 bindgen = "0.49.0"

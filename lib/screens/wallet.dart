@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet_flutter/screens/scan.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
 
@@ -71,18 +72,7 @@ class Wallet extends StatelessWidget{
                     fontSize: 14,
                   )
                 ),
-                TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Recieving Address',
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.content_paste),
-                      onPressed: () {
-                        Clipboard.getData("text/plain");
-                      }
-                    ),
-                  ),
-                ),     
+                ScanScreen(),
                 TextField(
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(

@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet_flutter/models/tx_output.dart';
+import 'package:wallet_flutter/models/tx_output_list.dart';
 import 'package:wallet_flutter/screens/scan.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
+const platform = const MethodChannel('flutter.dev/rust');
 
 const double tsize = 20;
 const ts1 = TextStyle(fontSize: tsize);
@@ -89,7 +94,13 @@ class Wallet extends StatelessWidget{
                 SizedBox(
                   width: double.infinity,
                   child: RaisedButton(
-                    onPressed: () {},
+                    onPressed: () async{
+                      
+                      //var t = TxOutputList(tx_outputs: );
+                      print(jsonEncode([TxOutput(address: "asd", value: 1)]));
+                      //var y = await platform.invokeMethod('gen_send_transaction',{"ticker": x.ticker, "private_key": x.private_key, "public_key": x.public_key, "tx_outputs": t.toJson()});
+                      //print(y);
+                    },
                     padding: EdgeInsets.all(15),
                     shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
                     child: Text(
@@ -105,4 +116,8 @@ class Wallet extends StatelessWidget{
       }
     );
   }
+}
+
+Future<String> send_transaction() async {
+
 }

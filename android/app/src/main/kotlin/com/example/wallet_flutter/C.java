@@ -42,6 +42,8 @@ public final class C {
 
     public static native C [] get_wallets(String a0) ;
 
+    public static native String gen_send_transaction(String a0, String a1, String a2, Outputs [] a3) ;
+
     public synchronized void delete() {
         if (mNativeObj != 0) {
             do_delete(mNativeObj);

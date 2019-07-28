@@ -14,6 +14,4 @@ class CoinList {
        coins: coins,
     );
   }
-
-
 }

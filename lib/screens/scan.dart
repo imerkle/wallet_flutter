@@ -4,44 +4,39 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ScanScreen extends StatefulWidget {
-  @override
-  _ScanState createState() => new _ScanState();
-}
 
-class _ScanState extends State<ScanScreen> {
-  String barcode = "";
+class ScanScreen extends StatelessWidget {
+  ScanScreen({this.controller, this.onScan});
 
-  @override
-  initState() {
-    super.initState();
-  }
+  TextEditingController controller;
+  Function onScan;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-            controller: TextEditingController(text: barcode),
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Recieving Address',
-              prefixIcon: IconButton(
-                icon: Icon(Icons.center_focus_weak),
-                onPressed: scan
-              ),
-              suffixIcon: IconButton(
-                icon: Icon(Icons.content_paste),
-                onPressed: () {
-                  Clipboard.getData("text/plain");
-                }
-              ),
-            ),
-          );
+      controller: controller,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Recieving Address',
+        prefixIcon: IconButton(
+          icon: Icon(Icons.center_focus_weak),
+          onPressed: scan
+        ),
+        suffixIcon: IconButton(
+          icon: Icon(Icons.content_paste),
+          onPressed: () {
+            Clipboard.getData("text/plain");
+          }
+        ),
+      ),
+    );
   }
 
   Future scan() async {
     try {
       String barcode = await BarcodeScanner.scan();
-      setState(() => this.barcode = barcode);
+      onScan(barcode);
+      //setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         /*setState(() {

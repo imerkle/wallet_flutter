@@ -67,6 +67,6 @@ impl C{
 
 
         let c = Coin::new(ticker, Some(array), Some(array2), None);
-        c.gen_send_transaction(outputs)    
+        c.gen_send_transaction(outputs)
     }
 }

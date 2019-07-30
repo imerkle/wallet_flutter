@@ -13,6 +13,9 @@ import kotlinx.serialization.json.JSON
 @Serializable
 data class Wallet(val private_key: String, val public_key: String, val wif: String, val address: String, val ticker: String)
 
+@Serializable
+data class TxOutputs(val address: String, val value: Long)
+
 class MainActivity: FlutterActivity() {
   private val CHANNEL = "flutter.dev/rust"  
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,19 +26,21 @@ class MainActivity: FlutterActivity() {
 
       when(call.method) {
         "gen_send_transaction" -> {
-          val tx_outputs: String? = call.argument("tx_outputs")
-          println(tx_outputs)
+          val txo: String? = call.argument("tx_outputs")
+          val t: String = txo ?: ""
+          val tx_outputs: List<TxOutputs> = JSON.parse(TxOutputs.serializer().list, t)
+          println(txo)
+          val ticker: String? = call.argument("ticker")
+          
+          val private_key: String? = call.argument("private_key")
+          val public_key: String? = call.argument("public_key")
 
-          //Dart(call.argument) sends nullable arguments so kotlin mad
-          //i'm sure there's better way to do it but not a kotlin person
-          /* 
-            val outputs = arrayOfNulls<Outputs>(addresses.size)
-            for(i in 0..addresses.size){
-              //outputs.add(Outputs(addresses[i], values[i]))
-              outputs[i]= Outputs(addresses[i], values[i])
-            }
-            result.success(C.gen_send_transaction(call.argument("ticker"), call.argument("private_key"), call.argument("public_key"), outputs));
-          */
+          val outputs = arrayOfNulls<Outputs>(tx_outputs.size)
+          for(i in 0..tx_outputs.size-1){
+            outputs[i]= Outputs(tx_outputs[i].address, tx_outputs[i].value)
+          }
+          result.success(C.gen_send_transaction(ticker, private_key, public_key, outputs));
+          
         }
         "get_wallets" -> {
           val x = C.get_wallets(call.argument("mnemonic"))

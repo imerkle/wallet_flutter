@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/models/tx_output.dart';
-import 'package:wallet_flutter/models/tx_output_list.dart';
 import 'package:wallet_flutter/screens/scan.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
@@ -16,7 +15,18 @@ const double tsize = 20;
 const ts1 = TextStyle(fontSize: tsize);
 const ts2 = TextStyle(fontSize: tsize, fontWeight: FontWeight.bold);
 
-class Wallet extends StatelessWidget{
+class Wallet extends StatefulWidget{
+  String receivingAddress = "";
+  String amount = "0";
+
+  @override
+  _WalletState createState() => _WalletState();
+}
+
+class _WalletState extends State<Wallet> {
+  String receivingAddress;
+  String amount;
+
   @override
   Widget build(context){
     final walletStore = Provider.of<MainStore>(context).walletStore;
@@ -28,7 +38,6 @@ class Wallet extends StatelessWidget{
         var selected = fabStore.selected;        
         var selectedChild = fabStore.selectedChild;
         var x = walletStore.wList[0].coinbaseList[selected].coins[selectedChild];
-        print(x.address);
         return Padding(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           child: SingleChildScrollView(
@@ -77,9 +86,10 @@ class Wallet extends StatelessWidget{
                     fontSize: 14,
                   )
                 ),
-                ScanScreen(),
+                ScanScreen(controller: TextEditingController(text: receivingAddress), onScan: (text) => setState(() => this.receivingAddress = text)),
                 TextField(
                   keyboardType: TextInputType.number,
+                  controller: TextEditingController(text: amount),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '${x.ticker} Amount',
@@ -96,10 +106,9 @@ class Wallet extends StatelessWidget{
                   child: RaisedButton(
                     onPressed: () async{
                       
-                      //var t = TxOutputList(tx_outputs: );
-                      print(jsonEncode([TxOutput(address: "asd", value: 1)]));
-                      //var y = await platform.invokeMethod('gen_send_transaction',{"ticker": x.ticker, "private_key": x.private_key, "public_key": x.public_key, "tx_outputs": t.toJson()});
-                      //print(y);
+                      var txOutputs = jsonEncode([TxOutput(address: "bc1quy5xr8npkahm7hpxs5q52qwjy3qpv685fpvcjm", value: amount as int)]);
+                      var y = await platform.invokeMethod('gen_send_transaction',{"ticker": x.ticker, "private_key": x.private_key, "public_key": x.public_key, "tx_outputs": txOutputs});
+                      print(y);
                     },
                     padding: EdgeInsets.all(15),
                     shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),

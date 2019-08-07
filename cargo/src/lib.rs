@@ -76,15 +76,19 @@ pub fn from_ticker(coin_type: &str) -> Result<CoinType, &str>{
     match coin_type.to_lowercase().as_str() {
         "btc" => Ok(CoinType::Btc(btc::Btc{
             network: Base58Network{
-                private: vec![128],
-                public: vec![0],
+                //private: vec![128],
+                //public: vec![0],
+                private: vec![239],
+                public: vec![111],
             },
-            slips44_code: 0,
+            //slips44_code: 0,
+            slips44_code: 1,
             decimal_point: 8,
             ticker: coin_type.to_uppercase(),
         })),
         "eth" => Ok(CoinType::Eth(eth::Eth{
-            slips44_code: 60,
+            //slips44_code: 60,
+            slips44_code: 1,
             decimal_point: 18,
             ticker: coin_type.to_uppercase(),
         })),

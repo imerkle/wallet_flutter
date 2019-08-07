@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:wallet_flutter/models/tx_output.dart';
 import 'package:wallet_flutter/screens/scan.dart';
 import 'package:wallet_flutter/stores/main.dart';
+import 'package:http/http.dart' as http;
 
 const platform = const MethodChannel('flutter.dev/rust');
 
@@ -100,6 +101,7 @@ class Wallet extends StatelessWidget {
                       
                       String txOutputs = jsonEncode([TxOutput(address: receivingAddress.text, value: int.parse(amount.text))]);
                       String tx_signed_hex = await platform.invokeMethod('gen_send_transaction',{"ticker": x.ticker, "private_key": x.private_key, "public_key": x.public_key, "tx_outputs": txOutputs});
+                      send_transaction(x.ticker, x.ticker, tx_signed_hex);
                       //send tx_signed_hex
                     },
                     padding: EdgeInsets.all(15),
@@ -119,6 +121,7 @@ class Wallet extends StatelessWidget {
   }
 }
 
-Future<String> send_transaction() async {
-
+Future<String> send_transaction(String rel, String base, String rawTx) async {
+  var response = await http.post('http://localhost:4000/api/post_tx', body: {'rel': rel, 'base': base, 'rawTx': rawTx});
+  print('Response body: ${response.body}');
 }

@@ -41,7 +41,8 @@ Future<List<Wallet>> initWalletIfAbsent() async {
     String mnemonic = "";
     List<Wallet> wList = [];
     if(walletsJson == null){
-      mnemonic = bip39.generateMnemonic();
+      //mnemonic = bip39.generateMnemonic();
+      mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
       String seedHex = bip39.mnemonicToSeedHex(mnemonic);
 
       var x = await platform.invokeMethod('get_wallets',{"mnemonic": mnemonic});
@@ -60,15 +61,7 @@ Future<List<Wallet>> initWalletIfAbsent() async {
 List<Coinbase> orderCoinbase(List<Coin> coins){
   List<Coinbase> coinbaseList = getListOfCoinbase();
   for(var o in coins){
-    var index;
-    switch (o.ticker) {
-      case 'BTC':
-        index = coinbaseList.indexWhere((coinbase) => coinbase.ticker == "BTC");
-      break;
-      case 'ETH':
-        index = coinbaseList.indexWhere((coinbase) => coinbase.ticker == "ETH");
-      break;
-    }
+    var index = coinbaseList.indexWhere((coinbase) => coinbase.ticker == o.ticker);
     coinbaseList[index].coins.add(o);
   }
   return coinbaseList;

@@ -15,8 +15,9 @@ use wallet::{
     util::{
         crypto::{SeedOrVect},
         bip32::{self, Node, CurveName, SK_BYTES, PK_BYTES},
+        base58::{Base58Network},
     },
-    coin::{Coin, Outputs},
+    coin::{Coin, Outputs, CoinType, btc, eth},
     hex,
 };
 
@@ -48,7 +49,7 @@ impl C{
 
         let tickers: Vec<&str> = vec!["btc","eth"];
         tickers.iter().enumerate().map(|(_i, &ticker)|{
-            let coin = Coin::new(&ticker, None, None,Some(node.clone()));
+            let coin = Coin::new(from_ticker(&ticker).unwrap(), None, None,Some(node.clone()));
 
             C{private_key: hex::encode(&coin.private_key), public_key: hex::encode(&coin.public_key.to_vec()), wif: coin.to_wif(), address: coin.to_address(), ticker: ticker.to_uppercase().to_string() }
         }).collect::<Vec<_>>()
@@ -66,7 +67,27 @@ impl C{
         array2.copy_from_slice(bytes); 
 
 
-        let c = Coin::new(ticker, Some(array), Some(array2), None);
+        let c = Coin::new(from_ticker(ticker).unwrap(), Some(array), Some(array2), None);
         c.gen_send_transaction(outputs)
+    }
+}
+
+pub fn from_ticker(coin_type: &str) -> Result<CoinType, &str>{
+    match coin_type.to_lowercase().as_str() {
+        "btc" => Ok(CoinType::Btc(btc::Btc{
+            network: Base58Network{
+                private: vec![128],
+                public: vec![0],
+            },
+            slips44_code: 0,
+            decimal_point: 8,
+            ticker: coin_type.to_uppercase(),
+        })),
+        "eth" => Ok(CoinType::Eth(eth::Eth{
+            slips44_code: 60,
+            decimal_point: 18,
+            ticker: coin_type.to_uppercase(),
+        })),
+        _ => Err("invalid type"),
     }
 }

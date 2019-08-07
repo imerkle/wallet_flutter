@@ -15,17 +15,9 @@ const double tsize = 20;
 const ts1 = TextStyle(fontSize: tsize);
 const ts2 = TextStyle(fontSize: tsize, fontWeight: FontWeight.bold);
 
-class Wallet extends StatefulWidget{
-  String receivingAddress = "";
-  String amount = "0";
-
-  @override
-  _WalletState createState() => _WalletState();
-}
-
-class _WalletState extends State<Wallet> {
-  String receivingAddress;
-  String amount;
+class Wallet extends StatelessWidget {
+  final receivingAddress = TextEditingController();
+  final amount = TextEditingController();
 
   @override
   Widget build(context){
@@ -86,10 +78,10 @@ class _WalletState extends State<Wallet> {
                     fontSize: 14,
                   )
                 ),
-                ScanScreen(controller: TextEditingController(text: receivingAddress), onScan: (text) => setState(() => this.receivingAddress = text)),
+                ScanScreen(controller: receivingAddress, onScan: (text) => this.receivingAddress.text = text),
                 TextField(
                   keyboardType: TextInputType.number,
-                  controller: TextEditingController(text: amount),
+                  controller: amount,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '${x.ticker} Amount',
@@ -106,9 +98,9 @@ class _WalletState extends State<Wallet> {
                   child: RaisedButton(
                     onPressed: () async{
                       
-                      var txOutputs = jsonEncode([TxOutput(address: "bc1quy5xr8npkahm7hpxs5q52qwjy3qpv685fpvcjm", value: amount as int)]);
-                      var y = await platform.invokeMethod('gen_send_transaction',{"ticker": x.ticker, "private_key": x.private_key, "public_key": x.public_key, "tx_outputs": txOutputs});
-                      print(y);
+                      String txOutputs = jsonEncode([TxOutput(address: receivingAddress.text, value: int.parse(amount.text))]);
+                      String tx_signed_hex = await platform.invokeMethod('gen_send_transaction',{"ticker": x.ticker, "private_key": x.private_key, "public_key": x.public_key, "tx_outputs": txOutputs});
+                      //send tx_signed_hex
                     },
                     padding: EdgeInsets.all(15),
                     shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),

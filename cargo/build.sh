@@ -1,6 +1,5 @@
 #!/bin/bash
 
-rm src/java_glue.rs
 cargo build --target i686-linux-android
 cargo build --target aarch64-linux-android
 

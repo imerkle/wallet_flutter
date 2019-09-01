@@ -8,7 +8,6 @@ import 'package:wallet_flutter/stores/main.dart';
 import 'screens/wallet.dart';
 import 'widgets/DrawerWidget.dart';
 
-
 void main() => runApp(EasyLocalization(child: MyApp()));
 
 final mainStore = new MainStore();

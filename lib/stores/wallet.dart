@@ -4,8 +4,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/models/wallet.dart';
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:wallet_flutter/models/coin.dart';
-import 'package:wallet_flutter/models/coin_list.dart';
+//import 'package:wallet_flutter/models/coin.dart';
+//import 'package:wallet_flutter/models/coin_list.dart';
+import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
 import 'package:wallet_flutter/models/coinbase.dart';
 import 'package:wallet_flutter/models/wallet_list.dart';
 import 'package:flutter/services.dart';
@@ -45,19 +46,25 @@ Future<List<Wallet>> initWalletIfAbsent() async {
       mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
       String seedHex = bip39.mnemonicToSeedHex(mnemonic);
 
-      var x = await platform.invokeMethod('get_wallets',{"mnemonic": mnemonic});
+      TickerList t = TickerList();
+      List<String> l  = ["btc"];
+      t.strings.addAll(l);
+      var x = await platform.invokeMethod('get_wallets',{"mnemonic": mnemonic, "tickers": t.writeToBuffer() });
+      CoinList c = new CoinList.fromBuffer(x);
+      /*
       var coins = CoinList.fromJson(jsonDecode(x)).coins;
       
       List<Coinbase> coinbaseList = orderCoinbase(coins);
       Wallet w = new Wallet(id: 0, seedHex: seedHex, mnemonic: mnemonic, coinbaseList: coinbaseList);
       wList.add(w);
       storage.write(key: key, value: jsonEncode(wList));
+      */
     }else{
       wList = WalletList.fromJson(jsonDecode(walletsJson)).wallets;
     }
     return wList;
 }
-
+/*
 List<Coinbase> orderCoinbase(List<Coin> coins){
   List<Coinbase> coinbaseList = getListOfCoinbase();
   for(var o in coins){
@@ -67,7 +74,7 @@ List<Coinbase> orderCoinbase(List<Coin> coins){
   return coinbaseList;
 }
 List<Coinbase> getListOfCoinbase(){
-  List a = ["BTC", "ETH"];
+  List a = ["BTC", "ETH", "XLM", "XRP", "EOS", "NEO", "ONT"];
   List<Coinbase> c = [];
   for(var x in a){
     List<Coin> cx = [];
@@ -75,3 +82,4 @@ List<Coinbase> getListOfCoinbase(){
   }
   return c;
 }
+*/

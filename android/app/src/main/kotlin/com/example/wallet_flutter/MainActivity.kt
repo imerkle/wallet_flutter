@@ -21,11 +21,14 @@ class MainActivity: FlutterActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     GeneratedPluginRegistrant.registerWith(this)
-    RustJNI()
+    System.loadLibrary("walletjni")
+
+
     MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
 
       when(call.method) {
         "gen_send_transaction" -> {
+          /*
           val txo: String? = call.argument("tx_outputs")
           val t: String = txo ?: ""
           val tx_outputs: List<TxOutputs> = JSON.parse(TxOutputs.serializer().list, t)
@@ -37,20 +40,31 @@ class MainActivity: FlutterActivity() {
 
           val outputs = arrayOfNulls<Outputs>(tx_outputs.size)
           for(i in 0..tx_outputs.size-1){
-            outputs[i]= Outputs(tx_outputs[i].address, tx_outputs[i].value)
+            outputs[i]= Outputs(tx_outputs[i].address, tx_outputs[i].value, "")
           }
           result.success(C.gen_send_transaction(ticker, private_key, public_key, outputs)); 
+          */
         }
         "get_wallets" -> {
+          val mnemonic: String = call.argument("mnemonic") ?: ""
+          val tickers: ByteArray = call.argument("tickers") ?: ByteArray(0)
+          val x = getWallet(tickers, mnemonic)
+          println(x)
+          result.success(x)
+          /*
           val x = C.get_wallets(call.argument("mnemonic"))
+          
+
           val myList: MutableList<Wallet> = mutableListOf<Wallet>()
           for(y in x){
             myList.add(Wallet(y.private_key(), y.public_key(), y.wif(), y.address(), y.ticker()))
           }
           val jsonList = JSON.stringify(Wallet.serializer().list, myList)
           result.success(jsonList)
+          */
         }
       }
     }
   }
+  external fun getWallet(s: ByteArray, b: String): ByteArray
 }

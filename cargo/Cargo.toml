@@ -11,12 +11,9 @@ crate-type = ["cdylib"]
 
 [dependencies]
 wallet = { path = "../../wallet" }
-log = "0.4.6"
-log-panics = "2.0"
-android_logger = "0.8"
+protobuf = "2.8.0"
+jni = "0.13.1"
 openssl = { version = "0.10", features = ["vendored"] }
 
 [build-dependencies]
-bindgen = "0.49.0"
-rust_swig = "0.3.0"
-walkdir = "2.2.7"
+protoc-rust = "2.8.0"

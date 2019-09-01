@@ -1,97 +1,32 @@
-#[cfg(target_os = "android")]
-extern crate android_logger;
-#[macro_use]
-extern crate log;
-extern crate log_panics;
+mod protos;
+mod connector;
+use jni::objects::JString;
+use protobuf::Message;
 
-#[cfg(target_os = "android")]
-mod android_c_headers;
-#[cfg(target_os = "android")]
-mod java_glue;
-#[cfg(target_os = "android")]
-pub use crate::java_glue::*;
+use jni::objects::JClass;
+use jni::JNIEnv;
+use jni::sys::{jbyteArray, jboolean};
 
-use wallet::{
-    util::{
-        crypto::{SeedOrVect},
-        bip32::{self, Node, CurveName, SK_BYTES, PK_BYTES},
-        base58::{Base58Network},
-    },
-    coin::{Coin, Outputs, CoinType, btc, eth},
-    hex,
-};
+#[allow(non_snake_case)]
+#[no_mangle]
+pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_getWallet(
+    // Java environment.
+    env: JNIEnv,
+    // Static class which owns this method.
+    _class: JClass,
 
-#[derive(Default)]
-struct C{
-    private_key: String,
-    public_key: String,    
-    wif: String,
-    address: String,
-    ticker: String,
-    /*
-    If Make changes to this structure then modify
-    1) java_glue.rs.in
-    2) MainActivity.kt -> Wallet Class, and callling reference
-    3) models/coin.dart class
-    */
-}
-impl C{
-    pub fn new()-> C{ C{..Default::default()} }
-    pub fn private_key(&self) -> &str{ &self.private_key }
-    pub fn public_key(&self) -> &str{ &self.public_key }
-    pub fn wif(&self) -> &str{ &self.wif }
-    pub fn address(&self) -> &str{ &self.address }
-    pub fn ticker(&self) -> &str{ &self.ticker }
-    pub fn get_wallets(mnemonic: String) -> Vec<C>{
-        
-        let seed = bip32::generate_seed(Some(&mnemonic), None);
-        let node = Node::new(&SeedOrVect::Seed(seed), CurveName::Secp256k1, b"Bitcoin seed");
+    input1: jbyteArray,
+    input2: JString,
+) -> jbyteArray {
+    let mnemonic: String = env.get_string(input2).unwrap().into();
+    //byte array -> vector
+    let b =  env.convert_byte_array(input1).unwrap();
+    //vector -> protobuf -> rust struct
+    let tickers = protobuf::parse_from_bytes::<protos::coin::TickerList>(&b).unwrap().strings.into_vec();
+    // func -> rust struct -> protobuf -> vector
+    let v: Vec<u8> = connector::get_wallets(tickers, mnemonic, false).write_to_bytes().unwrap();
+    // vector -> java array
+    let output = env.byte_array_from_slice(&v).unwrap();
 
-        let tickers: Vec<&str> = vec!["btc","eth"];
-        tickers.iter().enumerate().map(|(_i, &ticker)|{
-            let coin = Coin::new(from_ticker(&ticker).unwrap(), None, None,Some(node.clone()));
-
-            C{private_key: hex::encode(&coin.private_key), public_key: hex::encode(&coin.public_key.to_vec()), wif: coin.to_wif(), address: coin.to_address(), ticker: ticker.to_uppercase().to_string() }
-        }).collect::<Vec<_>>()
-    }
-    pub fn gen_send_transaction(ticker: &str, private_key: String, public_key: String, outputs: Vec<Outputs>) -> String{
-        let private_key = hex::decode(private_key).unwrap();
-        let public_key = &hex::decode(public_key).unwrap();
-
-        let mut array = [0; SK_BYTES];
-        let bytes = &private_key[..array.len()];
-        array.copy_from_slice(bytes); 
-
-        let mut array2 = [0; PK_BYTES];
-        let bytes = &public_key[..array2.len()];
-        array2.copy_from_slice(bytes); 
-
-
-        let c = Coin::new(from_ticker(ticker).unwrap(), Some(array), Some(array2), None);
-        c.gen_send_transaction(outputs)
-    }
-}
-
-pub fn from_ticker(coin_type: &str) -> Result<CoinType, &str>{
-    match coin_type.to_lowercase().as_str() {
-        "btc" => Ok(CoinType::Btc(btc::Btc{
-            network: Base58Network{
-                //private: vec![128],
-                //public: vec![0],
-                private: vec![239],
-                public: vec![111],
-            },
-            //slips44_code: 0,
-            slips44_code: 1,
-            decimal_point: 8,
-            ticker: coin_type.to_uppercase(),
-        })),
-        "eth" => Ok(CoinType::Eth(eth::Eth{
-            //slips44_code: 60,
-            slips44_code: 1,
-            decimal_point: 18,
-            ticker: coin_type.to_uppercase(),
-        })),
-        _ => Err("invalid type"),
-    }
+    output
 }

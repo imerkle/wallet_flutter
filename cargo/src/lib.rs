@@ -5,7 +5,7 @@ use protobuf::Message;
 
 use jni::objects::JClass;
 use jni::JNIEnv;
-use jni::sys::{jbyteArray, jboolean};
+use jni::sys::{jbyteArray};
 
 #[allow(non_snake_case)]
 #[no_mangle]
@@ -22,7 +22,7 @@ pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_getWallet(
     //byte array -> vector
     let b =  env.convert_byte_array(input1).unwrap();
     //vector -> protobuf -> rust struct
-    let tickers = protobuf::parse_from_bytes::<protos::coin::TickerList>(&b).unwrap().strings.into_vec();
+    let tickers = protobuf::parse_from_bytes::<protos::coin::Tickers>(&b).unwrap();
     // func -> rust struct -> protobuf -> vector
     let v: Vec<u8> = connector::get_wallets(tickers, mnemonic, false).write_to_bytes().unwrap();
     // vector -> java array

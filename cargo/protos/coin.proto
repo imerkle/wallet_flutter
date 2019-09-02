@@ -13,9 +13,19 @@ message Coin {
     string rel = 5;
     string base = 6;
 }
-message CoinList{
+message Coins{
     repeated Coin coin = 1;
+    string base = 2;
 }
-message TickerList{
-    repeated string strings = 1;
+
+message Ticker{
+    repeated string rel = 1;
+    string base = 2;
+}
+
+message Tickers{
+    repeated Ticker ticker = 1;
+}
+message CoinsList{
+    repeated Coins coins = 1;
 }

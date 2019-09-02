@@ -45,12 +45,10 @@ Future<List<Wallet>> initWalletIfAbsent() async {
       //mnemonic = bip39.generateMnemonic();
       mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
       String seedHex = bip39.mnemonicToSeedHex(mnemonic);
-
-      TickerList t = TickerList();
-      List<String> l  = ["btc"];
-      t.strings.addAll(l);
+      
+      Tickers t = get_tickers();
       var x = await platform.invokeMethod('get_wallets',{"mnemonic": mnemonic, "tickers": t.writeToBuffer() });
-      CoinList c = new CoinList.fromBuffer(x);
+      Coins c = new Coins.fromBuffer(x);
       /*
       var coins = CoinList.fromJson(jsonDecode(x)).coins;
       
@@ -64,6 +62,21 @@ Future<List<Wallet>> initWalletIfAbsent() async {
     }
     return wList;
 }
+Tickers get_tickers(){
+      Map<String, List<String>> a = {
+        "btc": ["btc"],
+        "eth": ["eth"],
+      };
+      Tickers t = Tickers();
+      a.forEach((k, v) {
+          Ticker t1 = Ticker();
+          t1.rel.addAll(v);
+          t1.base = k;
+          t.ticker.add(t1);
+      }); 
+      return t;
+}
+
 /*
 List<Coinbase> orderCoinbase(List<Coin> coins){
   List<Coinbase> coinbaseList = getListOfCoinbase();

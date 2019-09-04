@@ -25,6 +25,14 @@ const Coins$json = const {
   ],
 };
 
+const Ticker$json = const {
+  '1': 'Ticker',
+  '2': const [
+    const {'1': 'rel', '3': 1, '4': 3, '5': 9, '10': 'rel'},
+    const {'1': 'base', '3': 2, '4': 1, '5': 9, '10': 'base'},
+  ],
+};
+
 const Tickers$json = const {
   '1': 'Tickers',
   '2': const [
@@ -32,11 +40,25 @@ const Tickers$json = const {
   ],
 };
 
-const Ticker$json = const {
-  '1': 'Ticker',
+const CoinsList$json = const {
+  '1': 'CoinsList',
   '2': const [
-    const {'1': 'rel', '3': 1, '4': 3, '5': 9, '10': 'rel'},
-    const {'1': 'base', '3': 2, '4': 1, '5': 9, '10': 'base'},
+    const {'1': 'coins', '3': 1, '4': 3, '5': 11, '6': '.Coins', '10': 'coins'},
+  ],
+};
+
+const Wallet$json = const {
+  '1': 'Wallet',
+  '2': const [
+    const {'1': 'mnemonic', '3': 1, '4': 1, '5': 9, '10': 'mnemonic'},
+    const {'1': 'coins_list', '3': 2, '4': 1, '5': 11, '6': '.CoinsList', '10': 'coinsList'},
+  ],
+};
+
+const Wallets$json = const {
+  '1': 'Wallets',
+  '2': const [
+    const {'1': 'wallets', '3': 1, '4': 3, '5': 11, '6': '.Wallet', '10': 'wallets'},
   ],
 };
 

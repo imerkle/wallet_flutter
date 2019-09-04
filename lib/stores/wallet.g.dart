@@ -9,21 +9,21 @@ part of 'wallet.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars
 
 mixin _$WalletStore on _WalletStore, Store {
-  final _$wListAtom = Atom(name: '_WalletStore.wList');
+  final _$wsAtom = Atom(name: '_WalletStore.ws');
 
   @override
-  List<Wallet> get wList {
-    _$wListAtom.context.enforceReadPolicy(_$wListAtom);
-    _$wListAtom.reportObserved();
-    return super.wList;
+  Wallets get ws {
+    _$wsAtom.context.enforceReadPolicy(_$wsAtom);
+    _$wsAtom.reportObserved();
+    return super.ws;
   }
 
   @override
-  set wList(List<Wallet> value) {
-    _$wListAtom.context.conditionallyRunInAction(() {
-      super.wList = value;
-      _$wListAtom.reportChanged();
-    }, _$wListAtom, name: '${_$wListAtom.name}_set');
+  set ws(Wallets value) {
+    _$wsAtom.context.conditionallyRunInAction(() {
+      super.ws = value;
+      _$wsAtom.reportChanged();
+    }, _$wsAtom, name: '${_$wsAtom.name}_set');
   }
 
   final _$initPrepAsyncAction = AsyncAction('initPrep');

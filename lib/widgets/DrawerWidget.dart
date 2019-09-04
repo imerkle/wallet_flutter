@@ -7,8 +7,12 @@ import 'package:wallet_flutter/widgets/SortWidget.dart';
 import 'Fabs.dart';
 
 String getName(String ticker){
-  return ticker;
+  return cryptoNames[ticker];
 }
+final cryptoNames = {
+  'btc': "Bitcoin",
+  'eth': "Ethereum",
+};
 
 class DrawerList extends StatelessWidget{
 
@@ -22,18 +26,18 @@ class DrawerList extends StatelessWidget{
       builder: (_) {
         var selectedChild = fabStore.selectedChild;
         var selected = fabStore.selected;
-        var coins = walletStore.wList[0].coinbaseList[selected].coins;
+        var coin = walletStore.ws.wallets[0].coinsList.coins[selected].coin;
         if (sortStore.sortables[0].direction == false){
-          coins = coins.reversed.toList();
+          coin = coin.reversed.toList();
         }
         return  ListView.builder(
-          itemCount: coins.length,
+          itemCount: coin.length,
           itemBuilder: (context, i) {
             return Container(
               color: i == selectedChild ? Color.fromRGBO(67, 67, 67, 1) : Colors.transparent,
               child: ListTile(
-                  title: Text(coins[i].ticker),
-                  subtitle: Text(getName(coins[i].ticker)),
+                  title: Text(coin[i].rel.toUpperCase()),
+                  subtitle: Text(getName(coin[i].rel)),
                   onTap: () {
                     fabStore.setSelectedChild(i);
                   },                
@@ -78,7 +82,7 @@ class DrawerWidget extends StatelessWidget {
                       child: Observer(
                         builder: (_) {
                           return Text(
-                            getName(walletStore.wList[0].coinbaseList[fabStore.selected].coins[0].ticker),
+                            getName(walletStore.ws.wallets[0].coinsList.coins[fabStore.selected].coin[0].rel),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontSize: 20,

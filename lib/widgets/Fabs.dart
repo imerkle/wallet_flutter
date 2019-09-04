@@ -11,9 +11,9 @@ String cryptoIconUrl(String ticker, {int size = 128,String color = "color"}){
 }
 
 final cryptoColors = {
-  'BTC': Colors.orange,
-  'ETH': Colors.blueAccent,
-  'LTC': Colors.grey,
+  'btc': Colors.orange,
+  'eth': Colors.blueAccent,
+  'ltc': Colors.grey,
 };
 
 class Fabs extends StatelessWidget{
@@ -23,7 +23,7 @@ class Fabs extends StatelessWidget{
     final fabStore = Provider.of<MainStore>(context).fabStore;
 
     return ListView.builder(
-      itemCount: walletStore.wList[0].coinbaseList.length,
+      itemCount: walletStore.ws.wallets[0].coinsList.coins.length,
       itemBuilder: (context, i) {
         return Observer(
           builder: (_) {
@@ -50,9 +50,9 @@ class Fabs extends StatelessWidget{
                         height: iconSize,
                         width: iconSize,
                         decoration: BoxDecoration(
-                          color: cryptoColors[walletStore.wList[0].coinbaseList[i].ticker],
+                          color: cryptoColors[walletStore.ws.wallets[0].coinsList.coins[i].base],
                           image: DecorationImage(
-                            image: NetworkImage(cryptoIconUrl(walletStore.wList[0].coinbaseList[i].ticker)),
+                            image: NetworkImage(cryptoIconUrl(walletStore.ws.wallets[0].coinsList.coins[i].base)),
                             fit: BoxFit.cover
                           ),
                           //shape: BoxShape.circle,

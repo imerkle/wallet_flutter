@@ -30,7 +30,7 @@ class Wallet extends StatelessWidget {
       builder: (_) {
         var selected = fabStore.selected;        
         var selectedChild = fabStore.selectedChild;
-        var x = walletStore.wList[0].coinbaseList[selected].coins[selectedChild];
+        var x = walletStore.ws.wallets[0].coinsList.coins[selected].coin[selectedChild];
         return Padding(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           child: SingleChildScrollView(
@@ -43,7 +43,7 @@ class Wallet extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text("${x.ticker} balance".toUpperCase(), style: ts1),
+                        Text("${x.rel} balance".toUpperCase(), style: ts1),
                         Text("0", style: ts2),
                       ],
                     ),
@@ -62,7 +62,7 @@ class Wallet extends StatelessWidget {
                   style: TextStyle(color: Colors.grey),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Your ${x.ticker} Address',
+                    labelText: 'Your ${x.rel} Address',
                     suffixIcon: IconButton(
                       icon: Icon(Icons.content_copy),
                       onPressed: () {
@@ -85,7 +85,7 @@ class Wallet extends StatelessWidget {
                   controller: amount,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: '${x.ticker} Amount',
+                    labelText: '${x.rel.toUpperCase()} Amount',
                     suffixIcon: IconButton(
                       icon: Icon(Icons.content_paste),
                       onPressed: () {
@@ -100,8 +100,8 @@ class Wallet extends StatelessWidget {
                     onPressed: () async{
                       
                       String txOutputs = jsonEncode([TxOutput(address: receivingAddress.text, value: int.parse(amount.text))]);
-                      String tx_signed_hex = await platform.invokeMethod('gen_send_transaction',{"ticker": x.ticker, "private_key": x.private_key, "public_key": x.public_key, "tx_outputs": txOutputs});
-                      send_transaction(x.ticker, x.ticker, tx_signed_hex);
+                      String tx_signed_hex = await platform.invokeMethod('gen_send_transaction',{"ticker": x.rel, "private_key": x.privateKey, "public_key": x.publicKey, "tx_outputs": txOutputs});
+                      send_transaction(x.rel, x.rel, tx_signed_hex);
                       //send tx_signed_hex
                     },
                     padding: EdgeInsets.all(15),

@@ -17,6 +17,7 @@ pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_getWallet(
 
     input1: jbyteArray,
     input2: JString,
+    is_testnet: bool,
 ) -> jbyteArray {
     let mnemonic: String = env.get_string(input2).unwrap().into();
     //byte array -> vector
@@ -24,7 +25,7 @@ pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_getWallet(
     //vector -> protobuf -> rust struct
     let tickers = protobuf::parse_from_bytes::<protos::coin::Tickers>(&b).unwrap();
     // func -> rust struct -> protobuf -> vector
-    let v: Vec<u8> = connector::get_wallets(tickers, mnemonic, false).write_to_bytes().unwrap();
+    let v: Vec<u8> = connector::get_wallets(tickers, mnemonic, is_testnet).write_to_bytes().unwrap();
     // vector -> java array
     let output = env.byte_array_from_slice(&v).unwrap();
 

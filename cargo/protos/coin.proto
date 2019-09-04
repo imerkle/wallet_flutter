@@ -29,3 +29,13 @@ message Tickers{
 message CoinsList{
     repeated Coins coins = 1;
 }
+
+// wallet proto
+
+message Wallet{
+    string mnemonic = 1;
+    CoinsList coins_list = 2;
+}
+message Wallets{
+    repeated Wallet wallets = 1;
+}

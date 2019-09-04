@@ -48,23 +48,12 @@ class MainActivity: FlutterActivity() {
         "get_wallets" -> {
           val mnemonic: String = call.argument("mnemonic") ?: ""
           val tickers: ByteArray = call.argument("tickers") ?: ByteArray(0)
-          val x = getWallet(tickers, mnemonic)
-          println(x)
+          val is_testnet: Boolean = call.argument("is_testnet") ?: false
+          val x = getWallet(tickers, mnemonic, is_testnet)
           result.success(x)
-          /*
-          val x = C.get_wallets(call.argument("mnemonic"))
-          
-
-          val myList: MutableList<Wallet> = mutableListOf<Wallet>()
-          for(y in x){
-            myList.add(Wallet(y.private_key(), y.public_key(), y.wif(), y.address(), y.ticker()))
-          }
-          val jsonList = JSON.stringify(Wallet.serializer().list, myList)
-          result.success(jsonList)
-          */
         }
       }
     }
   }
-  external fun getWallet(s: ByteArray, b: String): ByteArray
+  external fun getWallet(s: ByteArray, b: String, c: Boolean): ByteArray
 }

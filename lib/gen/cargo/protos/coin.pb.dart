@@ -94,29 +94,6 @@ class Coins extends $pb.GeneratedMessage {
   void clearBase() => clearField(2);
 }
 
-class Tickers extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Tickers')
-    ..pc<Ticker>(1, 'ticker', $pb.PbFieldType.PM,Ticker.create)
-    ..hasRequiredFields = false
-  ;
-
-  Tickers._() : super();
-  factory Tickers() => create();
-  factory Tickers.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Tickers.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  Tickers clone() => Tickers()..mergeFromMessage(this);
-  Tickers copyWith(void Function(Tickers) updates) => super.copyWith((message) => updates(message as Tickers));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static Tickers create() => Tickers._();
-  Tickers createEmptyInstance() => create();
-  static $pb.PbList<Tickers> createRepeated() => $pb.PbList<Tickers>();
-  static Tickers getDefault() => _defaultInstance ??= create()..freeze();
-  static Tickers _defaultInstance;
-
-  $core.List<Ticker> get ticker => $_getList(0);
-}
-
 class Ticker extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Ticker')
     ..pPS(1, 'rel')
@@ -144,5 +121,106 @@ class Ticker extends $pb.GeneratedMessage {
   set base($core.String v) { $_setString(1, v); }
   $core.bool hasBase() => $_has(1);
   void clearBase() => clearField(2);
+}
+
+class Tickers extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Tickers')
+    ..pc<Ticker>(1, 'ticker', $pb.PbFieldType.PM,Ticker.create)
+    ..hasRequiredFields = false
+  ;
+
+  Tickers._() : super();
+  factory Tickers() => create();
+  factory Tickers.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Tickers.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Tickers clone() => Tickers()..mergeFromMessage(this);
+  Tickers copyWith(void Function(Tickers) updates) => super.copyWith((message) => updates(message as Tickers));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Tickers create() => Tickers._();
+  Tickers createEmptyInstance() => create();
+  static $pb.PbList<Tickers> createRepeated() => $pb.PbList<Tickers>();
+  static Tickers getDefault() => _defaultInstance ??= create()..freeze();
+  static Tickers _defaultInstance;
+
+  $core.List<Ticker> get ticker => $_getList(0);
+}
+
+class CoinsList extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('CoinsList')
+    ..pc<Coins>(1, 'coins', $pb.PbFieldType.PM,Coins.create)
+    ..hasRequiredFields = false
+  ;
+
+  CoinsList._() : super();
+  factory CoinsList() => create();
+  factory CoinsList.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory CoinsList.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  CoinsList clone() => CoinsList()..mergeFromMessage(this);
+  CoinsList copyWith(void Function(CoinsList) updates) => super.copyWith((message) => updates(message as CoinsList));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static CoinsList create() => CoinsList._();
+  CoinsList createEmptyInstance() => create();
+  static $pb.PbList<CoinsList> createRepeated() => $pb.PbList<CoinsList>();
+  static CoinsList getDefault() => _defaultInstance ??= create()..freeze();
+  static CoinsList _defaultInstance;
+
+  $core.List<Coins> get coins => $_getList(0);
+}
+
+class Wallet extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallet')
+    ..aOS(1, 'mnemonic')
+    ..a<CoinsList>(2, 'coinsList', $pb.PbFieldType.OM, CoinsList.getDefault, CoinsList.create)
+    ..hasRequiredFields = false
+  ;
+
+  Wallet._() : super();
+  factory Wallet() => create();
+  factory Wallet.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Wallet.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Wallet clone() => Wallet()..mergeFromMessage(this);
+  Wallet copyWith(void Function(Wallet) updates) => super.copyWith((message) => updates(message as Wallet));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Wallet create() => Wallet._();
+  Wallet createEmptyInstance() => create();
+  static $pb.PbList<Wallet> createRepeated() => $pb.PbList<Wallet>();
+  static Wallet getDefault() => _defaultInstance ??= create()..freeze();
+  static Wallet _defaultInstance;
+
+  $core.String get mnemonic => $_getS(0, '');
+  set mnemonic($core.String v) { $_setString(0, v); }
+  $core.bool hasMnemonic() => $_has(0);
+  void clearMnemonic() => clearField(1);
+
+  CoinsList get coinsList => $_getN(1);
+  set coinsList(CoinsList v) { setField(2, v); }
+  $core.bool hasCoinsList() => $_has(1);
+  void clearCoinsList() => clearField(2);
+}
+
+class Wallets extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallets')
+    ..pc<Wallet>(1, 'wallets', $pb.PbFieldType.PM,Wallet.create)
+    ..hasRequiredFields = false
+  ;
+
+  Wallets._() : super();
+  factory Wallets() => create();
+  factory Wallets.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Wallets.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Wallets clone() => Wallets()..mergeFromMessage(this);
+  Wallets copyWith(void Function(Wallets) updates) => super.copyWith((message) => updates(message as Wallets));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Wallets create() => Wallets._();
+  Wallets createEmptyInstance() => create();
+  static $pb.PbList<Wallets> createRepeated() => $pb.PbList<Wallets>();
+  static Wallets getDefault() => _defaultInstance ??= create()..freeze();
+  static Wallets _defaultInstance;
+
+  $core.List<Wallet> get wallets => $_getList(0);
 }
 

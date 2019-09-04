@@ -176,15 +176,27 @@ macro_rules! address_matches {
 }
 
 pub fn from_ticker(coin_type: &str, is_testnet: bool) -> (CoinType, Opts){
-    address_matches!(coin_type.to_lowercase().as_str(),
-        [btc, "btc", 0, 128, 0, "bc"],
-        [eos, "eos", 194, 128, 0, "EOS"];
-        [eth, "eth", 60, 62] ;
-        [xlm, "xlm", 148, "Public Global Stellar Network ; September 2015".to_string()] ;
-        [xrp, "xrp", 144] ;
-        [neo, "neo", 888, 128, 0],
-        [neo, "ont", 1024, 128, 0]
-    )
+    if !is_testnet {
+        address_matches!(coin_type.to_lowercase().as_str(),
+            [btc, "btc", 0, 128, 0, "bc"],
+            [eos, "eos", 194, 128, 0, "EOS"];
+            [eth, "eth", 60, 62] ;
+            [xlm, "xlm", 148, "Public Global Stellar Network ; September 2015".to_string()] ;
+            [xrp, "xrp", 144] ;
+            [neo, "neo", 888, 128, 0],
+            [neo, "ont", 1024, 128, 0]
+        )
+    }else{
+        address_matches!(coin_type.to_lowercase().as_str(),
+            [btc, "btc", 1, 239, 111, "tb"],
+            [eos, "eos", 1, 128, 0, "EOS"];
+            [eth, "eth", 1, 62] ;
+            [xlm, "xlm", 1, "Test SDF Network ; September 2015".to_string()] ;
+            [xrp, "xrp", 1] ;
+            [neo, "neo", 1, 128, 0],
+            [neo, "ont", 1, 128, 0]
+        )        
+    }
 }
 
 #[cfg(test)]

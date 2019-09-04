@@ -1185,6 +1185,408 @@ impl ::protobuf::reflect::ProtobufValue for CoinsList {
     }
 }
 
+#[derive(PartialEq,Clone,Default)]
+pub struct Wallet {
+    // message fields
+    pub mnemonic: ::std::string::String,
+    pub coins_list: ::protobuf::SingularPtrField<CoinsList>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a Wallet {
+    fn default() -> &'a Wallet {
+        <Wallet as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl Wallet {
+    pub fn new() -> Wallet {
+        ::std::default::Default::default()
+    }
+
+    // string mnemonic = 1;
+
+
+    pub fn get_mnemonic(&self) -> &str {
+        &self.mnemonic
+    }
+    pub fn clear_mnemonic(&mut self) {
+        self.mnemonic.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_mnemonic(&mut self, v: ::std::string::String) {
+        self.mnemonic = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_mnemonic(&mut self) -> &mut ::std::string::String {
+        &mut self.mnemonic
+    }
+
+    // Take field
+    pub fn take_mnemonic(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.mnemonic, ::std::string::String::new())
+    }
+
+    // .CoinsList coins_list = 2;
+
+
+    pub fn get_coins_list(&self) -> &CoinsList {
+        self.coins_list.as_ref().unwrap_or_else(|| CoinsList::default_instance())
+    }
+    pub fn clear_coins_list(&mut self) {
+        self.coins_list.clear();
+    }
+
+    pub fn has_coins_list(&self) -> bool {
+        self.coins_list.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_coins_list(&mut self, v: CoinsList) {
+        self.coins_list = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_coins_list(&mut self) -> &mut CoinsList {
+        if self.coins_list.is_none() {
+            self.coins_list.set_default();
+        }
+        self.coins_list.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_coins_list(&mut self) -> CoinsList {
+        self.coins_list.take().unwrap_or_else(|| CoinsList::new())
+    }
+}
+
+impl ::protobuf::Message for Wallet {
+    fn is_initialized(&self) -> bool {
+        for v in &self.coins_list {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.mnemonic)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.coins_list)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.mnemonic.is_empty() {
+            my_size += ::protobuf::rt::string_size(1, &self.mnemonic);
+        }
+        if let Some(ref v) = self.coins_list.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if !self.mnemonic.is_empty() {
+            os.write_string(1, &self.mnemonic)?;
+        }
+        if let Some(ref v) = self.coins_list.as_ref() {
+            os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> Wallet {
+        Wallet::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                    "mnemonic",
+                    |m: &Wallet| { &m.mnemonic },
+                    |m: &mut Wallet| { &mut m.mnemonic },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<CoinsList>>(
+                    "coins_list",
+                    |m: &Wallet| { &m.coins_list },
+                    |m: &mut Wallet| { &mut m.coins_list },
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<Wallet>(
+                    "Wallet",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static Wallet {
+        static mut instance: ::protobuf::lazy::Lazy<Wallet> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const Wallet,
+        };
+        unsafe {
+            instance.get(Wallet::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for Wallet {
+    fn clear(&mut self) {
+        self.mnemonic.clear();
+        self.coins_list.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for Wallet {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Wallet {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct Wallets {
+    // message fields
+    pub wallets: ::protobuf::RepeatedField<Wallet>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a Wallets {
+    fn default() -> &'a Wallets {
+        <Wallets as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl Wallets {
+    pub fn new() -> Wallets {
+        ::std::default::Default::default()
+    }
+
+    // repeated .Wallet wallets = 1;
+
+
+    pub fn get_wallets(&self) -> &[Wallet] {
+        &self.wallets
+    }
+    pub fn clear_wallets(&mut self) {
+        self.wallets.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_wallets(&mut self, v: ::protobuf::RepeatedField<Wallet>) {
+        self.wallets = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_wallets(&mut self) -> &mut ::protobuf::RepeatedField<Wallet> {
+        &mut self.wallets
+    }
+
+    // Take field
+    pub fn take_wallets(&mut self) -> ::protobuf::RepeatedField<Wallet> {
+        ::std::mem::replace(&mut self.wallets, ::protobuf::RepeatedField::new())
+    }
+}
+
+impl ::protobuf::Message for Wallets {
+    fn is_initialized(&self) -> bool {
+        for v in &self.wallets {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.wallets)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        for value in &self.wallets {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        for v in &self.wallets {
+            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> Wallets {
+        Wallets::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Wallet>>(
+                    "wallets",
+                    |m: &Wallets| { &m.wallets },
+                    |m: &mut Wallets| { &mut m.wallets },
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<Wallets>(
+                    "Wallets",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static Wallets {
+        static mut instance: ::protobuf::lazy::Lazy<Wallets> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const Wallets,
+        };
+        unsafe {
+            instance.get(Wallets::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for Wallets {
+    fn clear(&mut self) {
+        self.wallets.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for Wallets {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Wallets {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n\ncoin.proto\"\x98\x01\n\x04Coin\x12\x1d\n\npublic_key\x18\x01\x20\x01\
     (\x0cR\tpublicKey\x12\x1f\n\x0bprivate_key\x18\x02\x20\x01(\x0cR\nprivat\
@@ -1195,8 +1597,11 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x02\x20\x01(\tR\x04base\".\n\x06Ticker\x12\x10\n\x03rel\x18\x01\x20\x03\
     (\tR\x03rel\x12\x12\n\x04base\x18\x02\x20\x01(\tR\x04base\"*\n\x07Ticker\
     s\x12\x1f\n\x06ticker\x18\x01\x20\x03(\x0b2\x07.TickerR\x06ticker\")\n\t\
-    CoinsList\x12\x1c\n\x05coins\x18\x01\x20\x03(\x0b2\x06.CoinsR\x05coinsB-\
-    \n\x1acom.example.wallet_flutterB\x06Protos\xa2\x02\x06Protosb\x06proto3\
+    CoinsList\x12\x1c\n\x05coins\x18\x01\x20\x03(\x0b2\x06.CoinsR\x05coins\"\
+    O\n\x06Wallet\x12\x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\x12)\
+    \n\ncoins_list\x18\x02\x20\x01(\x0b2\n.CoinsListR\tcoinsList\",\n\x07Wal\
+    lets\x12!\n\x07wallets\x18\x01\x20\x03(\x0b2\x07.WalletR\x07walletsB-\n\
+    \x1acom.example.wallet_flutterB\x06Protos\xa2\x02\x06Protosb\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

@@ -56,9 +56,9 @@ pub fn get_wallets(tickers: protos::coin::Tickers, mnemonic: String, is_testnet:
 }
 
 
-pub fn gen_send_transaction(rel: &str, private_key: Vec<u8>, public_key: Vec<u8>, outputs: Vec<Outputs>) -> String{
+pub fn gen_send_transaction(rel: &str, is_testnet: bool, private_key: Vec<u8>, public_key: Vec<u8>, os: protos::coin::Outputs) -> String{
     
-    let (ctype, opts) = from_ticker(&rel, false);
+    let (ctype, opts) = from_ticker(&rel, is_testnet);
 
     let mut array = [0; SK_BYTES];
     let bytes = &private_key[..array.len()];
@@ -78,7 +78,13 @@ pub fn gen_send_transaction(rel: &str, private_key: Vec<u8>, public_key: Vec<u8>
             PubKey::Secp256k1(array2)
         }
     };
-
+    let outputs = os.output.iter().enumerate().map(|(_i, o)|{
+        Outputs{
+            address: o.address.clone(),
+            value: o.value,
+            memo: o.memo.clone(),
+        }
+    }).collect::<Vec<_>>();
     let c = Coin::new(ctype, opts, Some(array), Some(pubkey), None);
     c.gen_send_transaction(outputs)
 }

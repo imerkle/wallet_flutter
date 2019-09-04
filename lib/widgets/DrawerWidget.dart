@@ -7,11 +7,16 @@ import 'package:wallet_flutter/widgets/SortWidget.dart';
 import 'Fabs.dart';
 
 String getName(String ticker){
-  return cryptoNames[ticker];
+  return cryptoNames[ticker] ?? "Unknown";
 }
 final cryptoNames = {
   'btc': "Bitcoin",
   'eth': "Ethereum",
+  'eos': "EOS",
+  'xrp': "Ripple",
+  'xlm': "Stellar",
+  'neo': "NEO",
+  'ont': "Ontology",
 };
 
 class DrawerList extends StatelessWidget{

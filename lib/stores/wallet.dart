@@ -25,7 +25,6 @@ abstract class _WalletStore with Store {
 
 }
 
-
 Future<Wallets> initWalletIfAbsent() async {
     storage.deleteAll();
     const String key = "wallets";
@@ -58,6 +57,10 @@ Tickers getTickers(){
       Map<String, List<String>> a = {
         "btc": ["btc"],
         "eth": ["eth"],
+        "eos": ["eos"],
+        "xlm": ["xlm"],
+        "xrp": ["xrp"],
+        "neo": ["neo", "ont"],
       };
       Tickers t = Tickers();
       a.forEach((k, v) {

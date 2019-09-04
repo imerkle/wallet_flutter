@@ -39,3 +39,15 @@ message Wallet{
 message Wallets{
     repeated Wallet wallets = 1;
 }
+message Output{
+    string address = 1;
+    uint64 value = 2;
+    string memo = 3;
+}
+message Outputs{
+    repeated Output output = 1;
+}
+
+message Tx{
+    string tx_hex = 1;
+}

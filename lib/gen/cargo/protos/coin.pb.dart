@@ -224,3 +224,90 @@ class Wallets extends $pb.GeneratedMessage {
   $core.List<Wallet> get wallets => $_getList(0);
 }
 
+class Output extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Output')
+    ..aOS(1, 'address')
+    ..a<$core.double>(2, 'value', $pb.PbFieldType.OD)
+    ..aOS(3, 'memo')
+    ..hasRequiredFields = false
+  ;
+
+  Output._() : super();
+  factory Output() => create();
+  factory Output.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Output.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Output clone() => Output()..mergeFromMessage(this);
+  Output copyWith(void Function(Output) updates) => super.copyWith((message) => updates(message as Output));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Output create() => Output._();
+  Output createEmptyInstance() => create();
+  static $pb.PbList<Output> createRepeated() => $pb.PbList<Output>();
+  static Output getDefault() => _defaultInstance ??= create()..freeze();
+  static Output _defaultInstance;
+
+  $core.String get address => $_getS(0, '');
+  set address($core.String v) { $_setString(0, v); }
+  $core.bool hasAddress() => $_has(0);
+  void clearAddress() => clearField(1);
+
+  $core.double get value => $_getN(1);
+  set value($core.double v) { $_setDouble(1, v); }
+  $core.bool hasValue() => $_has(1);
+  void clearValue() => clearField(2);
+
+  $core.String get memo => $_getS(2, '');
+  set memo($core.String v) { $_setString(2, v); }
+  $core.bool hasMemo() => $_has(2);
+  void clearMemo() => clearField(3);
+}
+
+class Outputs extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Outputs')
+    ..pc<Output>(1, 'output', $pb.PbFieldType.PM,Output.create)
+    ..hasRequiredFields = false
+  ;
+
+  Outputs._() : super();
+  factory Outputs() => create();
+  factory Outputs.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Outputs.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Outputs clone() => Outputs()..mergeFromMessage(this);
+  Outputs copyWith(void Function(Outputs) updates) => super.copyWith((message) => updates(message as Outputs));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Outputs create() => Outputs._();
+  Outputs createEmptyInstance() => create();
+  static $pb.PbList<Outputs> createRepeated() => $pb.PbList<Outputs>();
+  static Outputs getDefault() => _defaultInstance ??= create()..freeze();
+  static Outputs _defaultInstance;
+
+  $core.List<Output> get output => $_getList(0);
+}
+
+class Tx extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Tx')
+    ..aOS(1, 'txHex')
+    ..hasRequiredFields = false
+  ;
+
+  Tx._() : super();
+  factory Tx() => create();
+  factory Tx.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Tx.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Tx clone() => Tx()..mergeFromMessage(this);
+  Tx copyWith(void Function(Tx) updates) => super.copyWith((message) => updates(message as Tx));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Tx create() => Tx._();
+  Tx createEmptyInstance() => create();
+  static $pb.PbList<Tx> createRepeated() => $pb.PbList<Tx>();
+  static Tx getDefault() => _defaultInstance ??= create()..freeze();
+  static Tx _defaultInstance;
+
+  $core.String get txHex => $_getS(0, '');
+  set txHex($core.String v) { $_setString(0, v); }
+  $core.bool hasTxHex() => $_has(0);
+  void clearTxHex() => clearField(1);
+}
+

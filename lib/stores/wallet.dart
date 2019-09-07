@@ -1,5 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wallet_flutter/constants.dart';
 import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
 import 'package:flutter/services.dart';
 
@@ -40,7 +41,7 @@ Future<Wallets> initWalletIfAbsent() async {
       var x = await platform.invokeMethod('get_wallets',{
        "mnemonic": mnemonic,
        "tickers": t.writeToBuffer(),
-       "is_testnet": true,
+       "isTestnet": isTestnet,
       });
       Wallet w = Wallet();
       w.coinsList = new CoinsList.fromBuffer(x);

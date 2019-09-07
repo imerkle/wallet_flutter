@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:wallet_flutter/constants.dart';
 
 
 class ScanScreen extends StatelessWidget {
@@ -25,7 +26,7 @@ class ScanScreen extends StatelessWidget {
         suffixIcon: IconButton(
           icon: Icon(Icons.content_paste),
           onPressed: () {
-            Clipboard.getData("text/plain");
+            write_paste(this.controller);
           }
         ),
       ),

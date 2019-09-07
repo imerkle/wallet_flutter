@@ -56,7 +56,7 @@ pub fn get_wallets(tickers: protos::coin::Tickers, mnemonic: String, is_testnet:
 }
 
 
-pub fn gen_send_transaction(rel: &str, is_testnet: bool, private_key: Vec<u8>, public_key: Vec<u8>, os: protos::coin::Outputs) -> String{
+pub fn gen_send_transaction(rel: &str, is_testnet: bool, api: &str, private_key: Vec<u8>, public_key: Vec<u8>, os: protos::coin::Outputs) -> String{
     
     let (ctype, opts) = from_ticker(&rel, is_testnet);
 
@@ -86,7 +86,8 @@ pub fn gen_send_transaction(rel: &str, is_testnet: bool, private_key: Vec<u8>, p
         }
     }).collect::<Vec<_>>();
     let c = Coin::new(ctype, opts, Some(array), Some(pubkey), None);
-    c.gen_send_transaction(outputs)
+
+    c.gen_send_transaction(outputs, api)
 }
 
 
@@ -116,7 +117,7 @@ macro_rules! address_matches {
                 }),
                 Opts{
                     slips44_code: $code,
-                    decimal_point: 8,
+                    precision: 8,
                     rel: $rel.to_string(),
                     ..Default::default()
                 }
@@ -129,7 +130,7 @@ macro_rules! address_matches {
                 }),
                 Opts{
                     slips44_code: $code1,
-                    decimal_point: 18,
+                    precision: 18,
                     rel: $rel1.to_string(),
                     ..Default::default()
                 }
@@ -142,7 +143,7 @@ macro_rules! address_matches {
                 }),
                 Opts{
                     slips44_code: $code2,
-                    decimal_point: 7,
+                    precision: 7,
                     rel: $rel2.to_string(),
                     curve_name: CurveName::Ed25519
                 }
@@ -153,7 +154,7 @@ macro_rules! address_matches {
                 CoinType::$xrp(coin::$xrp::$xrp{}),
                 Opts{
                     slips44_code: $code3,
-                    decimal_point: 6,
+                    precision: 6,
                     rel: $rel3.to_string(),
                     ..Default::default()
                     
@@ -170,7 +171,7 @@ macro_rules! address_matches {
                 }),
                 Opts{
                     slips44_code: $code4,
-                    decimal_point: 0,
+                    precision: 0,
                     rel: $rel4.to_string(),
                     curve_name: CurveName::Secp256r1,
                 }
@@ -208,6 +209,7 @@ pub fn from_ticker(coin_type: &str, is_testnet: bool) -> (CoinType, Opts){
 #[cfg(test)]
 mod tests {
     use super::*;
+    const API: &str = "http://localhost:4000/api";
 
     macro_rules! ticker {
         ( $base:expr, $rels:expr ) => {
@@ -218,9 +220,8 @@ mod tests {
             }
         }
     }
-    #[test]
-    fn connector_test() {
-        let t = protos::coin::Tickers{
+    fn t() -> protos::coin::Tickers{
+        protos::coin::Tickers{
             ticker: protobuf::RepeatedField::from_vec(
                 vec![
                     ticker!("btc", vec!["btc".to_string()]),
@@ -232,7 +233,33 @@ mod tests {
                 ]
             ),
             ..Default::default()
-        };
+        }
+    }
+
+    #[test]
+    fn gentx_test(){
+        let t = t();
+        let y = get_wallets(t, "connect ritual news sand rapid scale behind swamp damp brief explain ankle".to_string(), true);
+        let x = y.coins.into_vec();
+
+        let tx = gen_send_transaction("btc", true, API, x[0].coin[0].private_key.clone(), x[0].coin[0].public_key.clone(), protos::coin::Outputs{
+            output: protobuf::RepeatedField::from_vec(
+                vec![
+                protos::coin::Output{
+                    address: x[0].coin[0].address.clone(),
+                    value: 1.0,
+                    ..Default::default()
+                }
+            ]), 
+            ..Default::default()
+        });
+        assert_eq!(tx, "02000000000101b668b55ae3de4bbb98937c84aeed4df65c4901ef84b4d716cfdc1ffc78da518e000000006a483045022100df4b333d977743c75998249e5a53115d07f516ed21e7acbb2c8eb3207c9d0891022039956275136d0cbc9157eaed136adeb9b7f20e3a4e21fb89ffacdb9af30593020120e06871b7c067ebc1815d056391dc2aae55092b81fb9913b0077bcca64e23ba62ffffffff0100e1f50500000000160014804524dd80e1a2d0ead297fa3699c9b89c08dff20240df4b333d977743c75998249e5a53115d07f516ed21e7acbb2c8eb3207c9d089139956275136d0cbc9157eaed136adeb9b7f20e3a4e21fb89ffacdb9af30593022102051021b3cc91f6ea0342dca37ed84306402d0a88b08816223f40155f3532563700000000");
+     
+    }
+    #[test]
+    fn connector_test() {
+        let t = t();
+
         let y = get_wallets(t, "connect ritual news sand rapid scale behind swamp damp brief explain ankle".to_string(), false);
         let x = y.coins.into_vec();
         assert_eq!(x[0].coin[0].address, "bc1qhee7awenpfzmn7tuk95vrkuhctj8h5mh7yrxnu");

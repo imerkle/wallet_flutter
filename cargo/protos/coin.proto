@@ -41,7 +41,7 @@ message Wallets{
 }
 message Output{
     string address = 1;
-    uint64 value = 2;
+    double value = 2;
     string memo = 3;
 }
 message Outputs{

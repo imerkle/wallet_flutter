@@ -1591,7 +1591,7 @@ impl ::protobuf::reflect::ProtobufValue for Wallets {
 pub struct Output {
     // message fields
     pub address: ::std::string::String,
-    pub value: u64,
+    pub value: f64,
     pub memo: ::std::string::String,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -1635,18 +1635,18 @@ impl Output {
         ::std::mem::replace(&mut self.address, ::std::string::String::new())
     }
 
-    // uint64 value = 2;
+    // double value = 2;
 
 
-    pub fn get_value(&self) -> u64 {
+    pub fn get_value(&self) -> f64 {
         self.value
     }
     pub fn clear_value(&mut self) {
-        self.value = 0;
+        self.value = 0.;
     }
 
     // Param is passed by value, moved
-    pub fn set_value(&mut self, v: u64) {
+    pub fn set_value(&mut self, v: f64) {
         self.value = v;
     }
 
@@ -1690,10 +1690,10 @@ impl ::protobuf::Message for Output {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.address)?;
                 },
                 2 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                    if wire_type != ::protobuf::wire_format::WireTypeFixed64 {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    let tmp = is.read_uint64()?;
+                    let tmp = is.read_double()?;
                     self.value = tmp;
                 },
                 3 => {
@@ -1714,8 +1714,8 @@ impl ::protobuf::Message for Output {
         if !self.address.is_empty() {
             my_size += ::protobuf::rt::string_size(1, &self.address);
         }
-        if self.value != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.value, ::protobuf::wire_format::WireTypeVarint);
+        if self.value != 0. {
+            my_size += 9;
         }
         if !self.memo.is_empty() {
             my_size += ::protobuf::rt::string_size(3, &self.memo);
@@ -1729,8 +1729,8 @@ impl ::protobuf::Message for Output {
         if !self.address.is_empty() {
             os.write_string(1, &self.address)?;
         }
-        if self.value != 0 {
-            os.write_uint64(2, self.value)?;
+        if self.value != 0. {
+            os.write_double(2, self.value)?;
         }
         if !self.memo.is_empty() {
             os.write_string(3, &self.memo)?;
@@ -1782,7 +1782,7 @@ impl ::protobuf::Message for Output {
                     |m: &Output| { &m.address },
                     |m: &mut Output| { &mut m.address },
                 ));
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeDouble>(
                     "value",
                     |m: &Output| { &m.value },
                     |m: &mut Output| { &mut m.value },
@@ -1815,7 +1815,7 @@ impl ::protobuf::Message for Output {
 impl ::protobuf::Clear for Output {
     fn clear(&mut self) {
         self.address.clear();
-        self.value = 0;
+        self.value = 0.;
         self.memo.clear();
         self.unknown_fields.clear();
     }
@@ -2193,7 +2193,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \n\ncoins_list\x18\x02\x20\x01(\x0b2\n.CoinsListR\tcoinsList\",\n\x07Wal\
     lets\x12!\n\x07wallets\x18\x01\x20\x03(\x0b2\x07.WalletR\x07wallets\"L\n\
     \x06Output\x12\x18\n\x07address\x18\x01\x20\x01(\tR\x07address\x12\x14\n\
-    \x05value\x18\x02\x20\x01(\x04R\x05value\x12\x12\n\x04memo\x18\x03\x20\
+    \x05value\x18\x02\x20\x01(\x01R\x05value\x12\x12\n\x04memo\x18\x03\x20\
     \x01(\tR\x04memo\"*\n\x07Outputs\x12\x1f\n\x06output\x18\x01\x20\x03(\
     \x0b2\x07.OutputR\x06output\"\x1b\n\x02Tx\x12\x15\n\x06tx_hex\x18\x01\
     \x20\x01(\tR\x05txHexB-\n\x1acom.example.wallet_flutterB\x06Protos\xa2\

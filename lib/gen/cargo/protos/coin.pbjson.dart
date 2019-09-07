@@ -62,3 +62,26 @@ const Wallets$json = const {
   ],
 };
 
+const Output$json = const {
+  '1': 'Output',
+  '2': const [
+    const {'1': 'address', '3': 1, '4': 1, '5': 9, '10': 'address'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 1, '10': 'value'},
+    const {'1': 'memo', '3': 3, '4': 1, '5': 9, '10': 'memo'},
+  ],
+};
+
+const Outputs$json = const {
+  '1': 'Outputs',
+  '2': const [
+    const {'1': 'output', '3': 1, '4': 3, '5': 11, '6': '.Output', '10': 'output'},
+  ],
+};
+
+const Tx$json = const {
+  '1': 'Tx',
+  '2': const [
+    const {'1': 'tx_hex', '3': 1, '4': 1, '5': 9, '10': 'txHex'},
+  ],
+};
+

@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:wallet_flutter/models/tx_output.dart';
+import 'package:wallet_flutter/constants.dart';
+import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
 import 'package:wallet_flutter/screens/scan.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:http/http.dart' as http;
@@ -89,7 +88,7 @@ class Wallet extends StatelessWidget {
                     suffixIcon: IconButton(
                       icon: Icon(Icons.content_paste),
                       onPressed: () {
-                        Clipboard.getData("text/plain");
+                        write_paste(amount);
                       }
                     ),
                   ),
@@ -99,9 +98,23 @@ class Wallet extends StatelessWidget {
                   child: RaisedButton(
                     onPressed: () async{
                       
-                      String txOutputs = jsonEncode([TxOutput(address: receivingAddress.text, value: int.parse(amount.text))]);
-                      String tx_signed_hex = await platform.invokeMethod('gen_send_transaction',{"ticker": x.rel, "private_key": x.privateKey, "public_key": x.publicKey, "tx_outputs": txOutputs});
-                      send_transaction(x.rel, x.rel, tx_signed_hex);
+                      Outputs os = Outputs();
+                      Output o = Output();
+                      o.address = receivingAddress.text;
+                      o.value = double.parse(amount.text);
+                      o.memo = "";
+                      os.output.add(o);
+                      
+                      var txSignedHex = await platform.invokeMethod('gen_send_transaction',{
+                        "rel": x.rel,
+                        "isTestnet": isTestnet,
+                        "api": explorerApi,
+                        "privateKey": x.privateKey,
+                        "publicKey": x.publicKey,
+                        "txOutputs": os.writeToBuffer()
+                      });
+                      var t = Tx.fromBuffer(txSignedHex);
+                      //send_transaction(x.rel, x.rel, tx_signed_hex);
                       //send tx_signed_hex
                     },
                     padding: EdgeInsets.all(15),

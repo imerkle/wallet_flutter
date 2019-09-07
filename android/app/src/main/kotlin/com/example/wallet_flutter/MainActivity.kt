@@ -28,32 +28,26 @@ class MainActivity: FlutterActivity() {
 
       when(call.method) {
         "gen_send_transaction" -> {
-          /*
-          val txo: String? = call.argument("tx_outputs")
-          val t: String = txo ?: ""
-          val tx_outputs: List<TxOutputs> = JSON.parse(TxOutputs.serializer().list, t)
-          println(txo)
-          val ticker: String? = call.argument("ticker")
+          val rel: String = call.argument("rel") ?: ""
+          val api: String = call.argument("api") ?: ""
+          val isTestnet: Boolean = call.argument("isTestnet") ?: false
+          val privateKey: ByteArray = call.argument("privateKey") ?: ByteArray(0)
+          val publicKey: ByteArray = call.argument("publicKey") ?: ByteArray(0)
+          val txOutputs: ByteArray = call.argument("txOutputs") ?: ByteArray(0)
           
-          val private_key: String? = call.argument("private_key")
-          val public_key: String? = call.argument("public_key")
-
-          val outputs = arrayOfNulls<Outputs>(tx_outputs.size)
-          for(i in 0..tx_outputs.size-1){
-            outputs[i]= Outputs(tx_outputs[i].address, tx_outputs[i].value, "")
-          }
-          result.success(C.gen_send_transaction(ticker, private_key, public_key, outputs)); 
-          */
+          val x = genSendTransaction(rel, isTestnet, api, privateKey, publicKey, txOutputs)
+          result.success(x)
         }
         "get_wallets" -> {
           val mnemonic: String = call.argument("mnemonic") ?: ""
           val tickers: ByteArray = call.argument("tickers") ?: ByteArray(0)
-          val is_testnet: Boolean = call.argument("is_testnet") ?: false
-          val x = getWallet(tickers, mnemonic, is_testnet)
+          val isTestnet: Boolean = call.argument("isTestnet") ?: false
+          val x = getWallet(tickers, mnemonic, isTestnet)      
           result.success(x)
         }
       }
     }
   }
-  external fun getWallet(s: ByteArray, b: String, c: Boolean): ByteArray
+  external fun getWallet(a: ByteArray, b: String, c: Boolean): ByteArray
+  external fun genSendTransaction(a: String, b: Boolean, c: String, d: ByteArray, e: ByteArray, f: ByteArray): ByteArray
 }

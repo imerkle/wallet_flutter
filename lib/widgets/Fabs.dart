@@ -29,7 +29,7 @@ class Fabs extends StatelessWidget{
           builder: (_) {
             return 
             GestureDetector(
-              onTap: () => fabStore.setSelected(i),
+              onTap: () => fabStore.setBaseIndex(i),
               child: Padding(
                 padding: EdgeInsets.only(top: 7, bottom: 7),
                 child: Row(
@@ -38,7 +38,7 @@ class Fabs extends StatelessWidget{
                       height: iconSize-0.2*iconSize,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: fabStore.selected == i ? Theme.of(context).accentColor: Colors.transparent,
+                          color: fabStore.baseIndex == i ? Theme.of(context).accentColor: Colors.transparent,
                           width: 2.0,
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -56,7 +56,7 @@ class Fabs extends StatelessWidget{
                             fit: BoxFit.cover
                           ),
                           //shape: BoxShape.circle,
-                          borderRadius: BorderRadius.all(Radius.circular(fabStore.selected == i ? 10 : 100)),
+                          borderRadius: BorderRadius.all(Radius.circular(fabStore.baseIndex == i ? 10 : 100)),
                         ),
                       ),
                     ),

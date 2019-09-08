@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:wallet_flutter/constants.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/widgets/SortWidget.dart';
@@ -29,9 +30,8 @@ class DrawerList extends StatelessWidget{
     
     return Observer(
       builder: (_) {
-        var selectedChild = fabStore.selectedChild;
-        var selected = fabStore.selected;
-        var coin = walletStore.ws.list[0].coinsList.list[selected].coin;
+        var relIndex = fabStore.relIndex;
+        var coin = getCoinList(store: walletStore, baseIndex: fabStore.baseIndex);
         if (sortStore.sortables[0].direction == false){
           coin = coin.reversed.toList();
         }
@@ -39,14 +39,14 @@ class DrawerList extends StatelessWidget{
           itemCount: coin.length,
           itemBuilder: (context, i) {
             return Container(
-              color: i == selectedChild ? Color.fromRGBO(67, 67, 67, 1) : Colors.transparent,
+              color: i == relIndex ? Color.fromRGBO(67, 67, 67, 1) : Colors.transparent,
               child: ListTile(
                   title: Text(coin[i].rel.toUpperCase()),
                   subtitle: Text(getName(coin[i].rel)),
                   onTap: () {
-                    fabStore.setSelectedChild(i);
+                    fabStore.setRelIndex(i);
                   },                
-                  selected: i == selectedChild,
+                  selected: i == relIndex,
                 ),
             );
           }
@@ -87,7 +87,7 @@ class DrawerWidget extends StatelessWidget {
                       child: Observer(
                         builder: (_) {
                           return Text(
-                            getName(walletStore.ws.list[0].coinsList.list[fabStore.selected].coin[0].rel),
+                            getName(walletStore.ws.list[0].coinsList.list[fabStore.baseIndex].coin[0].rel),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontSize: 20,

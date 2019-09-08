@@ -9,57 +9,57 @@ part of 'fab.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars
 
 mixin _$FabStore on _FabStore, Store {
-  final _$selectedAtom = Atom(name: '_FabStore.selected');
+  final _$baseIndexAtom = Atom(name: '_FabStore.baseIndex');
 
   @override
-  int get selected {
-    _$selectedAtom.context.enforceReadPolicy(_$selectedAtom);
-    _$selectedAtom.reportObserved();
-    return super.selected;
+  int get baseIndex {
+    _$baseIndexAtom.context.enforceReadPolicy(_$baseIndexAtom);
+    _$baseIndexAtom.reportObserved();
+    return super.baseIndex;
   }
 
   @override
-  set selected(int value) {
-    _$selectedAtom.context.conditionallyRunInAction(() {
-      super.selected = value;
-      _$selectedAtom.reportChanged();
-    }, _$selectedAtom, name: '${_$selectedAtom.name}_set');
+  set baseIndex(int value) {
+    _$baseIndexAtom.context.conditionallyRunInAction(() {
+      super.baseIndex = value;
+      _$baseIndexAtom.reportChanged();
+    }, _$baseIndexAtom, name: '${_$baseIndexAtom.name}_set');
   }
 
-  final _$selectedChildAtom = Atom(name: '_FabStore.selectedChild');
+  final _$relIndexAtom = Atom(name: '_FabStore.relIndex');
 
   @override
-  int get selectedChild {
-    _$selectedChildAtom.context.enforceReadPolicy(_$selectedChildAtom);
-    _$selectedChildAtom.reportObserved();
-    return super.selectedChild;
+  int get relIndex {
+    _$relIndexAtom.context.enforceReadPolicy(_$relIndexAtom);
+    _$relIndexAtom.reportObserved();
+    return super.relIndex;
   }
 
   @override
-  set selectedChild(int value) {
-    _$selectedChildAtom.context.conditionallyRunInAction(() {
-      super.selectedChild = value;
-      _$selectedChildAtom.reportChanged();
-    }, _$selectedChildAtom, name: '${_$selectedChildAtom.name}_set');
+  set relIndex(int value) {
+    _$relIndexAtom.context.conditionallyRunInAction(() {
+      super.relIndex = value;
+      _$relIndexAtom.reportChanged();
+    }, _$relIndexAtom, name: '${_$relIndexAtom.name}_set');
   }
 
   final _$_FabStoreActionController = ActionController(name: '_FabStore');
 
   @override
-  void setSelected(int c) {
+  void setBaseIndex(int c) {
     final _$actionInfo = _$_FabStoreActionController.startAction();
     try {
-      return super.setSelected(c);
+      return super.setBaseIndex(c);
     } finally {
       _$_FabStoreActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void setSelectedChild(int c) {
+  void setRelIndex(int c) {
     final _$actionInfo = _$_FabStoreActionController.startAction();
     try {
-      return super.setSelectedChild(c);
+      return super.setRelIndex(c);
     } finally {
       _$_FabStoreActionController.endAction(_$actionInfo);
     }

@@ -15,6 +15,7 @@ const double tsize = 20;
 const ts1 = TextStyle(fontSize: tsize);
 const ts2 = TextStyle(fontSize: tsize, fontWeight: FontWeight.bold);
 
+
 class Wallet extends StatelessWidget {
   final receivingAddress = TextEditingController();
   final amount = TextEditingController();
@@ -27,9 +28,8 @@ class Wallet extends StatelessWidget {
 
     return Observer(
       builder: (_) {
-        var selected = fabStore.selected;        
-        var selectedChild = fabStore.selectedChild;
-        var x = walletStore.ws.list[0].coinsList.list[selected].coin[selectedChild];
+        var x = getCoin(store: walletStore, baseIndex: fabStore.baseIndex, relIndex: fabStore.relIndex);
+        
         return Padding(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           child: SingleChildScrollView(
@@ -88,7 +88,6 @@ class Wallet extends StatelessWidget {
                     suffixIcon: FlatButton(
                       child: Text("MAX"), 
                       onPressed: () {
-                        //walletStore.ws.wallets.
                       },
                     ),
                   ),

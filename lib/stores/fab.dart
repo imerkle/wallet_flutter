@@ -10,16 +10,16 @@ class FabStore = _FabStore with _$FabStore;
 abstract class _FabStore with Store {
   
   @observable
-  int selected = 0;
+  int baseIndex = 0;
   @observable
-  int selectedChild = 0;
+  int relIndex = 0;
 
   @action 
-  void setSelected(int c){
-    selected = c;
+  void setBaseIndex(int c){
+    baseIndex = c;
   }
   @action 
-  void setSelectedChild(int c){
-    selectedChild = c;
+  void setRelIndex(int c){
+    relIndex = c;
   }
 }

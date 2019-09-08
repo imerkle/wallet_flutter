@@ -47,7 +47,7 @@ Future<Wallets> initWalletIfAbsent() async {
       w.coinsList = new CoinsList.fromBuffer(x);
       w.mnemonic = mnemonic;
 
-      ws.wallets.add(w);
+      ws.list.add(w);
       storage.write(key: key, value: ws.writeToJson());
     }else{
       ws = Wallets.fromJson(walletsJson);
@@ -68,7 +68,7 @@ Tickers getTickers(){
           Ticker t1 = Ticker();
           t1.rel.addAll(v);
           t1.base = k;
-          t.ticker.add(t1);
+          t.list.add(t1);
       }); 
       return t;
 }

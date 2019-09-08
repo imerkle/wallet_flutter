@@ -29,7 +29,7 @@ class Wallet extends StatelessWidget {
       builder: (_) {
         var selected = fabStore.selected;        
         var selectedChild = fabStore.selectedChild;
-        var x = walletStore.ws.wallets[0].coinsList.coins[selected].coin[selectedChild];
+        var x = walletStore.ws.list[0].coinsList.list[selected].coin[selectedChild];
         return Padding(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           child: SingleChildScrollView(
@@ -85,11 +85,11 @@ class Wallet extends StatelessWidget {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: '${x.rel.toUpperCase()} Amount',
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.content_paste),
+                    suffixIcon: FlatButton(
+                      child: Text("MAX"), 
                       onPressed: () {
-                        write_paste(amount);
-                      }
+                        //walletStore.ws.wallets.
+                      },
                     ),
                   ),
                 ),
@@ -103,7 +103,7 @@ class Wallet extends StatelessWidget {
                       o.address = receivingAddress.text;
                       o.value = double.parse(amount.text);
                       o.memo = "";
-                      os.output.add(o);
+                      os.list.add(o);
                       
                       var txSignedHex = await platform.invokeMethod('gen_send_transaction',{
                         "rel": x.rel,

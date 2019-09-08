@@ -24,10 +24,10 @@ message Ticker{
 }
 
 message Tickers{
-    repeated Ticker ticker = 1;
+    repeated Ticker list = 1;
 }
 message CoinsList{
-    repeated Coins coins = 1;
+    repeated Coins list = 1;
 }
 
 // wallet proto
@@ -37,7 +37,7 @@ message Wallet{
     CoinsList coins_list = 2;
 }
 message Wallets{
-    repeated Wallet wallets = 1;
+    repeated Wallet list = 1;
 }
 message Output{
     string address = 1;
@@ -45,7 +45,7 @@ message Output{
     string memo = 3;
 }
 message Outputs{
-    repeated Output output = 1;
+    repeated Output list = 1;
 }
 
 message Tx{

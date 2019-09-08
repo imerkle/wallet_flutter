@@ -28,7 +28,7 @@ pub fn get_wallets(tickers: protos::coin::Tickers, mnemonic: String, is_testnet:
         ed25519: Some(node3),
     };
 
-    let v = tickers.ticker.into_vec().iter().enumerate().map(|(_i, ticker)|{
+    let v = tickers.list.into_vec().iter().enumerate().map(|(_i, ticker)|{
         let v1 = ticker.rel.clone().into_vec().iter().enumerate().map(|(_i, rel)|{
             let (ctype, opts) = from_ticker(&rel, is_testnet);
             let coin = Coin::new(ctype, opts, None, None,Some(nodes.clone()));
@@ -50,7 +50,7 @@ pub fn get_wallets(tickers: protos::coin::Tickers, mnemonic: String, is_testnet:
         }
     }).collect::<Vec<_>>();
     protos::coin::CoinsList{
-        coins: protobuf::RepeatedField::from_vec(v),
+        list: protobuf::RepeatedField::from_vec(v),
         ..Default::default()
     }
 }
@@ -78,7 +78,7 @@ pub fn gen_send_transaction(rel: &str, is_testnet: bool, api: &str, private_key:
             PubKey::Secp256k1(array2)
         }
     };
-    let outputs = os.output.iter().enumerate().map(|(_i, o)|{
+    let outputs = os.list.iter().enumerate().map(|(_i, o)|{
         Outputs{
             address: o.address.clone(),
             value: o.value,
@@ -222,7 +222,7 @@ mod tests {
     }
     fn t() -> protos::coin::Tickers{
         protos::coin::Tickers{
-            ticker: protobuf::RepeatedField::from_vec(
+            list: protobuf::RepeatedField::from_vec(
                 vec![
                     ticker!("btc", vec!["btc".to_string()]),
                     ticker!("eth", vec!["eth".to_string()]),
@@ -240,10 +240,10 @@ mod tests {
     fn gentx_test(){
         let t = t();
         let y = get_wallets(t, "connect ritual news sand rapid scale behind swamp damp brief explain ankle".to_string(), true);
-        let x = y.coins.into_vec();
+        let x = y.list.into_vec();
 
         let tx = gen_send_transaction("btc", true, API, x[0].coin[0].private_key.clone(), x[0].coin[0].public_key.clone(), protos::coin::Outputs{
-            output: protobuf::RepeatedField::from_vec(
+            list: protobuf::RepeatedField::from_vec(
                 vec![
                 protos::coin::Output{
                     address: x[0].coin[0].address.clone(),
@@ -261,7 +261,7 @@ mod tests {
         let t = t();
 
         let y = get_wallets(t, "connect ritual news sand rapid scale behind swamp damp brief explain ankle".to_string(), false);
-        let x = y.coins.into_vec();
+        let x = y.list.into_vec();
         assert_eq!(x[0].coin[0].address, "bc1qhee7awenpfzmn7tuk95vrkuhctj8h5mh7yrxnu");
         assert_eq!(x[1].coin[0].address, "b023b80afad0363ab966cf10b5f76e5f625cf497");
         assert_eq!(x[2].coin[0].address, "GDEHOJPTD6I336QBOTSIADKTKAVWKVWEF5S2QFNPBWQN7TCTL5TFSPCR");

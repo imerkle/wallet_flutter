@@ -73,7 +73,7 @@ class MyHomePage extends StatelessWidget {
       final walletStore = Provider.of<MainStore>(context).walletStore;
       return Observer(
         builder: (_) {
-          if(walletStore.ws.wallets.length == 0){
+          if(walletStore.ws.list.length == 0){
             return Container();
           }else{
             return SafeArea(

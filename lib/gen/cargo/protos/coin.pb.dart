@@ -125,7 +125,7 @@ class Ticker extends $pb.GeneratedMessage {
 
 class Tickers extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Tickers')
-    ..pc<Ticker>(1, 'ticker', $pb.PbFieldType.PM,Ticker.create)
+    ..pc<Ticker>(1, 'list', $pb.PbFieldType.PM,Ticker.create)
     ..hasRequiredFields = false
   ;
 
@@ -143,12 +143,12 @@ class Tickers extends $pb.GeneratedMessage {
   static Tickers getDefault() => _defaultInstance ??= create()..freeze();
   static Tickers _defaultInstance;
 
-  $core.List<Ticker> get ticker => $_getList(0);
+  $core.List<Ticker> get list => $_getList(0);
 }
 
 class CoinsList extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('CoinsList')
-    ..pc<Coins>(1, 'coins', $pb.PbFieldType.PM,Coins.create)
+    ..pc<Coins>(1, 'list', $pb.PbFieldType.PM,Coins.create)
     ..hasRequiredFields = false
   ;
 
@@ -166,7 +166,7 @@ class CoinsList extends $pb.GeneratedMessage {
   static CoinsList getDefault() => _defaultInstance ??= create()..freeze();
   static CoinsList _defaultInstance;
 
-  $core.List<Coins> get coins => $_getList(0);
+  $core.List<Coins> get list => $_getList(0);
 }
 
 class Wallet extends $pb.GeneratedMessage {
@@ -203,7 +203,7 @@ class Wallet extends $pb.GeneratedMessage {
 
 class Wallets extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallets')
-    ..pc<Wallet>(1, 'wallets', $pb.PbFieldType.PM,Wallet.create)
+    ..pc<Wallet>(1, 'list', $pb.PbFieldType.PM,Wallet.create)
     ..hasRequiredFields = false
   ;
 
@@ -221,7 +221,7 @@ class Wallets extends $pb.GeneratedMessage {
   static Wallets getDefault() => _defaultInstance ??= create()..freeze();
   static Wallets _defaultInstance;
 
-  $core.List<Wallet> get wallets => $_getList(0);
+  $core.List<Wallet> get list => $_getList(0);
 }
 
 class Output extends $pb.GeneratedMessage {
@@ -264,7 +264,7 @@ class Output extends $pb.GeneratedMessage {
 
 class Outputs extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Outputs')
-    ..pc<Output>(1, 'output', $pb.PbFieldType.PM,Output.create)
+    ..pc<Output>(1, 'list', $pb.PbFieldType.PM,Output.create)
     ..hasRequiredFields = false
   ;
 
@@ -282,7 +282,7 @@ class Outputs extends $pb.GeneratedMessage {
   static Outputs getDefault() => _defaultInstance ??= create()..freeze();
   static Outputs _defaultInstance;
 
-  $core.List<Output> get output => $_getList(0);
+  $core.List<Output> get list => $_getList(0);
 }
 
 class Tx extends $pb.GeneratedMessage {

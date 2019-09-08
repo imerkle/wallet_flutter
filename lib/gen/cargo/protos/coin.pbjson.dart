@@ -36,14 +36,14 @@ const Ticker$json = const {
 const Tickers$json = const {
   '1': 'Tickers',
   '2': const [
-    const {'1': 'ticker', '3': 1, '4': 3, '5': 11, '6': '.Ticker', '10': 'ticker'},
+    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Ticker', '10': 'list'},
   ],
 };
 
 const CoinsList$json = const {
   '1': 'CoinsList',
   '2': const [
-    const {'1': 'coins', '3': 1, '4': 3, '5': 11, '6': '.Coins', '10': 'coins'},
+    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Coins', '10': 'list'},
   ],
 };
 
@@ -58,7 +58,7 @@ const Wallet$json = const {
 const Wallets$json = const {
   '1': 'Wallets',
   '2': const [
-    const {'1': 'wallets', '3': 1, '4': 3, '5': 11, '6': '.Wallet', '10': 'wallets'},
+    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Wallet', '10': 'list'},
   ],
 };
 
@@ -74,7 +74,7 @@ const Output$json = const {
 const Outputs$json = const {
   '1': 'Outputs',
   '2': const [
-    const {'1': 'output', '3': 1, '4': 3, '5': 11, '6': '.Output', '10': 'output'},
+    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Output', '10': 'list'},
   ],
 };
 

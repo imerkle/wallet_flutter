@@ -23,7 +23,7 @@ class Fabs extends StatelessWidget{
     final fabStore = Provider.of<MainStore>(context).fabStore;
 
     return ListView.builder(
-      itemCount: walletStore.ws.wallets[0].coinsList.coins.length,
+      itemCount: walletStore.ws.list[0].coinsList.list.length,
       itemBuilder: (context, i) {
         return Observer(
           builder: (_) {
@@ -50,9 +50,9 @@ class Fabs extends StatelessWidget{
                         height: iconSize,
                         width: iconSize,
                         decoration: BoxDecoration(
-                          color: cryptoColors[walletStore.ws.wallets[0].coinsList.coins[i].base],
+                          color: cryptoColors[walletStore.ws.list[0].coinsList.list[i].base],
                           image: DecorationImage(
-                            image: NetworkImage(cryptoIconUrl(walletStore.ws.wallets[0].coinsList.coins[i].base)),
+                            image: NetworkImage(cryptoIconUrl(walletStore.ws.list[0].coinsList.list[i].base)),
                             fit: BoxFit.cover
                           ),
                           //shape: BoxShape.circle,

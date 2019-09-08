@@ -836,7 +836,7 @@ impl ::protobuf::reflect::ProtobufValue for Ticker {
 #[derive(PartialEq,Clone,Default)]
 pub struct Tickers {
     // message fields
-    pub ticker: ::protobuf::RepeatedField<Ticker>,
+    pub list: ::protobuf::RepeatedField<Ticker>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -853,35 +853,35 @@ impl Tickers {
         ::std::default::Default::default()
     }
 
-    // repeated .Ticker ticker = 1;
+    // repeated .Ticker list = 1;
 
 
-    pub fn get_ticker(&self) -> &[Ticker] {
-        &self.ticker
+    pub fn get_list(&self) -> &[Ticker] {
+        &self.list
     }
-    pub fn clear_ticker(&mut self) {
-        self.ticker.clear();
+    pub fn clear_list(&mut self) {
+        self.list.clear();
     }
 
     // Param is passed by value, moved
-    pub fn set_ticker(&mut self, v: ::protobuf::RepeatedField<Ticker>) {
-        self.ticker = v;
+    pub fn set_list(&mut self, v: ::protobuf::RepeatedField<Ticker>) {
+        self.list = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_ticker(&mut self) -> &mut ::protobuf::RepeatedField<Ticker> {
-        &mut self.ticker
+    pub fn mut_list(&mut self) -> &mut ::protobuf::RepeatedField<Ticker> {
+        &mut self.list
     }
 
     // Take field
-    pub fn take_ticker(&mut self) -> ::protobuf::RepeatedField<Ticker> {
-        ::std::mem::replace(&mut self.ticker, ::protobuf::RepeatedField::new())
+    pub fn take_list(&mut self) -> ::protobuf::RepeatedField<Ticker> {
+        ::std::mem::replace(&mut self.list, ::protobuf::RepeatedField::new())
     }
 }
 
 impl ::protobuf::Message for Tickers {
     fn is_initialized(&self) -> bool {
-        for v in &self.ticker {
+        for v in &self.list {
             if !v.is_initialized() {
                 return false;
             }
@@ -894,7 +894,7 @@ impl ::protobuf::Message for Tickers {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.ticker)?;
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.list)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -908,7 +908,7 @@ impl ::protobuf::Message for Tickers {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        for value in &self.ticker {
+        for value in &self.list {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
@@ -918,7 +918,7 @@ impl ::protobuf::Message for Tickers {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        for v in &self.ticker {
+        for v in &self.list {
             os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
@@ -966,9 +966,9 @@ impl ::protobuf::Message for Tickers {
             descriptor.get(|| {
                 let mut fields = ::std::vec::Vec::new();
                 fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Ticker>>(
-                    "ticker",
-                    |m: &Tickers| { &m.ticker },
-                    |m: &mut Tickers| { &mut m.ticker },
+                    "list",
+                    |m: &Tickers| { &m.list },
+                    |m: &mut Tickers| { &mut m.list },
                 ));
                 ::protobuf::reflect::MessageDescriptor::new::<Tickers>(
                     "Tickers",
@@ -992,7 +992,7 @@ impl ::protobuf::Message for Tickers {
 
 impl ::protobuf::Clear for Tickers {
     fn clear(&mut self) {
-        self.ticker.clear();
+        self.list.clear();
         self.unknown_fields.clear();
     }
 }
@@ -1012,7 +1012,7 @@ impl ::protobuf::reflect::ProtobufValue for Tickers {
 #[derive(PartialEq,Clone,Default)]
 pub struct CoinsList {
     // message fields
-    pub coins: ::protobuf::RepeatedField<Coins>,
+    pub list: ::protobuf::RepeatedField<Coins>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -1029,35 +1029,35 @@ impl CoinsList {
         ::std::default::Default::default()
     }
 
-    // repeated .Coins coins = 1;
+    // repeated .Coins list = 1;
 
 
-    pub fn get_coins(&self) -> &[Coins] {
-        &self.coins
+    pub fn get_list(&self) -> &[Coins] {
+        &self.list
     }
-    pub fn clear_coins(&mut self) {
-        self.coins.clear();
+    pub fn clear_list(&mut self) {
+        self.list.clear();
     }
 
     // Param is passed by value, moved
-    pub fn set_coins(&mut self, v: ::protobuf::RepeatedField<Coins>) {
-        self.coins = v;
+    pub fn set_list(&mut self, v: ::protobuf::RepeatedField<Coins>) {
+        self.list = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_coins(&mut self) -> &mut ::protobuf::RepeatedField<Coins> {
-        &mut self.coins
+    pub fn mut_list(&mut self) -> &mut ::protobuf::RepeatedField<Coins> {
+        &mut self.list
     }
 
     // Take field
-    pub fn take_coins(&mut self) -> ::protobuf::RepeatedField<Coins> {
-        ::std::mem::replace(&mut self.coins, ::protobuf::RepeatedField::new())
+    pub fn take_list(&mut self) -> ::protobuf::RepeatedField<Coins> {
+        ::std::mem::replace(&mut self.list, ::protobuf::RepeatedField::new())
     }
 }
 
 impl ::protobuf::Message for CoinsList {
     fn is_initialized(&self) -> bool {
-        for v in &self.coins {
+        for v in &self.list {
             if !v.is_initialized() {
                 return false;
             }
@@ -1070,7 +1070,7 @@ impl ::protobuf::Message for CoinsList {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.coins)?;
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.list)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -1084,7 +1084,7 @@ impl ::protobuf::Message for CoinsList {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        for value in &self.coins {
+        for value in &self.list {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
@@ -1094,7 +1094,7 @@ impl ::protobuf::Message for CoinsList {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        for v in &self.coins {
+        for v in &self.list {
             os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
@@ -1142,9 +1142,9 @@ impl ::protobuf::Message for CoinsList {
             descriptor.get(|| {
                 let mut fields = ::std::vec::Vec::new();
                 fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Coins>>(
-                    "coins",
-                    |m: &CoinsList| { &m.coins },
-                    |m: &mut CoinsList| { &mut m.coins },
+                    "list",
+                    |m: &CoinsList| { &m.list },
+                    |m: &mut CoinsList| { &mut m.list },
                 ));
                 ::protobuf::reflect::MessageDescriptor::new::<CoinsList>(
                     "CoinsList",
@@ -1168,7 +1168,7 @@ impl ::protobuf::Message for CoinsList {
 
 impl ::protobuf::Clear for CoinsList {
     fn clear(&mut self) {
-        self.coins.clear();
+        self.list.clear();
         self.unknown_fields.clear();
     }
 }
@@ -1414,7 +1414,7 @@ impl ::protobuf::reflect::ProtobufValue for Wallet {
 #[derive(PartialEq,Clone,Default)]
 pub struct Wallets {
     // message fields
-    pub wallets: ::protobuf::RepeatedField<Wallet>,
+    pub list: ::protobuf::RepeatedField<Wallet>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -1431,35 +1431,35 @@ impl Wallets {
         ::std::default::Default::default()
     }
 
-    // repeated .Wallet wallets = 1;
+    // repeated .Wallet list = 1;
 
 
-    pub fn get_wallets(&self) -> &[Wallet] {
-        &self.wallets
+    pub fn get_list(&self) -> &[Wallet] {
+        &self.list
     }
-    pub fn clear_wallets(&mut self) {
-        self.wallets.clear();
+    pub fn clear_list(&mut self) {
+        self.list.clear();
     }
 
     // Param is passed by value, moved
-    pub fn set_wallets(&mut self, v: ::protobuf::RepeatedField<Wallet>) {
-        self.wallets = v;
+    pub fn set_list(&mut self, v: ::protobuf::RepeatedField<Wallet>) {
+        self.list = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_wallets(&mut self) -> &mut ::protobuf::RepeatedField<Wallet> {
-        &mut self.wallets
+    pub fn mut_list(&mut self) -> &mut ::protobuf::RepeatedField<Wallet> {
+        &mut self.list
     }
 
     // Take field
-    pub fn take_wallets(&mut self) -> ::protobuf::RepeatedField<Wallet> {
-        ::std::mem::replace(&mut self.wallets, ::protobuf::RepeatedField::new())
+    pub fn take_list(&mut self) -> ::protobuf::RepeatedField<Wallet> {
+        ::std::mem::replace(&mut self.list, ::protobuf::RepeatedField::new())
     }
 }
 
 impl ::protobuf::Message for Wallets {
     fn is_initialized(&self) -> bool {
-        for v in &self.wallets {
+        for v in &self.list {
             if !v.is_initialized() {
                 return false;
             }
@@ -1472,7 +1472,7 @@ impl ::protobuf::Message for Wallets {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.wallets)?;
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.list)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -1486,7 +1486,7 @@ impl ::protobuf::Message for Wallets {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        for value in &self.wallets {
+        for value in &self.list {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
@@ -1496,7 +1496,7 @@ impl ::protobuf::Message for Wallets {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        for v in &self.wallets {
+        for v in &self.list {
             os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
@@ -1544,9 +1544,9 @@ impl ::protobuf::Message for Wallets {
             descriptor.get(|| {
                 let mut fields = ::std::vec::Vec::new();
                 fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Wallet>>(
-                    "wallets",
-                    |m: &Wallets| { &m.wallets },
-                    |m: &mut Wallets| { &mut m.wallets },
+                    "list",
+                    |m: &Wallets| { &m.list },
+                    |m: &mut Wallets| { &mut m.list },
                 ));
                 ::protobuf::reflect::MessageDescriptor::new::<Wallets>(
                     "Wallets",
@@ -1570,7 +1570,7 @@ impl ::protobuf::Message for Wallets {
 
 impl ::protobuf::Clear for Wallets {
     fn clear(&mut self) {
-        self.wallets.clear();
+        self.list.clear();
         self.unknown_fields.clear();
     }
 }
@@ -1836,7 +1836,7 @@ impl ::protobuf::reflect::ProtobufValue for Output {
 #[derive(PartialEq,Clone,Default)]
 pub struct Outputs {
     // message fields
-    pub output: ::protobuf::RepeatedField<Output>,
+    pub list: ::protobuf::RepeatedField<Output>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -1853,35 +1853,35 @@ impl Outputs {
         ::std::default::Default::default()
     }
 
-    // repeated .Output output = 1;
+    // repeated .Output list = 1;
 
 
-    pub fn get_output(&self) -> &[Output] {
-        &self.output
+    pub fn get_list(&self) -> &[Output] {
+        &self.list
     }
-    pub fn clear_output(&mut self) {
-        self.output.clear();
+    pub fn clear_list(&mut self) {
+        self.list.clear();
     }
 
     // Param is passed by value, moved
-    pub fn set_output(&mut self, v: ::protobuf::RepeatedField<Output>) {
-        self.output = v;
+    pub fn set_list(&mut self, v: ::protobuf::RepeatedField<Output>) {
+        self.list = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_output(&mut self) -> &mut ::protobuf::RepeatedField<Output> {
-        &mut self.output
+    pub fn mut_list(&mut self) -> &mut ::protobuf::RepeatedField<Output> {
+        &mut self.list
     }
 
     // Take field
-    pub fn take_output(&mut self) -> ::protobuf::RepeatedField<Output> {
-        ::std::mem::replace(&mut self.output, ::protobuf::RepeatedField::new())
+    pub fn take_list(&mut self) -> ::protobuf::RepeatedField<Output> {
+        ::std::mem::replace(&mut self.list, ::protobuf::RepeatedField::new())
     }
 }
 
 impl ::protobuf::Message for Outputs {
     fn is_initialized(&self) -> bool {
-        for v in &self.output {
+        for v in &self.list {
             if !v.is_initialized() {
                 return false;
             }
@@ -1894,7 +1894,7 @@ impl ::protobuf::Message for Outputs {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.output)?;
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.list)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -1908,7 +1908,7 @@ impl ::protobuf::Message for Outputs {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        for value in &self.output {
+        for value in &self.list {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
@@ -1918,7 +1918,7 @@ impl ::protobuf::Message for Outputs {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        for v in &self.output {
+        for v in &self.list {
             os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
@@ -1966,9 +1966,9 @@ impl ::protobuf::Message for Outputs {
             descriptor.get(|| {
                 let mut fields = ::std::vec::Vec::new();
                 fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Output>>(
-                    "output",
-                    |m: &Outputs| { &m.output },
-                    |m: &mut Outputs| { &mut m.output },
+                    "list",
+                    |m: &Outputs| { &m.list },
+                    |m: &mut Outputs| { &mut m.list },
                 ));
                 ::protobuf::reflect::MessageDescriptor::new::<Outputs>(
                     "Outputs",
@@ -1992,7 +1992,7 @@ impl ::protobuf::Message for Outputs {
 
 impl ::protobuf::Clear for Outputs {
     fn clear(&mut self) {
-        self.output.clear();
+        self.list.clear();
         self.unknown_fields.clear();
     }
 }
@@ -2186,18 +2186,18 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     rel\x12\x12\n\x04base\x18\x06\x20\x01(\tR\x04base\"6\n\x05Coins\x12\x19\
     \n\x04coin\x18\x01\x20\x03(\x0b2\x05.CoinR\x04coin\x12\x12\n\x04base\x18\
     \x02\x20\x01(\tR\x04base\".\n\x06Ticker\x12\x10\n\x03rel\x18\x01\x20\x03\
-    (\tR\x03rel\x12\x12\n\x04base\x18\x02\x20\x01(\tR\x04base\"*\n\x07Ticker\
-    s\x12\x1f\n\x06ticker\x18\x01\x20\x03(\x0b2\x07.TickerR\x06ticker\")\n\t\
-    CoinsList\x12\x1c\n\x05coins\x18\x01\x20\x03(\x0b2\x06.CoinsR\x05coins\"\
-    O\n\x06Wallet\x12\x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\x12)\
-    \n\ncoins_list\x18\x02\x20\x01(\x0b2\n.CoinsListR\tcoinsList\",\n\x07Wal\
-    lets\x12!\n\x07wallets\x18\x01\x20\x03(\x0b2\x07.WalletR\x07wallets\"L\n\
-    \x06Output\x12\x18\n\x07address\x18\x01\x20\x01(\tR\x07address\x12\x14\n\
-    \x05value\x18\x02\x20\x01(\x01R\x05value\x12\x12\n\x04memo\x18\x03\x20\
-    \x01(\tR\x04memo\"*\n\x07Outputs\x12\x1f\n\x06output\x18\x01\x20\x03(\
-    \x0b2\x07.OutputR\x06output\"\x1b\n\x02Tx\x12\x15\n\x06tx_hex\x18\x01\
-    \x20\x01(\tR\x05txHexB-\n\x1acom.example.wallet_flutterB\x06Protos\xa2\
-    \x02\x06Protosb\x06proto3\
+    (\tR\x03rel\x12\x12\n\x04base\x18\x02\x20\x01(\tR\x04base\"&\n\x07Ticker\
+    s\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.TickerR\x04list\"'\n\tCoin\
+    sList\x12\x1a\n\x04list\x18\x01\x20\x03(\x0b2\x06.CoinsR\x04list\"O\n\
+    \x06Wallet\x12\x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\x12)\n\
+    \ncoins_list\x18\x02\x20\x01(\x0b2\n.CoinsListR\tcoinsList\"&\n\x07Walle\
+    ts\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.WalletR\x04list\"L\n\x06O\
+    utput\x12\x18\n\x07address\x18\x01\x20\x01(\tR\x07address\x12\x14\n\x05v\
+    alue\x18\x02\x20\x01(\x01R\x05value\x12\x12\n\x04memo\x18\x03\x20\x01(\t\
+    R\x04memo\"&\n\x07Outputs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.Ou\
+    tputR\x04list\"\x1b\n\x02Tx\x12\x15\n\x06tx_hex\x18\x01\x20\x01(\tR\x05t\
+    xHexB-\n\x1acom.example.wallet_flutterB\x06Protos\xa2\x02\x06Protosb\x06\
+    proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

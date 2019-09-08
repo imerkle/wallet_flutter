@@ -31,7 +31,7 @@ class DrawerList extends StatelessWidget{
       builder: (_) {
         var selectedChild = fabStore.selectedChild;
         var selected = fabStore.selected;
-        var coin = walletStore.ws.wallets[0].coinsList.coins[selected].coin;
+        var coin = walletStore.ws.list[0].coinsList.list[selected].coin;
         if (sortStore.sortables[0].direction == false){
           coin = coin.reversed.toList();
         }
@@ -87,7 +87,7 @@ class DrawerWidget extends StatelessWidget {
                       child: Observer(
                         builder: (_) {
                           return Text(
-                            getName(walletStore.ws.wallets[0].coinsList.coins[fabStore.selected].coin[0].rel),
+                            getName(walletStore.ws.list[0].coinsList.list[fabStore.selected].coin[0].rel),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontSize: 20,

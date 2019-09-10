@@ -6,9 +6,7 @@ import 'package:wallet_flutter/constants.dart';
 import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:wallet_flutter/models/bal_params.dart';
 import 'package:wallet_flutter/models/balance.dart';
-import 'package:wallet_flutter/models/balances.dart';
 
 // Include generated file
 part 'wallet.g.dart';

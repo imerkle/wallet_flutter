@@ -263,7 +263,7 @@ mod tests {
         let y = get_wallets(t, "connect ritual news sand rapid scale behind swamp damp brief explain ankle".to_string(), false);
         let x = y.list.into_vec();
         assert_eq!(x[0].coin[0].address, "bc1qhee7awenpfzmn7tuk95vrkuhctj8h5mh7yrxnu");
-        assert_eq!(x[1].coin[0].address, "b023b80afad0363ab966cf10b5f76e5f625cf497");
+        assert_eq!(x[1].coin[0].address, "0xb023b80afad0363ab966cf10b5f76e5f625cf497");
         assert_eq!(x[2].coin[0].address, "GDEHOJPTD6I336QBOTSIADKTKAVWKVWEF5S2QFNPBWQN7TCTL5TFSPCR");
         assert_eq!(x[2].coin[0].wif, "SAOR373KUDDGZ7QN4HNXFQKIFMZKFMRMWP6B7XAHMVEIQBVR5IDYVHXH");
         assert_eq!(x[3].coin[0].address, "rPphbLGemSQv4De1LUHYq6tupBkrrZUxNe");

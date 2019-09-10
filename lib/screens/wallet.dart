@@ -88,6 +88,8 @@ class Wallet extends StatelessWidget {
                     suffixIcon: FlatButton(
                       child: Text("MAX"), 
                       onPressed: () {
+                        var o = walletStore.bl.singleWhere((b) => b.base == x.base).balances.singleWhere((b)=> b.rel == x.rel);
+                        amount.text = o.value.toString();
                       },
                     ),
                   ),

@@ -14,6 +14,7 @@ const Coin$json = const {
     const {'1': 'address', '3': 4, '4': 1, '5': 9, '10': 'address'},
     const {'1': 'rel', '3': 5, '4': 1, '5': 9, '10': 'rel'},
     const {'1': 'base', '3': 6, '4': 1, '5': 9, '10': 'base'},
+    const {'1': 'protocol', '3': 7, '4': 1, '5': 9, '10': 'protocol'},
   ],
 };
 

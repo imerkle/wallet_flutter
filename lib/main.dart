@@ -63,10 +63,25 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({this.title});
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({
+    Key key,
+    this.title,
+  }) : super(key: key);
 
   final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _currentIndex = 0;
+  static List<Widget> _widgetOptions = <Widget>[
+    Wallet(),
+    Text("1"),
+    Text("2"),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -80,12 +95,32 @@ class MyHomePage extends StatelessWidget {
               child: Scaffold(
                 //backgroundColor: Theme.of(context).primaryColor,
                 appBar: AppBar(
-                  title: Text(title),
+                  title: Text(widget.title),
                 ),
                 drawer: Drawer(
                   child: DrawerWidget(),
                 ),
-                body: Wallet(),
+                body: _widgetOptions.elementAt(_currentIndex),
+                bottomNavigationBar: BottomNavigationBar(
+                  currentIndex: _currentIndex,
+                  items: [
+                    BottomNavigationBarItem(
+                      icon: new Icon(Icons.home),
+                      title: new Text('Home'),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: new Icon(Icons.settings),
+                      title: new Text('Settings'),
+                    ),
+                    BottomNavigationBarItem(
+                      icon: new Icon(Icons.info),
+                      title: new Text('About'),
+                    ),
+                  ],
+                  onTap: (int index){
+                      setState(() { _currentIndex = index; });
+                  },
+                )
               ),
             );            
           }

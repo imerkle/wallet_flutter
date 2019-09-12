@@ -7,9 +7,11 @@ import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:wallet_flutter/models/balance.dart';
+import 'package:bip39/bip39.dart' as bip39;
 
 // Include generated file
 part 'wallet.g.dart';
+
 
 const platform = const MethodChannel('flutter.dev/rust');
 final storage = new FlutterSecureStorage();
@@ -38,12 +40,12 @@ abstract class _WalletStore with Store {
 
   @action
   Future<List<Balances>> initFetchBalances() async{
-    var url = '${explorerApi}/get_balances';
+    var url = '$explorerApi/get_balances';
     Map<String, String> headers = {"Content-type": "application/json"};
     List<BalParams> bp = [];
     ws.list[this.walletIndex].coinsList.list.forEach((l) => {
       l.coin.forEach((c) => {
-        bp.add(BalParams(rel: c.rel, base: c.base, address: c.address))
+        bp.add(BalParams(rel: c.rel, base: c.base, protocol: c.protocol, address: c.address))
       })
     });
     var response = await http.post(url, headers: headers, body: jsonEncode(bp));
@@ -54,16 +56,18 @@ abstract class _WalletStore with Store {
 String replaceAll(String str, String r, String w){
     return str.replaceAll(new RegExp(r), w);
 }
+
 Future<Wallets> initWalletIfAbsent() async {
-    storage.deleteAll();
+    //storage.deleteAll();
     const String key = "wallets";
     String walletsJson = await storage.read(key: key);
       
     String mnemonic = "";
     Wallets ws = Wallets();
     if(walletsJson == null){
-      //mnemonic = bip39.generateMnemonic();
-      mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
+      mnemonic = bip39.generateMnemonic();
+      //mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
+      
       
       Tickers t = getTickers();
       var x = await platform.invokeMethod('get_wallets',{

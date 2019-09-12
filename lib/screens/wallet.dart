@@ -5,9 +5,11 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/constants.dart';
 import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
+import 'package:wallet_flutter/models/balance.dart';
 import 'package:wallet_flutter/screens/scan.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:http/http.dart' as http;
+import 'package:wallet_flutter/stores/wallet.dart';
 
 const platform = const MethodChannel('flutter.dev/rust');
 
@@ -15,7 +17,11 @@ const double tsize = 20;
 const ts1 = TextStyle(fontSize: tsize);
 const ts2 = TextStyle(fontSize: tsize, fontWeight: FontWeight.bold);
 
-
+Balance getBalance(WalletStore walletStore, String base, String rel){
+  walletStore.bl.forEach((b) => print(b.base));
+  //return walletStore.bl.singleWhere((b) => b.base == base).balances.singleWhere((b)=> b.rel == rel);
+  return Balance(rel: rel, value: 0.0);
+}
 class Wallet extends StatelessWidget {
   final receivingAddress = TextEditingController();
   final amount = TextEditingController();
@@ -25,11 +31,10 @@ class Wallet extends StatelessWidget {
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
 
-
     return Observer(
       builder: (_) {
         var x = getCoin(store: walletStore, baseIndex: fabStore.baseIndex, relIndex: fabStore.relIndex);
-        
+        Balance b = getBalance(walletStore, x.base, x.rel);
         return Padding(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           child: SingleChildScrollView(
@@ -43,7 +48,7 @@ class Wallet extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text("${x.rel} balance".toUpperCase(), style: ts1),
-                        Text("0", style: ts2),
+                        Text(b.value.toString(), style: ts2),
                       ],
                     ),
                     Column(
@@ -88,8 +93,7 @@ class Wallet extends StatelessWidget {
                     suffixIcon: FlatButton(
                       child: Text("MAX"), 
                       onPressed: () {
-                        var o = walletStore.bl.singleWhere((b) => b.base == x.base).balances.singleWhere((b)=> b.rel == x.rel);
-                        amount.text = o.value.toString();
+                        amount.text = b.value.toString();
                       },
                     ),
                   ),
@@ -115,7 +119,7 @@ class Wallet extends StatelessWidget {
                         "txOutputs": os.writeToBuffer()
                       });
                       var t = Tx.fromBuffer(txSignedHex);
-                      //send_transaction(x.rel, x.rel, tx_signed_hex);
+                      //sendTransaction(x.rel, x.rel, tx_signed_hex);
                       //send tx_signed_hex
                     },
                     padding: EdgeInsets.all(15),
@@ -135,7 +139,7 @@ class Wallet extends StatelessWidget {
   }
 }
 
-Future<String> send_transaction(String rel, String base, String rawTx) async {
+Future<String> sendTransaction(String rel, String base, String rawTx) async {
   var response = await http.post('http://localhost:4000/api/post_tx', body: {'rel': rel, 'base': base, 'rawTx': rawTx});
   print('Response body: ${response.body}');
 }

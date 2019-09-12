@@ -6,7 +6,7 @@ import 'package:wallet_flutter/stores/wallet.dart';
 final bool isTestnet = true;
 final String explorerApi = "http://10.0.2.2:4000/api";
 
-Future write_paste(TextEditingController c) async {
+Future writePaste(TextEditingController c) async {
   ClipboardData data = await Clipboard.getData("text/plain");
   c.text = data.text;
 }

@@ -124,12 +124,6 @@ class DrawerWidget extends StatelessWidget {
             ], 
           ),
         ),
-        Expanded(
-          flex: 5,
-          child: Container(
-            child: Text("Hello"),
-          ),
-        ),
       ],
     );
   }

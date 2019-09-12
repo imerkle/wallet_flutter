@@ -39,13 +39,13 @@ pub fn get_wallets(tickers: protos::coin::Tickers, mnemonic: String, is_testnet:
                 wif: coin.to_wif(),
                 address: coin.to_address(),
                 rel: rel.to_string(),
-                base: ticker.base.clone(),
+                protocol: ticker.protocol,
                 ..Default::default()
             }
         }).collect::<Vec<_>>();
         protos::coin::Coins{
             coin: protobuf::RepeatedField::from_vec(v1),
-            base: ticker.base.clone(),
+            base: ticker.base,
             ..Default::default()
         }
     }).collect::<Vec<_>>();

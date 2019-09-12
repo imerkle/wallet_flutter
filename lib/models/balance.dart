@@ -32,9 +32,10 @@ class Balances {
 class BalParams {
   String rel;
   String base;
+  String protocol;
   String address;
 
-  BalParams({this.rel, this.base, this.address});
+  BalParams({this.rel, this.base, this.protocol, this.address});
 
 
   factory BalParams.fromJson(Map<String, dynamic> json) => _$BalParamsFromJson(json);

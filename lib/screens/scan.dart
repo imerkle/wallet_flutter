@@ -9,8 +9,8 @@ import 'package:wallet_flutter/constants.dart';
 class ScanScreen extends StatelessWidget {
   ScanScreen({this.controller, this.onScan});
 
-  TextEditingController controller;
-  Function onScan;
+  final TextEditingController controller;
+  final Function onScan;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class ScanScreen extends StatelessWidget {
         suffixIcon: IconButton(
           icon: Icon(Icons.content_paste),
           onPressed: () {
-            write_paste(this.controller);
+            writePaste(this.controller);
           }
         ),
       ),

@@ -5,18 +5,19 @@
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
-import 'dart:core' as $core show bool, Deprecated, double, int, List, Map, override, pragma, String;
+import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class Coin extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Coin')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Coin', createEmptyInstance: create)
     ..a<$core.List<$core.int>>(1, 'publicKey', $pb.PbFieldType.OY)
     ..a<$core.List<$core.int>>(2, 'privateKey', $pb.PbFieldType.OY)
     ..aOS(3, 'wif')
     ..aOS(4, 'address')
     ..aOS(5, 'rel')
     ..aOS(6, 'base')
+    ..aOS(7, 'protocol')
     ..hasRequiredFields = false
   ;
 
@@ -63,11 +64,16 @@ class Coin extends $pb.GeneratedMessage {
   set base($core.String v) { $_setString(5, v); }
   $core.bool hasBase() => $_has(5);
   void clearBase() => clearField(6);
+
+  $core.String get protocol => $_getS(6, '');
+  set protocol($core.String v) { $_setString(6, v); }
+  $core.bool hasProtocol() => $_has(6);
+  void clearProtocol() => clearField(7);
 }
 
 class Coins extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Coins')
-    ..pc<Coin>(1, 'coin', $pb.PbFieldType.PM,Coin.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Coins', createEmptyInstance: create)
+    ..pc<Coin>(1, 'coin', $pb.PbFieldType.PM, subBuilder: Coin.create)
     ..aOS(2, 'base')
     ..hasRequiredFields = false
   ;
@@ -95,7 +101,7 @@ class Coins extends $pb.GeneratedMessage {
 }
 
 class Ticker extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Ticker')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Ticker', createEmptyInstance: create)
     ..pPS(1, 'rel')
     ..aOS(2, 'base')
     ..hasRequiredFields = false
@@ -124,8 +130,8 @@ class Ticker extends $pb.GeneratedMessage {
 }
 
 class Tickers extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Tickers')
-    ..pc<Ticker>(1, 'list', $pb.PbFieldType.PM,Ticker.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Tickers', createEmptyInstance: create)
+    ..pc<Ticker>(1, 'list', $pb.PbFieldType.PM, subBuilder: Ticker.create)
     ..hasRequiredFields = false
   ;
 
@@ -147,8 +153,8 @@ class Tickers extends $pb.GeneratedMessage {
 }
 
 class CoinsList extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('CoinsList')
-    ..pc<Coins>(1, 'list', $pb.PbFieldType.PM,Coins.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('CoinsList', createEmptyInstance: create)
+    ..pc<Coins>(1, 'list', $pb.PbFieldType.PM, subBuilder: Coins.create)
     ..hasRequiredFields = false
   ;
 
@@ -170,9 +176,9 @@ class CoinsList extends $pb.GeneratedMessage {
 }
 
 class Wallet extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallet')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallet', createEmptyInstance: create)
     ..aOS(1, 'mnemonic')
-    ..a<CoinsList>(2, 'coinsList', $pb.PbFieldType.OM, CoinsList.getDefault, CoinsList.create)
+    ..a<CoinsList>(2, 'coinsList', $pb.PbFieldType.OM, defaultOrMaker: CoinsList.getDefault, subBuilder: CoinsList.create)
     ..hasRequiredFields = false
   ;
 
@@ -202,8 +208,8 @@ class Wallet extends $pb.GeneratedMessage {
 }
 
 class Wallets extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallets')
-    ..pc<Wallet>(1, 'list', $pb.PbFieldType.PM,Wallet.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallets', createEmptyInstance: create)
+    ..pc<Wallet>(1, 'list', $pb.PbFieldType.PM, subBuilder: Wallet.create)
     ..hasRequiredFields = false
   ;
 
@@ -225,7 +231,7 @@ class Wallets extends $pb.GeneratedMessage {
 }
 
 class Output extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Output')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Output', createEmptyInstance: create)
     ..aOS(1, 'address')
     ..a<$core.double>(2, 'value', $pb.PbFieldType.OD)
     ..aOS(3, 'memo')
@@ -263,8 +269,8 @@ class Output extends $pb.GeneratedMessage {
 }
 
 class Outputs extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Outputs')
-    ..pc<Output>(1, 'list', $pb.PbFieldType.PM,Output.create)
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Outputs', createEmptyInstance: create)
+    ..pc<Output>(1, 'list', $pb.PbFieldType.PM, subBuilder: Output.create)
     ..hasRequiredFields = false
   ;
 
@@ -286,7 +292,7 @@ class Outputs extends $pb.GeneratedMessage {
 }
 
 class Tx extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Tx')
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Tx', createEmptyInstance: create)
     ..aOS(1, 'txHex')
     ..hasRequiredFields = false
   ;

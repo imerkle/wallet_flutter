@@ -1,3 +1,19 @@
+/*
+package com.example.wallet_flutter
+
+import android.os.Bundle
+
+import io.flutter.app.FlutterActivity
+import io.flutter.plugins.GeneratedPluginRegistrant
+
+class MainActivity: FlutterActivity() {
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    GeneratedPluginRegistrant.registerWith(this)
+  }
+}
+*/
+
 package com.example.wallet_flutter
 
 import android.os.Bundle
@@ -5,16 +21,6 @@ import android.os.Bundle
 import io.flutter.app.FlutterActivity
 import io.flutter.plugins.GeneratedPluginRegistrant
 import io.flutter.plugin.common.MethodChannel
-
-import kotlinx.serialization.*
-import kotlinx.serialization.json.JSON
-
-
-@Serializable
-data class Wallet(val private_key: String, val public_key: String, val wif: String, val address: String, val ticker: String)
-
-@Serializable
-data class TxOutputs(val address: String, val value: Long)
 
 class MainActivity: FlutterActivity() {
   private val CHANNEL = "flutter.dev/rust"  
@@ -51,3 +57,4 @@ class MainActivity: FlutterActivity() {
   external fun getWallet(a: ByteArray, b: String, c: Boolean): ByteArray
   external fun genSendTransaction(a: String, b: Boolean, c: String, d: ByteArray, e: ByteArray, f: ByteArray): ByteArray
 }
+

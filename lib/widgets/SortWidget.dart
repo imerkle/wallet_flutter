@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 class SortWidget extends StatelessWidget{
   SortWidget({this.title, this.direction, this.active, this.onTap});
 
-  String title;
-  bool direction;
-  bool active;
-  Function onTap;
+  final String title;
+  final bool direction;
+  final bool active;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {

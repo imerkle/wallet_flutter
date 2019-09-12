@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:provider/provider.dart';
-import 'package:wallet_flutter/stores/wallet.dart';
-
 
 final double iconSize = 45;
 String cryptoIconUrl(String ticker, {int size = 128,String color = "color"}){

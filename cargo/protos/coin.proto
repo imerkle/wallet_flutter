@@ -11,17 +11,16 @@ message Coin {
     string wif = 3;
     string address = 4;
     string rel = 5;
-    string protocol = 6;
 }
 message Coins{
     repeated Coin coin = 1;
     string base = 2;
+    string protocol = 3;
 }
 
 message Ticker{
     repeated string rel = 1;
     string base = 2;
-    string protocol = 3;
 }
 
 message Tickers{

@@ -9,7 +9,6 @@ import 'package:wallet_flutter/models/balance.dart';
 import 'package:wallet_flutter/screens/scan.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:http/http.dart' as http;
-import 'package:wallet_flutter/stores/wallet.dart';
 
 const platform = const MethodChannel('flutter.dev/rust');
 
@@ -17,11 +16,7 @@ const double tsize = 20;
 const ts1 = TextStyle(fontSize: tsize);
 const ts2 = TextStyle(fontSize: tsize, fontWeight: FontWeight.bold);
 
-Balance getBalance(WalletStore walletStore, String base, String rel){
-  walletStore.bl.forEach((b) => print(b.base));
-  //return walletStore.bl.singleWhere((b) => b.base == base).balances.singleWhere((b)=> b.rel == rel);
-  return Balance(rel: rel, value: 0.0);
-}
+
 class Wallet extends StatelessWidget {
   final receivingAddress = TextEditingController();
   final amount = TextEditingController();
@@ -29,12 +24,14 @@ class Wallet extends StatelessWidget {
   @override
   Widget build(context){
     final walletStore = Provider.of<MainStore>(context).walletStore;
-    final fabStore = Provider.of<MainStore>(context).fabStore;
+    final mainStore = Provider.of<MainStore>(context);
 
     return Observer(
       builder: (_) {
-        var x = getCoin(store: walletStore, baseIndex: fabStore.baseIndex, relIndex: fabStore.relIndex);
-        Balance b = getBalance(walletStore, x.base, x.rel);
+        Coins a = mainStore.coinListFromBase;
+        Coin x = mainStore.coinFromRel;
+        
+        double b = walletStore.getBalance(rel: x.rel, base: a.base);
         return Padding(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
           child: SingleChildScrollView(
@@ -48,14 +45,14 @@ class Wallet extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text("${x.rel} balance".toUpperCase(), style: ts1),
-                        Text(b.value.toString(), style: ts2),
+                        Text(b.toStringAsFixed(CRYPTO_PRECISION), style: ts2),
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text("USD value".toUpperCase(), style: ts1),
-                        Text("\$0", style: ts2),
+                        Text("${walletStore.fiat.symbol}${walletStore.getFiatValue(balance: b, rel: x.rel).toStringAsFixed(FIAT_PRECISION)}", style: ts2),
                       ],
                     ),
                   ],
@@ -93,7 +90,7 @@ class Wallet extends StatelessWidget {
                     suffixIcon: FlatButton(
                       child: Text("MAX"), 
                       onPressed: () {
-                        amount.text = b.value.toString();
+                        amount.text = b.toString();
                       },
                     ),
                   ),

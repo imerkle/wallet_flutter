@@ -34,7 +34,6 @@ pub struct Coin {
     pub wif: ::std::string::String,
     pub address: ::std::string::String,
     pub rel: ::std::string::String,
-    pub protocol: ::std::string::String,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -180,32 +179,6 @@ impl Coin {
     pub fn take_rel(&mut self) -> ::std::string::String {
         ::std::mem::replace(&mut self.rel, ::std::string::String::new())
     }
-
-    // string protocol = 6;
-
-
-    pub fn get_protocol(&self) -> &str {
-        &self.protocol
-    }
-    pub fn clear_protocol(&mut self) {
-        self.protocol.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_protocol(&mut self, v: ::std::string::String) {
-        self.protocol = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_protocol(&mut self) -> &mut ::std::string::String {
-        &mut self.protocol
-    }
-
-    // Take field
-    pub fn take_protocol(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.protocol, ::std::string::String::new())
-    }
 }
 
 impl ::protobuf::Message for Coin {
@@ -231,9 +204,6 @@ impl ::protobuf::Message for Coin {
                 },
                 5 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.rel)?;
-                },
-                6 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.protocol)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -262,9 +232,6 @@ impl ::protobuf::Message for Coin {
         if !self.rel.is_empty() {
             my_size += ::protobuf::rt::string_size(5, &self.rel);
         }
-        if !self.protocol.is_empty() {
-            my_size += ::protobuf::rt::string_size(6, &self.protocol);
-        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -285,9 +252,6 @@ impl ::protobuf::Message for Coin {
         }
         if !self.rel.is_empty() {
             os.write_string(5, &self.rel)?;
-        }
-        if !self.protocol.is_empty() {
-            os.write_string(6, &self.protocol)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -356,11 +320,6 @@ impl ::protobuf::Message for Coin {
                     |m: &Coin| { &m.rel },
                     |m: &mut Coin| { &mut m.rel },
                 ));
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                    "protocol",
-                    |m: &Coin| { &m.protocol },
-                    |m: &mut Coin| { &mut m.protocol },
-                ));
                 ::protobuf::reflect::MessageDescriptor::new::<Coin>(
                     "Coin",
                     fields,
@@ -388,7 +347,6 @@ impl ::protobuf::Clear for Coin {
         self.wif.clear();
         self.address.clear();
         self.rel.clear();
-        self.protocol.clear();
         self.unknown_fields.clear();
     }
 }
@@ -410,6 +368,7 @@ pub struct Coins {
     // message fields
     pub coin: ::protobuf::RepeatedField<Coin>,
     pub base: ::std::string::String,
+    pub protocol: ::std::string::String,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -476,6 +435,32 @@ impl Coins {
     pub fn take_base(&mut self) -> ::std::string::String {
         ::std::mem::replace(&mut self.base, ::std::string::String::new())
     }
+
+    // string protocol = 3;
+
+
+    pub fn get_protocol(&self) -> &str {
+        &self.protocol
+    }
+    pub fn clear_protocol(&mut self) {
+        self.protocol.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_protocol(&mut self, v: ::std::string::String) {
+        self.protocol = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_protocol(&mut self) -> &mut ::std::string::String {
+        &mut self.protocol
+    }
+
+    // Take field
+    pub fn take_protocol(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.protocol, ::std::string::String::new())
+    }
 }
 
 impl ::protobuf::Message for Coins {
@@ -498,6 +483,9 @@ impl ::protobuf::Message for Coins {
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.base)?;
                 },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.protocol)?;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -517,6 +505,9 @@ impl ::protobuf::Message for Coins {
         if !self.base.is_empty() {
             my_size += ::protobuf::rt::string_size(2, &self.base);
         }
+        if !self.protocol.is_empty() {
+            my_size += ::protobuf::rt::string_size(3, &self.protocol);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -530,6 +521,9 @@ impl ::protobuf::Message for Coins {
         };
         if !self.base.is_empty() {
             os.write_string(2, &self.base)?;
+        }
+        if !self.protocol.is_empty() {
+            os.write_string(3, &self.protocol)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -583,6 +577,11 @@ impl ::protobuf::Message for Coins {
                     |m: &Coins| { &m.base },
                     |m: &mut Coins| { &mut m.base },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                    "protocol",
+                    |m: &Coins| { &m.protocol },
+                    |m: &mut Coins| { &mut m.protocol },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<Coins>(
                     "Coins",
                     fields,
@@ -607,6 +606,7 @@ impl ::protobuf::Clear for Coins {
     fn clear(&mut self) {
         self.coin.clear();
         self.base.clear();
+        self.protocol.clear();
         self.unknown_fields.clear();
     }
 }
@@ -628,7 +628,6 @@ pub struct Ticker {
     // message fields
     pub rel: ::protobuf::RepeatedField<::std::string::String>,
     pub base: ::std::string::String,
-    pub protocol: ::std::string::String,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -695,32 +694,6 @@ impl Ticker {
     pub fn take_base(&mut self) -> ::std::string::String {
         ::std::mem::replace(&mut self.base, ::std::string::String::new())
     }
-
-    // string protocol = 3;
-
-
-    pub fn get_protocol(&self) -> &str {
-        &self.protocol
-    }
-    pub fn clear_protocol(&mut self) {
-        self.protocol.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_protocol(&mut self, v: ::std::string::String) {
-        self.protocol = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_protocol(&mut self) -> &mut ::std::string::String {
-        &mut self.protocol
-    }
-
-    // Take field
-    pub fn take_protocol(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.protocol, ::std::string::String::new())
-    }
 }
 
 impl ::protobuf::Message for Ticker {
@@ -737,9 +710,6 @@ impl ::protobuf::Message for Ticker {
                 },
                 2 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.base)?;
-                },
-                3 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.protocol)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -759,9 +729,6 @@ impl ::protobuf::Message for Ticker {
         if !self.base.is_empty() {
             my_size += ::protobuf::rt::string_size(2, &self.base);
         }
-        if !self.protocol.is_empty() {
-            my_size += ::protobuf::rt::string_size(3, &self.protocol);
-        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -773,9 +740,6 @@ impl ::protobuf::Message for Ticker {
         };
         if !self.base.is_empty() {
             os.write_string(2, &self.base)?;
-        }
-        if !self.protocol.is_empty() {
-            os.write_string(3, &self.protocol)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -829,11 +793,6 @@ impl ::protobuf::Message for Ticker {
                     |m: &Ticker| { &m.base },
                     |m: &mut Ticker| { &mut m.base },
                 ));
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                    "protocol",
-                    |m: &Ticker| { &m.protocol },
-                    |m: &mut Ticker| { &mut m.protocol },
-                ));
                 ::protobuf::reflect::MessageDescriptor::new::<Ticker>(
                     "Ticker",
                     fields,
@@ -858,7 +817,6 @@ impl ::protobuf::Clear for Ticker {
     fn clear(&mut self) {
         self.rel.clear();
         self.base.clear();
-        self.protocol.clear();
         self.unknown_fields.clear();
     }
 }
@@ -2221,26 +2179,25 @@ impl ::protobuf::reflect::ProtobufValue for Tx {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\ncoin.proto\"\xa0\x01\n\x04Coin\x12\x1d\n\npublic_key\x18\x01\x20\x01\
+    \n\ncoin.proto\"\x84\x01\n\x04Coin\x12\x1d\n\npublic_key\x18\x01\x20\x01\
     (\x0cR\tpublicKey\x12\x1f\n\x0bprivate_key\x18\x02\x20\x01(\x0cR\nprivat\
     eKey\x12\x10\n\x03wif\x18\x03\x20\x01(\tR\x03wif\x12\x18\n\x07address\
     \x18\x04\x20\x01(\tR\x07address\x12\x10\n\x03rel\x18\x05\x20\x01(\tR\x03\
-    rel\x12\x1a\n\x08protocol\x18\x06\x20\x01(\tR\x08protocol\"6\n\x05Coins\
-    \x12\x19\n\x04coin\x18\x01\x20\x03(\x0b2\x05.CoinR\x04coin\x12\x12\n\x04\
-    base\x18\x02\x20\x01(\tR\x04base\"J\n\x06Ticker\x12\x10\n\x03rel\x18\x01\
-    \x20\x03(\tR\x03rel\x12\x12\n\x04base\x18\x02\x20\x01(\tR\x04base\x12\
-    \x1a\n\x08protocol\x18\x03\x20\x01(\tR\x08protocol\"&\n\x07Tickers\x12\
-    \x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.TickerR\x04list\"'\n\tCoinsList\
-    \x12\x1a\n\x04list\x18\x01\x20\x03(\x0b2\x06.CoinsR\x04list\"O\n\x06Wall\
-    et\x12\x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\x12)\n\ncoins_l\
-    ist\x18\x02\x20\x01(\x0b2\n.CoinsListR\tcoinsList\"&\n\x07Wallets\x12\
-    \x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.WalletR\x04list\"L\n\x06Output\
-    \x12\x18\n\x07address\x18\x01\x20\x01(\tR\x07address\x12\x14\n\x05value\
-    \x18\x02\x20\x01(\x01R\x05value\x12\x12\n\x04memo\x18\x03\x20\x01(\tR\
-    \x04memo\"&\n\x07Outputs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.Out\
-    putR\x04list\"\x1b\n\x02Tx\x12\x15\n\x06tx_hex\x18\x01\x20\x01(\tR\x05tx\
-    HexB-\n\x1acom.example.wallet_flutterB\x06Protos\xa2\x02\x06Protosb\x06p\
-    roto3\
+    rel\"R\n\x05Coins\x12\x19\n\x04coin\x18\x01\x20\x03(\x0b2\x05.CoinR\x04c\
+    oin\x12\x12\n\x04base\x18\x02\x20\x01(\tR\x04base\x12\x1a\n\x08protocol\
+    \x18\x03\x20\x01(\tR\x08protocol\".\n\x06Ticker\x12\x10\n\x03rel\x18\x01\
+    \x20\x03(\tR\x03rel\x12\x12\n\x04base\x18\x02\x20\x01(\tR\x04base\"&\n\
+    \x07Tickers\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.TickerR\x04list\
+    \"'\n\tCoinsList\x12\x1a\n\x04list\x18\x01\x20\x03(\x0b2\x06.CoinsR\x04l\
+    ist\"O\n\x06Wallet\x12\x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\
+    \x12)\n\ncoins_list\x18\x02\x20\x01(\x0b2\n.CoinsListR\tcoinsList\"&\n\
+    \x07Wallets\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.WalletR\x04list\
+    \"L\n\x06Output\x12\x18\n\x07address\x18\x01\x20\x01(\tR\x07address\x12\
+    \x14\n\x05value\x18\x02\x20\x01(\x01R\x05value\x12\x12\n\x04memo\x18\x03\
+    \x20\x01(\tR\x04memo\"&\n\x07Outputs\x12\x1b\n\x04list\x18\x01\x20\x03(\
+    \x0b2\x07.OutputR\x04list\"\x1b\n\x02Tx\x12\x15\n\x06tx_hex\x18\x01\x20\
+    \x01(\tR\x05txHexB-\n\x1acom.example.wallet_flutterB\x06Protos\xa2\x02\
+    \x06Protosb\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

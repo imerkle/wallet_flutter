@@ -42,3 +42,16 @@ class BalParams {
 
   Map<String, dynamic> toJson() => _$BalParamsToJson(this);
 }
+
+@JsonSerializable()
+class PriceParams {
+  String fiat;
+  List<String> coins;
+
+  PriceParams({this.fiat, this.coins});
+
+
+  factory PriceParams.fromJson(Map<String, dynamic> json) => _$PriceParamsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PriceParamsToJson(this);
+}

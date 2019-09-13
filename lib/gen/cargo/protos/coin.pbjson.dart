@@ -13,8 +13,6 @@ const Coin$json = const {
     const {'1': 'wif', '3': 3, '4': 1, '5': 9, '10': 'wif'},
     const {'1': 'address', '3': 4, '4': 1, '5': 9, '10': 'address'},
     const {'1': 'rel', '3': 5, '4': 1, '5': 9, '10': 'rel'},
-    const {'1': 'base', '3': 6, '4': 1, '5': 9, '10': 'base'},
-    const {'1': 'protocol', '3': 7, '4': 1, '5': 9, '10': 'protocol'},
   ],
 };
 
@@ -23,6 +21,7 @@ const Coins$json = const {
   '2': const [
     const {'1': 'coin', '3': 1, '4': 3, '5': 11, '6': '.Coin', '10': 'coin'},
     const {'1': 'base', '3': 2, '4': 1, '5': 9, '10': 'base'},
+    const {'1': 'protocol', '3': 3, '4': 1, '5': 9, '10': 'protocol'},
   ],
 };
 

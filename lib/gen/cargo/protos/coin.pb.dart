@@ -16,8 +16,6 @@ class Coin extends $pb.GeneratedMessage {
     ..aOS(3, 'wif')
     ..aOS(4, 'address')
     ..aOS(5, 'rel')
-    ..aOS(6, 'base')
-    ..aOS(7, 'protocol')
     ..hasRequiredFields = false
   ;
 
@@ -59,22 +57,13 @@ class Coin extends $pb.GeneratedMessage {
   set rel($core.String v) { $_setString(4, v); }
   $core.bool hasRel() => $_has(4);
   void clearRel() => clearField(5);
-
-  $core.String get base => $_getS(5, '');
-  set base($core.String v) { $_setString(5, v); }
-  $core.bool hasBase() => $_has(5);
-  void clearBase() => clearField(6);
-
-  $core.String get protocol => $_getS(6, '');
-  set protocol($core.String v) { $_setString(6, v); }
-  $core.bool hasProtocol() => $_has(6);
-  void clearProtocol() => clearField(7);
 }
 
 class Coins extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Coins', createEmptyInstance: create)
     ..pc<Coin>(1, 'coin', $pb.PbFieldType.PM, subBuilder: Coin.create)
     ..aOS(2, 'base')
+    ..aOS(3, 'protocol')
     ..hasRequiredFields = false
   ;
 
@@ -98,6 +87,11 @@ class Coins extends $pb.GeneratedMessage {
   set base($core.String v) { $_setString(1, v); }
   $core.bool hasBase() => $_has(1);
   void clearBase() => clearField(2);
+
+  $core.String get protocol => $_getS(2, '');
+  set protocol($core.String v) { $_setString(2, v); }
+  $core.bool hasProtocol() => $_has(2);
+  void clearProtocol() => clearField(3);
 }
 
 class Ticker extends $pb.GeneratedMessage {

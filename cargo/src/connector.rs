@@ -29,23 +29,24 @@ pub fn get_wallets(tickers: protos::coin::Tickers, mnemonic: String, is_testnet:
     };
 
     let v = tickers.list.into_vec().iter().enumerate().map(|(_i, ticker)|{
+        let mut protocol: String = "".to_string();
         let v1 = ticker.rel.clone().into_vec().iter().enumerate().map(|(_i, rel)|{
-            let (ctype, opts) = from_ticker(&rel, is_testnet);
+            let (ctype, opts, p) = from_ticker(&rel, is_testnet);
+            protocol = p;
             let coin = Coin::new(ctype, opts, None, None,Some(nodes.clone()));
-
             protos::coin::Coin{
                 private_key: coin.private_key.to_vec(),
                 public_key: coin.public_key.concat(&[]),
                 wif: coin.to_wif(),
                 address: coin.to_address(),
                 rel: rel.to_string(),
-                protocol: ticker.protocol,
                 ..Default::default()
             }
         }).collect::<Vec<_>>();
         protos::coin::Coins{
             coin: protobuf::RepeatedField::from_vec(v1),
-            base: ticker.base,
+            base: ticker.base.clone(),
+            protocol,
             ..Default::default()
         }
     }).collect::<Vec<_>>();
@@ -58,7 +59,7 @@ pub fn get_wallets(tickers: protos::coin::Tickers, mnemonic: String, is_testnet:
 
 pub fn gen_send_transaction(rel: &str, is_testnet: bool, api: &str, private_key: Vec<u8>, public_key: Vec<u8>, os: protos::coin::Outputs) -> String{
     
-    let (ctype, opts) = from_ticker(&rel, is_testnet);
+    let (ctype, opts, protocol) = from_ticker(&rel, is_testnet);
 
     let mut array = [0; SK_BYTES];
     let bytes = &private_key[..array.len()];
@@ -120,7 +121,8 @@ macro_rules! address_matches {
                     precision: 8,
                     rel: $rel.to_string(),
                     ..Default::default()
-                }
+                },
+                stringify!($btc).to_string()
             ), 
         )*    
         $(
@@ -133,7 +135,8 @@ macro_rules! address_matches {
                     precision: 18,
                     rel: $rel1.to_string(),
                     ..Default::default()
-                }
+                },
+                stringify!($eth).to_string()
             ), 
         )*
         $(
@@ -146,8 +149,9 @@ macro_rules! address_matches {
                     precision: 7,
                     rel: $rel2.to_string(),
                     curve_name: CurveName::Ed25519
-                }
-            ), 
+                },
+                stringify!($xlm).to_string()
+            ),
         )*
         $(
             $rel3 => (
@@ -158,7 +162,8 @@ macro_rules! address_matches {
                     rel: $rel3.to_string(),
                     ..Default::default()
                     
-                }
+                },
+                stringify!($xrp).to_string()
             ), 
         )*
         $( 
@@ -174,7 +179,8 @@ macro_rules! address_matches {
                     precision: 0,
                     rel: $rel4.to_string(),
                     curve_name: CurveName::Secp256r1,
-                }
+                },
+                stringify!($neo).to_string()
             ), 
         )*
         _=> panic!("hoho match error")
@@ -182,7 +188,7 @@ macro_rules! address_matches {
     }
 }
 
-pub fn from_ticker(coin_type: &str, is_testnet: bool) -> (CoinType, Opts){
+pub fn from_ticker(coin_type: &str, is_testnet: bool) -> (CoinType, Opts, String){
     if !is_testnet {
         address_matches!(coin_type.to_lowercase().as_str(),
             [btc, "btc", 0, 128, 0, "bc"],

@@ -24,6 +24,7 @@ class DrawerList extends StatelessWidget{
 
   @override
   Widget build(context){
+    final mainStore = Provider.of<MainStore>(context);
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
     final sortStore = Provider.of<MainStore>(context).sortStore;
@@ -31,23 +32,41 @@ class DrawerList extends StatelessWidget{
     return Observer(
       builder: (_) {
         var relIndex = fabStore.relIndex;
-        var coin = getCoinList(store: walletStore, baseIndex: fabStore.baseIndex);
+        var cl = mainStore.coinListFromBase;
+        var coin = cl.coin;
         if (sortStore.sortables[0].direction == false){
           coin = coin.reversed.toList();
         }
         return  ListView.builder(
           itemCount: coin.length,
           itemBuilder: (context, i) {
+            var b = walletStore.getBalance(rel: coin[i].rel, base: cl.base);
             return Container(
               color: i == relIndex ? Color.fromRGBO(67, 67, 67, 1) : Colors.transparent,
-              child: ListTile(
-                  title: Text(coin[i].rel.toUpperCase()),
-                  subtitle: Text(getName(coin[i].rel)),
-                  onTap: () {
-                    fabStore.setRelIndex(i);
-                  },                
-                  selected: i == relIndex,
-                ),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: ListTile(
+                        title: Text(coin[i].rel.toUpperCase()),
+                        subtitle: Text(getName(coin[i].rel)),
+                        onTap: () {
+                          fabStore.setRelIndex(i);
+                        },                
+                        selected: i == relIndex,
+                      ),
+                  ),
+                  Expanded(
+                    child: ListTile(
+                        title: Text(b.toStringAsFixed(CRYPTO_PRECISION)),
+                        subtitle: Text("${walletStore.fiat.symbol}${walletStore.getFiatValue(balance: b, rel: coin[i].rel).toStringAsFixed(FIAT_PRECISION)}"),
+                        onTap: () {
+                          fabStore.setRelIndex(i);
+                        },                
+                        selected: i == relIndex,
+                      ),
+                  ),
+                ],
+              ),
             );
           }
         );

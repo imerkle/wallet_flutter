@@ -61,9 +61,8 @@ class Coin extends $pb.GeneratedMessage {
 
 class Coins extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Coins', createEmptyInstance: create)
-    ..pc<Coin>(1, 'coin', $pb.PbFieldType.PM, subBuilder: Coin.create)
+    ..pc<Coin>(1, 'list', $pb.PbFieldType.PM, subBuilder: Coin.create)
     ..aOS(2, 'base')
-    ..aOS(3, 'protocol')
     ..hasRequiredFields = false
   ;
 
@@ -81,69 +80,12 @@ class Coins extends $pb.GeneratedMessage {
   static Coins getDefault() => _defaultInstance ??= create()..freeze();
   static Coins _defaultInstance;
 
-  $core.List<Coin> get coin => $_getList(0);
+  $core.List<Coin> get list => $_getList(0);
 
   $core.String get base => $_getS(1, '');
   set base($core.String v) { $_setString(1, v); }
   $core.bool hasBase() => $_has(1);
   void clearBase() => clearField(2);
-
-  $core.String get protocol => $_getS(2, '');
-  set protocol($core.String v) { $_setString(2, v); }
-  $core.bool hasProtocol() => $_has(2);
-  void clearProtocol() => clearField(3);
-}
-
-class Ticker extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Ticker', createEmptyInstance: create)
-    ..pPS(1, 'rel')
-    ..aOS(2, 'base')
-    ..hasRequiredFields = false
-  ;
-
-  Ticker._() : super();
-  factory Ticker() => create();
-  factory Ticker.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Ticker.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  Ticker clone() => Ticker()..mergeFromMessage(this);
-  Ticker copyWith(void Function(Ticker) updates) => super.copyWith((message) => updates(message as Ticker));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static Ticker create() => Ticker._();
-  Ticker createEmptyInstance() => create();
-  static $pb.PbList<Ticker> createRepeated() => $pb.PbList<Ticker>();
-  static Ticker getDefault() => _defaultInstance ??= create()..freeze();
-  static Ticker _defaultInstance;
-
-  $core.List<$core.String> get rel => $_getList(0);
-
-  $core.String get base => $_getS(1, '');
-  set base($core.String v) { $_setString(1, v); }
-  $core.bool hasBase() => $_has(1);
-  void clearBase() => clearField(2);
-}
-
-class Tickers extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Tickers', createEmptyInstance: create)
-    ..pc<Ticker>(1, 'list', $pb.PbFieldType.PM, subBuilder: Ticker.create)
-    ..hasRequiredFields = false
-  ;
-
-  Tickers._() : super();
-  factory Tickers() => create();
-  factory Tickers.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Tickers.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  Tickers clone() => Tickers()..mergeFromMessage(this);
-  Tickers copyWith(void Function(Tickers) updates) => super.copyWith((message) => updates(message as Tickers));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static Tickers create() => Tickers._();
-  Tickers createEmptyInstance() => create();
-  static $pb.PbList<Tickers> createRepeated() => $pb.PbList<Tickers>();
-  static Tickers getDefault() => _defaultInstance ??= create()..freeze();
-  static Tickers _defaultInstance;
-
-  $core.List<Ticker> get list => $_getList(0);
 }
 
 class CoinsList extends $pb.GeneratedMessage {
@@ -309,5 +251,102 @@ class Tx extends $pb.GeneratedMessage {
   set txHex($core.String v) { $_setString(0, v); }
   $core.bool hasTxHex() => $_has(0);
   void clearTxHex() => clearField(1);
+}
+
+class Config extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Config', createEmptyInstance: create)
+    ..aOS(1, 'rel')
+    ..aOS(2, 'protocol')
+    ..a<$core.int>(3, 'code', $pb.PbFieldType.OU3)
+    ..a<$core.int>(4, 'precision', $pb.PbFieldType.OU3)
+    ..a<$core.int>(5, 'private', $pb.PbFieldType.OU3)
+    ..a<$core.int>(6, 'public', $pb.PbFieldType.OU3)
+    ..aOS(7, 'prefix')
+    ..a<$core.int>(8, 'chainId', $pb.PbFieldType.OU3)
+    ..aOS(9, 'base')
+    ..hasRequiredFields = false
+  ;
+
+  Config._() : super();
+  factory Config() => create();
+  factory Config.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Config.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Config clone() => Config()..mergeFromMessage(this);
+  Config copyWith(void Function(Config) updates) => super.copyWith((message) => updates(message as Config));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Config create() => Config._();
+  Config createEmptyInstance() => create();
+  static $pb.PbList<Config> createRepeated() => $pb.PbList<Config>();
+  static Config getDefault() => _defaultInstance ??= create()..freeze();
+  static Config _defaultInstance;
+
+  $core.String get rel => $_getS(0, '');
+  set rel($core.String v) { $_setString(0, v); }
+  $core.bool hasRel() => $_has(0);
+  void clearRel() => clearField(1);
+
+  $core.String get protocol => $_getS(1, '');
+  set protocol($core.String v) { $_setString(1, v); }
+  $core.bool hasProtocol() => $_has(1);
+  void clearProtocol() => clearField(2);
+
+  $core.int get code => $_get(2, 0);
+  set code($core.int v) { $_setUnsignedInt32(2, v); }
+  $core.bool hasCode() => $_has(2);
+  void clearCode() => clearField(3);
+
+  $core.int get precision => $_get(3, 0);
+  set precision($core.int v) { $_setUnsignedInt32(3, v); }
+  $core.bool hasPrecision() => $_has(3);
+  void clearPrecision() => clearField(4);
+
+  $core.int get private => $_get(4, 0);
+  set private($core.int v) { $_setUnsignedInt32(4, v); }
+  $core.bool hasPrivate() => $_has(4);
+  void clearPrivate() => clearField(5);
+
+  $core.int get public => $_get(5, 0);
+  set public($core.int v) { $_setUnsignedInt32(5, v); }
+  $core.bool hasPublic() => $_has(5);
+  void clearPublic() => clearField(6);
+
+  $core.String get prefix => $_getS(6, '');
+  set prefix($core.String v) { $_setString(6, v); }
+  $core.bool hasPrefix() => $_has(6);
+  void clearPrefix() => clearField(7);
+
+  $core.int get chainId => $_get(7, 0);
+  set chainId($core.int v) { $_setUnsignedInt32(7, v); }
+  $core.bool hasChainId() => $_has(7);
+  void clearChainId() => clearField(8);
+
+  $core.String get base => $_getS(8, '');
+  set base($core.String v) { $_setString(8, v); }
+  $core.bool hasBase() => $_has(8);
+  void clearBase() => clearField(9);
+}
+
+class Configs extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Configs', createEmptyInstance: create)
+    ..pc<Config>(1, 'list', $pb.PbFieldType.PM, subBuilder: Config.create)
+    ..hasRequiredFields = false
+  ;
+
+  Configs._() : super();
+  factory Configs() => create();
+  factory Configs.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Configs.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Configs clone() => Configs()..mergeFromMessage(this);
+  Configs copyWith(void Function(Configs) updates) => super.copyWith((message) => updates(message as Configs));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Configs create() => Configs._();
+  Configs createEmptyInstance() => create();
+  static $pb.PbList<Configs> createRepeated() => $pb.PbList<Configs>();
+  static Configs getDefault() => _defaultInstance ??= create()..freeze();
+  static Configs _defaultInstance;
+
+  $core.List<Config> get list => $_getList(0);
 }
 

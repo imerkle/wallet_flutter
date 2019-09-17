@@ -30,59 +30,39 @@ abstract class _WalletStore with Store {
   @observable
   Wallets ws = Wallets();
   
+  
   @observable int walletIndex = 0;
   @observable Fiat fiat = Fiat(symbol: "\$", ticker: "usd");
   
   @observable
   List<Balances> bl = [];
   
-  @observable
-  Map<String, dynamic> pl = {};
-
-
   @action
   Future<void> initPrep() async{
     ws = await initWalletIfAbsent();
-    pl = await initFetchPrices();
-    bl = await initFetchBalances();
+    try { bl = await initFetchBalances(); }catch(e) {} 
   }
 
-  @action
-  Future<Map<String, dynamic>> initFetchPrices() async{
-
-    var url = '$explorerApi/get_prices';
-    Map<String, String> headers = {"Content-type": "application/json"};
-
-    PriceParams pp = PriceParams(fiat: fiat.ticker, coins: tickerStringList());
-    var response = await http.post(url, headers: headers, body: jsonEncode(pp));
-    return jsonDecode(response.body);
-  }
   @action
   Future<List<Balances>> initFetchBalances() async{
     var url = '$explorerApi/get_balances';
     Map<String, String> headers = {"Content-type": "application/json"};
     List<BalParams> bp = [];
     ws.list[walletIndex].coinsList.list.forEach((l) => {
-      l.coin.forEach((c) => {
-        bp.add(BalParams(rel: c.rel, base: l.base, protocol: l.protocol, address: c.address))
+      l.list.forEach((c) => {
+        bp.add(BalParams(rel: c.rel, base: l.base, address: c.address))
       })
     });
     var response = await http.post(url, headers: headers, body: jsonEncode(bp));
     return (jsonDecode(response.body) as List).map((e) => Balances.fromJson(e)).toList();
   }
   
-  double getBalance({String rel, String base}){
+  BalanceOutput getBalance({String rel, String base}){
       if (bl.length == 0) {
-        return 0.0;
+        return BalanceOutput(balance: 0.0, fiat: 0.0);
       }
-      return bl.singleWhere((b) => b.base == base).balances.singleWhere((b)=> b.rel == rel).value;
-  }
-  double getFiatValue({double balance, String rel}){
-    if(pl.containsKey(rel)){
-      return pl[rel] * balance;
-    }else{
-      return 0.0;
-    }
+      var x = bl.singleWhere((b) => b.base == base).balances.singleWhere((b)=> b.rel == rel);
+      return BalanceOutput(balance: x.value, fiat: x.value*x.fiat);
   }
 }
 
@@ -102,11 +82,10 @@ Future<Wallets> initWalletIfAbsent() async {
       mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
       
       
-      Tickers t = getTickers();
+      Configs c = getConfigs();
       var x = await platform.invokeMethod('get_wallets',{
        "mnemonic": mnemonic,
-       "tickers": t.writeToBuffer(),
-       "isTestnet": isTestnet,
+       "configs": c.writeToBuffer()
       });
       Wallet w = Wallet();
       w.coinsList = new CoinsList.fromBuffer(x);
@@ -119,29 +98,8 @@ Future<Wallets> initWalletIfAbsent() async {
     }
     return ws;
 }
-const Map<String, List<String>> TT = {
-  "btc": ["btc"],
-  "eth": ["eth"],
-  "eos": ["eos"],
-  "xlm": ["xlm"],
-  "xrp": ["xrp"],
-  "neo": ["neo"],
-  "ont": ["ont"],
-};
-Tickers getTickers(){
-      Tickers t = Tickers();
-      TT.forEach((k, v) {
-          Ticker t1 = Ticker();
-          t1.rel.addAll(v);
-          t1.base = k;
-          t.list.add(t1);
-      }); 
-      return t;
-}
-List<String> tickerStringList(){ 
-  List<String> l1 = [];
-  TT.forEach((k, v){
-    l1 = new List.from(l1)..addAll(v);
-  });
-  return l1;
+Configs getConfigs(){
+    var c = Configs();
+    configs.forEach((x){ c.list.add(x); });
+    return c;
 }

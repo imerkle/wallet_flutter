@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   barcode_scan: ^1.0.0
   qr_flutter: ^2.1.0+55
+  progress_button: ^0.0.2
 
   bip39: ^1.0.3
 

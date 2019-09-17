@@ -18,15 +18,14 @@ pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_getWallet(
 
     input1: jbyteArray,
     input2: JString,
-    is_testnet: bool,
 ) -> jbyteArray {
     let mnemonic: String = env.get_string(input2).unwrap().into();
     //byte array -> vector
     let b =  env.convert_byte_array(input1).unwrap();
     //vector -> protobuf -> rust struct
-    let tickers = protobuf::parse_from_bytes::<protos::coin::Tickers>(&b).unwrap();
+    let configs = protobuf::parse_from_bytes::<protos::coin::Configs>(&b).unwrap();
     // func -> rust struct -> protobuf -> vector
-    let v: Vec<u8> = connector::get_wallets(tickers, mnemonic, is_testnet).write_to_bytes().unwrap();
+    let v: Vec<u8> = connector::get_wallets(configs, mnemonic).write_to_bytes().unwrap();
     // vector -> java array
     let output = env.byte_array_from_slice(&v).unwrap();
 
@@ -41,22 +40,22 @@ pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_genSendTran
     // Static class which owns this method.
     _class: JClass,
 
-    input0: JString,
-    is_testnet: bool,
+    input0: jbyteArray,
     input1: JString,
     input3: jbyteArray,
     input4: jbyteArray,
     input5: jbyteArray,
 ) -> jbyteArray {
-    let rel: String = env.get_string(input0).unwrap().into();
     let api: String = env.get_string(input1).unwrap().into();
     let private_key =  env.convert_byte_array(input3).unwrap();
     let public_key =  env.convert_byte_array(input4).unwrap();
     
     let b =  env.convert_byte_array(input5).unwrap();
     let outputs = protobuf::parse_from_bytes::<protos::coin::Outputs>(&b).unwrap();
+    let c =  env.convert_byte_array(input0).unwrap();
+    let config = protobuf::parse_from_bytes::<protos::coin::Config>(&c).unwrap();
 
-    let tx_hex = connector::gen_send_transaction(&rel, is_testnet, &api, private_key.clone(), public_key, outputs);
+    let tx_hex = connector::gen_send_transaction(&config, &api, private_key.clone(), public_key, outputs);
     
     let v: Vec<u8> = protos::coin::Tx{
         tx_hex,

@@ -19,24 +19,8 @@ const Coin$json = const {
 const Coins$json = const {
   '1': 'Coins',
   '2': const [
-    const {'1': 'coin', '3': 1, '4': 3, '5': 11, '6': '.Coin', '10': 'coin'},
+    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Coin', '10': 'list'},
     const {'1': 'base', '3': 2, '4': 1, '5': 9, '10': 'base'},
-    const {'1': 'protocol', '3': 3, '4': 1, '5': 9, '10': 'protocol'},
-  ],
-};
-
-const Ticker$json = const {
-  '1': 'Ticker',
-  '2': const [
-    const {'1': 'rel', '3': 1, '4': 3, '5': 9, '10': 'rel'},
-    const {'1': 'base', '3': 2, '4': 1, '5': 9, '10': 'base'},
-  ],
-};
-
-const Tickers$json = const {
-  '1': 'Tickers',
-  '2': const [
-    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Ticker', '10': 'list'},
   ],
 };
 
@@ -82,6 +66,28 @@ const Tx$json = const {
   '1': 'Tx',
   '2': const [
     const {'1': 'tx_hex', '3': 1, '4': 1, '5': 9, '10': 'txHex'},
+  ],
+};
+
+const Config$json = const {
+  '1': 'Config',
+  '2': const [
+    const {'1': 'rel', '3': 1, '4': 1, '5': 9, '10': 'rel'},
+    const {'1': 'base', '3': 9, '4': 1, '5': 9, '10': 'base'},
+    const {'1': 'protocol', '3': 2, '4': 1, '5': 9, '10': 'protocol'},
+    const {'1': 'code', '3': 3, '4': 1, '5': 13, '10': 'code'},
+    const {'1': 'precision', '3': 4, '4': 1, '5': 13, '10': 'precision'},
+    const {'1': 'private', '3': 5, '4': 1, '5': 13, '10': 'private'},
+    const {'1': 'public', '3': 6, '4': 1, '5': 13, '10': 'public'},
+    const {'1': 'prefix', '3': 7, '4': 1, '5': 9, '10': 'prefix'},
+    const {'1': 'chain_id', '3': 8, '4': 1, '5': 13, '10': 'chainId'},
+  ],
+};
+
+const Configs$json = const {
+  '1': 'Configs',
+  '2': const [
+    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Config', '10': 'list'},
   ],
 };
 

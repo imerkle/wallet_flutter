@@ -46,15 +46,14 @@ class MainActivity: FlutterActivity() {
         }
         "get_wallets" -> {
           val mnemonic: String = call.argument("mnemonic") ?: ""
-          val tickers: ByteArray = call.argument("tickers") ?: ByteArray(0)
-          val isTestnet: Boolean = call.argument("isTestnet") ?: false
-          val x = getWallet(tickers, mnemonic, isTestnet)      
+          val configs: ByteArray = call.argument("configs") ?: ByteArray(0)
+          val x = getWallet(configs, mnemonic)
           result.success(x)
         }
       }
     }
   }
-  external fun getWallet(a: ByteArray, b: String, c: Boolean): ByteArray
+  external fun getWallet(a: ByteArray, b: String): ByteArray
   external fun genSendTransaction(a: String, b: Boolean, c: String, d: ByteArray, e: ByteArray, f: ByteArray): ByteArray
 }
 

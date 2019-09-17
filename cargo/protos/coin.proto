@@ -13,24 +13,13 @@ message Coin {
     string rel = 5;
 }
 message Coins{
-    repeated Coin coin = 1;
-    string base = 2;
-    string protocol = 3;
-}
-
-message Ticker{
-    repeated string rel = 1;
+    repeated Coin list = 1;
     string base = 2;
 }
 
-message Tickers{
-    repeated Ticker list = 1;
-}
 message CoinsList{
     repeated Coins list = 1;
 }
-
-// wallet proto
 
 message Wallet{
     string mnemonic = 1;
@@ -52,18 +41,17 @@ message Tx{
     string tx_hex = 1;
 }
 
-//Balance proto
-/*
-message Balance{
+message Config{
     string rel = 1;
-    double value = 2;
+    string base = 9;
+    string protocol = 2;
+    uint32 code = 3;
+    uint32 precision = 4;
+    uint32 private = 5;
+    uint32 public = 6;
+    string prefix = 7;
+    uint32 chain_id = 8;
 }
-
-message BalanceGroup{
-    repeated Balance balances = 1;
-    string base = 2;
+message Configs{
+    repeated Config list = 1;
 }
-message Balances{
-    repeated BalanceGroup list = 1;
-}
-*/

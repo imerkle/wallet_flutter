@@ -6,8 +6,9 @@ part 'balance.g.dart';
 class Balance {
   String rel;
   double value;
+  double fiat;
 
-  Balance({this.rel, this.value});
+  Balance({this.rel, this.value, this.fiat});
 
 
   factory Balance.fromJson(Map<String, dynamic> json) => _$BalanceFromJson(json);
@@ -32,26 +33,18 @@ class Balances {
 class BalParams {
   String rel;
   String base;
-  String protocol;
   String address;
 
-  BalParams({this.rel, this.base, this.protocol, this.address});
+  BalParams({this.rel, this.base, this.address});
 
 
   factory BalParams.fromJson(Map<String, dynamic> json) => _$BalParamsFromJson(json);
 
   Map<String, dynamic> toJson() => _$BalParamsToJson(this);
 }
+class BalanceOutput{
+  double balance;
+  double fiat;
 
-@JsonSerializable()
-class PriceParams {
-  String fiat;
-  List<String> coins;
-
-  PriceParams({this.fiat, this.coins});
-
-
-  factory PriceParams.fromJson(Map<String, dynamic> json) => _$PriceParamsFromJson(json);
-
-  Map<String, dynamic> toJson() => _$PriceParamsToJson(this);
+  BalanceOutput({this.balance, this.fiat});
 }

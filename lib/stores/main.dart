@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
 
@@ -20,12 +22,14 @@ abstract class _MainStore with Store {
   Future<void> initPrep() async{
     sortStore.sortables.add(Sortable("Coin", true, true));
     sortStore.sortables.add(Sortable("Amount", false, true));
-    walletStore.initPrep();
+    if (Platform.isAndroid || Platform.isIOS){
+      walletStore.initPrep();
+    }
   }
 
   @computed
   Coins get coinListFromBase =>  walletStore.ws.list[walletStore.walletIndex].coinsList.list[fabStore.baseIndex];
 
   @computed 
-  Coin get coinFromRel => coinListFromBase.coin[fabStore.relIndex];
+  Coin get coinFromRel => coinListFromBase.list[fabStore.relIndex];
 }

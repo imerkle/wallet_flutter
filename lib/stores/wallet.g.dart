@@ -77,35 +77,11 @@ mixin _$WalletStore on _WalletStore, Store {
     }, _$blAtom, name: '${_$blAtom.name}_set');
   }
 
-  final _$plAtom = Atom(name: '_WalletStore.pl');
-
-  @override
-  Map<String, dynamic> get pl {
-    _$plAtom.context.enforceReadPolicy(_$plAtom);
-    _$plAtom.reportObserved();
-    return super.pl;
-  }
-
-  @override
-  set pl(Map<String, dynamic> value) {
-    _$plAtom.context.conditionallyRunInAction(() {
-      super.pl = value;
-      _$plAtom.reportChanged();
-    }, _$plAtom, name: '${_$plAtom.name}_set');
-  }
-
   final _$initPrepAsyncAction = AsyncAction('initPrep');
 
   @override
   Future<void> initPrep() {
     return _$initPrepAsyncAction.run(() => super.initPrep());
-  }
-
-  final _$initFetchPricesAsyncAction = AsyncAction('initFetchPrices');
-
-  @override
-  Future<Map<String, dynamic>> initFetchPrices() {
-    return _$initFetchPricesAsyncAction.run(() => super.initFetchPrices());
   }
 
   final _$initFetchBalancesAsyncAction = AsyncAction('initFetchBalances');

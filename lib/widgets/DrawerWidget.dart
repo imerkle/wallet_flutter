@@ -33,22 +33,22 @@ class DrawerList extends StatelessWidget{
       builder: (_) {
         var relIndex = fabStore.relIndex;
         var cl = mainStore.coinListFromBase;
-        var coin = cl.coin;
+        var coins = cl.list;
         if (sortStore.sortables[0].direction == false){
-          coin = coin.reversed.toList();
+          coins = coins.reversed.toList();
         }
         return  ListView.builder(
-          itemCount: coin.length,
+          itemCount: coins.length,
           itemBuilder: (context, i) {
-            var b = walletStore.getBalance(rel: coin[i].rel, base: cl.base);
+            var b = walletStore.getBalance(rel: coins[i].rel, base: cl.base);
             return Container(
               color: i == relIndex ? Color.fromRGBO(67, 67, 67, 1) : Colors.transparent,
               child: Row(
                 children: <Widget>[
                   Expanded(
                     child: ListTile(
-                        title: Text(coin[i].rel.toUpperCase()),
-                        subtitle: Text(getName(coin[i].rel)),
+                        title: Text(coins[i].rel.toUpperCase()),
+                        subtitle: Text(getName(coins[i].rel)),
                         onTap: () {
                           fabStore.setRelIndex(i);
                         },                
@@ -57,8 +57,8 @@ class DrawerList extends StatelessWidget{
                   ),
                   Expanded(
                     child: ListTile(
-                        title: Text(b.toStringAsFixed(CRYPTO_PRECISION)),
-                        subtitle: Text("${walletStore.fiat.symbol}${walletStore.getFiatValue(balance: b, rel: coin[i].rel).toStringAsFixed(FIAT_PRECISION)}"),
+                        title: Text(b.balance.toStringAsFixed(CRYPTO_PRECISION)),
+                        subtitle: Text("${walletStore.fiat.symbol}${b.fiat.toStringAsFixed(FIAT_PRECISION)}"),
                         onTap: () {
                           fabStore.setRelIndex(i);
                         },                
@@ -106,7 +106,7 @@ class DrawerWidget extends StatelessWidget {
                       child: Observer(
                         builder: (_) {
                           return Text(
-                            getName(walletStore.ws.list[0].coinsList.list[fabStore.baseIndex].coin[0].rel),
+                            getName(walletStore.ws.list[0].coinsList.list[fabStore.baseIndex].list[0].rel),
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontSize: 20,

@@ -31,29 +31,16 @@ class MainActivity: FlutterActivity() {
 
 
     MethodChannel(flutterView, CHANNEL).setMethodCallHandler { call, result ->
-
+      val input: ByteArray = call.argument("input") ?: ByteArray(0)
+      var x: ByteArray = ByteArray(0);
       when(call.method) {
-        "gen_send_transaction" -> {
-          val rel: String = call.argument("rel") ?: ""
-          val api: String = call.argument("api") ?: ""
-          val isTestnet: Boolean = call.argument("isTestnet") ?: false
-          val privateKey: ByteArray = call.argument("privateKey") ?: ByteArray(0)
-          val publicKey: ByteArray = call.argument("publicKey") ?: ByteArray(0)
-          val txOutputs: ByteArray = call.argument("txOutputs") ?: ByteArray(0)
-          
-          val x = genSendTransaction(rel, isTestnet, api, privateKey, publicKey, txOutputs)
-          result.success(x)
-        }
-        "get_wallets" -> {
-          val mnemonic: String = call.argument("mnemonic") ?: ""
-          val configs: ByteArray = call.argument("configs") ?: ByteArray(0)
-          val x = getWallet(configs, mnemonic)
-          result.success(x)
-        }
+        "gen_send_transaction" -> x = genSendTransaction(input)
+        "get_wallets" -> x = getWallet(input)
       }
+      result.success(x)
     }
   }
-  external fun getWallet(a: ByteArray, b: String): ByteArray
-  external fun genSendTransaction(a: String, b: Boolean, c: String, d: ByteArray, e: ByteArray, f: ByteArray): ByteArray
+  external fun getWallet(a: ByteArray): ByteArray
+  external fun genSendTransaction(a: ByteArray): ByteArray
 }
 

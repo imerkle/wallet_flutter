@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:wallet_flutter/constants.dart';
+import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:provider/provider.dart';
-import 'package:wallet_flutter/widgets/SortWidget.dart';
+import 'package:wallet_flutter/widgets/fabs.dart';
+import 'package:wallet_flutter/widgets/sort_widget.dart';
 
-import 'Fabs.dart';
 
 String getName(String ticker){
   return cryptoNames[ticker] ?? "Unknown";
@@ -28,7 +28,7 @@ class DrawerList extends StatelessWidget{
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
     final sortStore = Provider.of<MainStore>(context).sortStore;
-    
+
     return Observer(
       builder: (_) {
         var relIndex = fabStore.relIndex;
@@ -83,7 +83,11 @@ class DrawerWidget extends StatelessWidget {
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
     final sortStore = Provider.of<MainStore>(context).sortStore;
-
+    
+    if(walletStore.ws.list.length == 0){
+      return Container();
+    }
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

@@ -169,13 +169,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.9"
-  easy_localization:
-    dependency: "direct main"
-    description:
-      name: easy_localization
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.1"
   fixnum:
     dependency: transitive
     description:
@@ -317,6 +310,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.19"
+  localstorage:
+    dependency: "direct main"
+    description:
+      name: localstorage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
   logging:
     dependency: transitive
     description:
@@ -380,6 +380,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.6.4"
+  path_provider:
+    dependency: transitive
+    description:
+      name: path_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.3.0"
   pedantic:
     dependency: transitive
     description:
@@ -394,6 +401,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
   pointycastle:
     dependency: transitive
     description:
@@ -408,13 +422,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.0"
-  progress_button:
-    dependency: "direct main"
-    description:
-      name: progress_button
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2"
   protobuf:
     dependency: "direct main"
     description:
@@ -443,6 +450,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.5"
+  pull_to_refresh:
+    dependency: "direct main"
+    description:
+      name: pull_to_refresh
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.6"
   qr:
     dependency: transitive
     description:
@@ -580,7 +594,16 @@ packages:
       name: web_socket_channel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.14"
+    version: "1.0.15"
+  web_socket_channel_shared:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "4656fe786f93e6ce973ea219bce067ae315a9f14"
+      url: "git://github.com/imerkle/web_socket_channel.git"
+    source: git
+    version: "1.0.13"
   xml:
     dependency: transitive
     description:

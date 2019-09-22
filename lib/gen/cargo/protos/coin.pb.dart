@@ -350,3 +350,117 @@ class Configs extends $pb.GeneratedMessage {
   $core.List<Config> get list => $_getList(0);
 }
 
+class GetWalletInput extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetWalletInput', createEmptyInstance: create)
+    ..aOS(1, 'mnemonic')
+    ..a<Configs>(2, 'configs', $pb.PbFieldType.OM, defaultOrMaker: Configs.getDefault, subBuilder: Configs.create)
+    ..hasRequiredFields = false
+  ;
+
+  GetWalletInput._() : super();
+  factory GetWalletInput() => create();
+  factory GetWalletInput.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetWalletInput.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetWalletInput clone() => GetWalletInput()..mergeFromMessage(this);
+  GetWalletInput copyWith(void Function(GetWalletInput) updates) => super.copyWith((message) => updates(message as GetWalletInput));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetWalletInput create() => GetWalletInput._();
+  GetWalletInput createEmptyInstance() => create();
+  static $pb.PbList<GetWalletInput> createRepeated() => $pb.PbList<GetWalletInput>();
+  static GetWalletInput getDefault() => _defaultInstance ??= create()..freeze();
+  static GetWalletInput _defaultInstance;
+
+  $core.String get mnemonic => $_getS(0, '');
+  set mnemonic($core.String v) { $_setString(0, v); }
+  $core.bool hasMnemonic() => $_has(0);
+  void clearMnemonic() => clearField(1);
+
+  Configs get configs => $_getN(1);
+  set configs(Configs v) { setField(2, v); }
+  $core.bool hasConfigs() => $_has(1);
+  void clearConfigs() => clearField(2);
+}
+
+class GenSendTxInput extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GenSendTxInput', createEmptyInstance: create)
+    ..a<Config>(1, 'config', $pb.PbFieldType.OM, defaultOrMaker: Config.getDefault, subBuilder: Config.create)
+    ..aOS(2, 'api')
+    ..a<$core.List<$core.int>>(3, 'privateKey', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(4, 'publicKey', $pb.PbFieldType.OY)
+    ..a<Outputs>(6, 'outputs', $pb.PbFieldType.OM, defaultOrMaker: Outputs.getDefault, subBuilder: Outputs.create)
+    ..hasRequiredFields = false
+  ;
+
+  GenSendTxInput._() : super();
+  factory GenSendTxInput() => create();
+  factory GenSendTxInput.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GenSendTxInput.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GenSendTxInput clone() => GenSendTxInput()..mergeFromMessage(this);
+  GenSendTxInput copyWith(void Function(GenSendTxInput) updates) => super.copyWith((message) => updates(message as GenSendTxInput));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GenSendTxInput create() => GenSendTxInput._();
+  GenSendTxInput createEmptyInstance() => create();
+  static $pb.PbList<GenSendTxInput> createRepeated() => $pb.PbList<GenSendTxInput>();
+  static GenSendTxInput getDefault() => _defaultInstance ??= create()..freeze();
+  static GenSendTxInput _defaultInstance;
+
+  Config get config => $_getN(0);
+  set config(Config v) { setField(1, v); }
+  $core.bool hasConfig() => $_has(0);
+  void clearConfig() => clearField(1);
+
+  $core.String get api => $_getS(1, '');
+  set api($core.String v) { $_setString(1, v); }
+  $core.bool hasApi() => $_has(1);
+  void clearApi() => clearField(2);
+
+  $core.List<$core.int> get privateKey => $_getN(2);
+  set privateKey($core.List<$core.int> v) { $_setBytes(2, v); }
+  $core.bool hasPrivateKey() => $_has(2);
+  void clearPrivateKey() => clearField(3);
+
+  $core.List<$core.int> get publicKey => $_getN(3);
+  set publicKey($core.List<$core.int> v) { $_setBytes(3, v); }
+  $core.bool hasPublicKey() => $_has(3);
+  void clearPublicKey() => clearField(4);
+
+  Outputs get outputs => $_getN(4);
+  set outputs(Outputs v) { setField(6, v); }
+  $core.bool hasOutputs() => $_has(4);
+  void clearOutputs() => clearField(6);
+}
+
+class WebPlatformChannel extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('WebPlatformChannel', createEmptyInstance: create)
+    ..aOS(1, 'methodName')
+    ..a<$core.List<$core.int>>(2, 'input', $pb.PbFieldType.OY)
+    ..hasRequiredFields = false
+  ;
+
+  WebPlatformChannel._() : super();
+  factory WebPlatformChannel() => create();
+  factory WebPlatformChannel.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory WebPlatformChannel.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  WebPlatformChannel clone() => WebPlatformChannel()..mergeFromMessage(this);
+  WebPlatformChannel copyWith(void Function(WebPlatformChannel) updates) => super.copyWith((message) => updates(message as WebPlatformChannel));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static WebPlatformChannel create() => WebPlatformChannel._();
+  WebPlatformChannel createEmptyInstance() => create();
+  static $pb.PbList<WebPlatformChannel> createRepeated() => $pb.PbList<WebPlatformChannel>();
+  static WebPlatformChannel getDefault() => _defaultInstance ??= create()..freeze();
+  static WebPlatformChannel _defaultInstance;
+
+  $core.String get methodName => $_getS(0, '');
+  set methodName($core.String v) { $_setString(0, v); }
+  $core.bool hasMethodName() => $_has(0);
+  void clearMethodName() => clearField(1);
+
+  $core.List<$core.int> get input => $_getN(1);
+  set input($core.List<$core.int> v) { $_setBytes(1, v); }
+  $core.bool hasInput() => $_has(1);
+  void clearInput() => clearField(2);
+}
+

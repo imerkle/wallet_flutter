@@ -91,3 +91,30 @@ const Configs$json = const {
   ],
 };
 
+const GetWalletInput$json = const {
+  '1': 'GetWalletInput',
+  '2': const [
+    const {'1': 'mnemonic', '3': 1, '4': 1, '5': 9, '10': 'mnemonic'},
+    const {'1': 'configs', '3': 2, '4': 1, '5': 11, '6': '.Configs', '10': 'configs'},
+  ],
+};
+
+const GenSendTxInput$json = const {
+  '1': 'GenSendTxInput',
+  '2': const [
+    const {'1': 'config', '3': 1, '4': 1, '5': 11, '6': '.Config', '10': 'config'},
+    const {'1': 'api', '3': 2, '4': 1, '5': 9, '10': 'api'},
+    const {'1': 'private_key', '3': 3, '4': 1, '5': 12, '10': 'privateKey'},
+    const {'1': 'public_key', '3': 4, '4': 1, '5': 12, '10': 'publicKey'},
+    const {'1': 'outputs', '3': 6, '4': 1, '5': 11, '6': '.Outputs', '10': 'outputs'},
+  ],
+};
+
+const WebPlatformChannel$json = const {
+  '1': 'WebPlatformChannel',
+  '2': const [
+    const {'1': 'method_name', '3': 1, '4': 1, '5': 9, '10': 'methodName'},
+    const {'1': 'input', '3': 2, '4': 1, '5': 12, '10': 'input'},
+  ],
+};
+

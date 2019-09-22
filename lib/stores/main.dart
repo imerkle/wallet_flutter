@@ -1,30 +1,29 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
+import 'package:wallet_flutter/models/rust.dart';
 
 import 'package:wallet_flutter/stores/sort.dart';
 import 'package:wallet_flutter/stores/wallet.dart';
+import 'package:wallet_flutter/stores/fab.dart';
 
-import 'fab.dart';
 part 'main.g.dart';
 
 class MainStore = _MainStore with _$MainStore;
 
 abstract class _MainStore with Store {
 
-  FabStore fabStore = new FabStore();
-  SortStore sortStore = new SortStore();
-  WalletStore walletStore = new WalletStore();
-  
+  FabStore fabStore = FabStore();
+  SortStore sortStore = SortStore();
+  WalletStore walletStore = WalletStore();
+  Rust rust = Rust();
 
   @action
   Future<void> initPrep() async{
+    rust.initChannel();
     sortStore.sortables.add(Sortable("Coin", true, true));
     sortStore.sortables.add(Sortable("Amount", false, true));
-    if (Platform.isAndroid || Platform.isIOS){
-      walletStore.initPrep();
-    }
+    walletStore.initPrep(rust);
   }
 
   @computed

@@ -1,7 +1,6 @@
 
 mod protos;
 mod connector;
-use jni::objects::JString;
 use protobuf::Message;
 
 use jni::objects::JClass;
@@ -16,14 +15,13 @@ pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_getWallet(
     // Static class which owns this method.
     _class: JClass,
 
-    input1: jbyteArray,
-    input2: JString,
+    input: jbyteArray,
 ) -> jbyteArray {
-    let mnemonic: String = env.get_string(input2).unwrap().into();
-    //byte array -> vector
-    let b =  env.convert_byte_array(input1).unwrap();
-    //vector -> protobuf -> rust struct
-    let configs = protobuf::parse_from_bytes::<protos::coin::Configs>(&b).unwrap();
+    let inputs = protobuf::parse_from_bytes::<protos::coin::GetWalletInput>(&env.convert_byte_array(input).unwrap()).unwrap();
+
+    let mnemonic = inputs.mnemonic;
+    let configs = inputs.configs.unwrap();
+
     // func -> rust struct -> protobuf -> vector
     let v: Vec<u8> = connector::get_wallets(configs, mnemonic).write_to_bytes().unwrap();
     // vector -> java array
@@ -40,20 +38,15 @@ pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_genSendTran
     // Static class which owns this method.
     _class: JClass,
 
-    input0: jbyteArray,
-    input1: JString,
-    input3: jbyteArray,
-    input4: jbyteArray,
-    input5: jbyteArray,
+    input: jbyteArray,
 ) -> jbyteArray {
-    let api: String = env.get_string(input1).unwrap().into();
-    let private_key =  env.convert_byte_array(input3).unwrap();
-    let public_key =  env.convert_byte_array(input4).unwrap();
-    
-    let b =  env.convert_byte_array(input5).unwrap();
-    let outputs = protobuf::parse_from_bytes::<protos::coin::Outputs>(&b).unwrap();
-    let c =  env.convert_byte_array(input0).unwrap();
-    let config = protobuf::parse_from_bytes::<protos::coin::Config>(&c).unwrap();
+    let inputs = protobuf::parse_from_bytes::<protos::coin::GenSendTxInput>(&env.convert_byte_array(input).unwrap()).unwrap();
+
+    let api = inputs.api;
+    let config = inputs.config.unwrap();
+    let outputs = inputs.outputs.unwrap();
+    let private_key = inputs.private_key;
+    let public_key = inputs.public_key;
 
     let tx_hex = connector::gen_send_transaction(&config, &api, private_key.clone(), public_key, outputs);
     

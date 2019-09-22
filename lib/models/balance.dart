@@ -29,19 +29,6 @@ class Balances {
   Map<String, dynamic> toJson() => _$BalancesToJson(this);
 }
 
-@JsonSerializable()
-class BalParams {
-  String rel;
-  String base;
-  String address;
-
-  BalParams({this.rel, this.base, this.address});
-
-
-  factory BalParams.fromJson(Map<String, dynamic> json) => _$BalParamsFromJson(json);
-
-  Map<String, dynamic> toJson() => _$BalParamsToJson(this);
-}
 class BalanceOutput{
   double balance;
   double fiat;

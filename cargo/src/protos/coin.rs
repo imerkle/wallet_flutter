@@ -2396,6 +2396,599 @@ impl ::protobuf::reflect::ProtobufValue for Configs {
     }
 }
 
+#[derive(PartialEq,Clone,Default)]
+pub struct GetWalletInput {
+    // message fields
+    pub mnemonic: ::std::string::String,
+    pub configs: ::protobuf::SingularPtrField<Configs>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a GetWalletInput {
+    fn default() -> &'a GetWalletInput {
+        <GetWalletInput as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl GetWalletInput {
+    pub fn new() -> GetWalletInput {
+        ::std::default::Default::default()
+    }
+
+    // string mnemonic = 1;
+
+
+    pub fn get_mnemonic(&self) -> &str {
+        &self.mnemonic
+    }
+    pub fn clear_mnemonic(&mut self) {
+        self.mnemonic.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_mnemonic(&mut self, v: ::std::string::String) {
+        self.mnemonic = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_mnemonic(&mut self) -> &mut ::std::string::String {
+        &mut self.mnemonic
+    }
+
+    // Take field
+    pub fn take_mnemonic(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.mnemonic, ::std::string::String::new())
+    }
+
+    // .Configs configs = 2;
+
+
+    pub fn get_configs(&self) -> &Configs {
+        self.configs.as_ref().unwrap_or_else(|| Configs::default_instance())
+    }
+    pub fn clear_configs(&mut self) {
+        self.configs.clear();
+    }
+
+    pub fn has_configs(&self) -> bool {
+        self.configs.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_configs(&mut self, v: Configs) {
+        self.configs = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_configs(&mut self) -> &mut Configs {
+        if self.configs.is_none() {
+            self.configs.set_default();
+        }
+        self.configs.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_configs(&mut self) -> Configs {
+        self.configs.take().unwrap_or_else(|| Configs::new())
+    }
+}
+
+impl ::protobuf::Message for GetWalletInput {
+    fn is_initialized(&self) -> bool {
+        for v in &self.configs {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.mnemonic)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.configs)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.mnemonic.is_empty() {
+            my_size += ::protobuf::rt::string_size(1, &self.mnemonic);
+        }
+        if let Some(ref v) = self.configs.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if !self.mnemonic.is_empty() {
+            os.write_string(1, &self.mnemonic)?;
+        }
+        if let Some(ref v) = self.configs.as_ref() {
+            os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> GetWalletInput {
+        GetWalletInput::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                    "mnemonic",
+                    |m: &GetWalletInput| { &m.mnemonic },
+                    |m: &mut GetWalletInput| { &mut m.mnemonic },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Configs>>(
+                    "configs",
+                    |m: &GetWalletInput| { &m.configs },
+                    |m: &mut GetWalletInput| { &mut m.configs },
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<GetWalletInput>(
+                    "GetWalletInput",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static GetWalletInput {
+        static mut instance: ::protobuf::lazy::Lazy<GetWalletInput> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const GetWalletInput,
+        };
+        unsafe {
+            instance.get(GetWalletInput::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for GetWalletInput {
+    fn clear(&mut self) {
+        self.mnemonic.clear();
+        self.configs.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for GetWalletInput {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for GetWalletInput {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct GenSendTxInput {
+    // message fields
+    pub config: ::protobuf::SingularPtrField<Config>,
+    pub api: ::std::string::String,
+    pub private_key: ::std::vec::Vec<u8>,
+    pub public_key: ::std::vec::Vec<u8>,
+    pub outputs: ::protobuf::SingularPtrField<Outputs>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a GenSendTxInput {
+    fn default() -> &'a GenSendTxInput {
+        <GenSendTxInput as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl GenSendTxInput {
+    pub fn new() -> GenSendTxInput {
+        ::std::default::Default::default()
+    }
+
+    // .Config config = 1;
+
+
+    pub fn get_config(&self) -> &Config {
+        self.config.as_ref().unwrap_or_else(|| Config::default_instance())
+    }
+    pub fn clear_config(&mut self) {
+        self.config.clear();
+    }
+
+    pub fn has_config(&self) -> bool {
+        self.config.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_config(&mut self, v: Config) {
+        self.config = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_config(&mut self) -> &mut Config {
+        if self.config.is_none() {
+            self.config.set_default();
+        }
+        self.config.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_config(&mut self) -> Config {
+        self.config.take().unwrap_or_else(|| Config::new())
+    }
+
+    // string api = 2;
+
+
+    pub fn get_api(&self) -> &str {
+        &self.api
+    }
+    pub fn clear_api(&mut self) {
+        self.api.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_api(&mut self, v: ::std::string::String) {
+        self.api = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_api(&mut self) -> &mut ::std::string::String {
+        &mut self.api
+    }
+
+    // Take field
+    pub fn take_api(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.api, ::std::string::String::new())
+    }
+
+    // bytes private_key = 3;
+
+
+    pub fn get_private_key(&self) -> &[u8] {
+        &self.private_key
+    }
+    pub fn clear_private_key(&mut self) {
+        self.private_key.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_private_key(&mut self, v: ::std::vec::Vec<u8>) {
+        self.private_key = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_private_key(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.private_key
+    }
+
+    // Take field
+    pub fn take_private_key(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.private_key, ::std::vec::Vec::new())
+    }
+
+    // bytes public_key = 4;
+
+
+    pub fn get_public_key(&self) -> &[u8] {
+        &self.public_key
+    }
+    pub fn clear_public_key(&mut self) {
+        self.public_key.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_public_key(&mut self, v: ::std::vec::Vec<u8>) {
+        self.public_key = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_public_key(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.public_key
+    }
+
+    // Take field
+    pub fn take_public_key(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.public_key, ::std::vec::Vec::new())
+    }
+
+    // .Outputs outputs = 6;
+
+
+    pub fn get_outputs(&self) -> &Outputs {
+        self.outputs.as_ref().unwrap_or_else(|| Outputs::default_instance())
+    }
+    pub fn clear_outputs(&mut self) {
+        self.outputs.clear();
+    }
+
+    pub fn has_outputs(&self) -> bool {
+        self.outputs.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_outputs(&mut self, v: Outputs) {
+        self.outputs = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_outputs(&mut self) -> &mut Outputs {
+        if self.outputs.is_none() {
+            self.outputs.set_default();
+        }
+        self.outputs.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_outputs(&mut self) -> Outputs {
+        self.outputs.take().unwrap_or_else(|| Outputs::new())
+    }
+}
+
+impl ::protobuf::Message for GenSendTxInput {
+    fn is_initialized(&self) -> bool {
+        for v in &self.config {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.outputs {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.config)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.api)?;
+                },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.private_key)?;
+                },
+                4 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.public_key)?;
+                },
+                6 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.outputs)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if let Some(ref v) = self.config.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        if !self.api.is_empty() {
+            my_size += ::protobuf::rt::string_size(2, &self.api);
+        }
+        if !self.private_key.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(3, &self.private_key);
+        }
+        if !self.public_key.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(4, &self.public_key);
+        }
+        if let Some(ref v) = self.outputs.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if let Some(ref v) = self.config.as_ref() {
+            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        if !self.api.is_empty() {
+            os.write_string(2, &self.api)?;
+        }
+        if !self.private_key.is_empty() {
+            os.write_bytes(3, &self.private_key)?;
+        }
+        if !self.public_key.is_empty() {
+            os.write_bytes(4, &self.public_key)?;
+        }
+        if let Some(ref v) = self.outputs.as_ref() {
+            os.write_tag(6, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> GenSendTxInput {
+        GenSendTxInput::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Config>>(
+                    "config",
+                    |m: &GenSendTxInput| { &m.config },
+                    |m: &mut GenSendTxInput| { &mut m.config },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                    "api",
+                    |m: &GenSendTxInput| { &m.api },
+                    |m: &mut GenSendTxInput| { &mut m.api },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                    "private_key",
+                    |m: &GenSendTxInput| { &m.private_key },
+                    |m: &mut GenSendTxInput| { &mut m.private_key },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                    "public_key",
+                    |m: &GenSendTxInput| { &m.public_key },
+                    |m: &mut GenSendTxInput| { &mut m.public_key },
+                ));
+                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Outputs>>(
+                    "outputs",
+                    |m: &GenSendTxInput| { &m.outputs },
+                    |m: &mut GenSendTxInput| { &mut m.outputs },
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<GenSendTxInput>(
+                    "GenSendTxInput",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static GenSendTxInput {
+        static mut instance: ::protobuf::lazy::Lazy<GenSendTxInput> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const GenSendTxInput,
+        };
+        unsafe {
+            instance.get(GenSendTxInput::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for GenSendTxInput {
+    fn clear(&mut self) {
+        self.config.clear();
+        self.api.clear();
+        self.private_key.clear();
+        self.public_key.clear();
+        self.outputs.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for GenSendTxInput {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for GenSendTxInput {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n\ncoin.proto\"\x84\x01\n\x04Coin\x12\x1d\n\npublic_key\x18\x01\x20\x01\
     (\x0cR\tpublicKey\x12\x1f\n\x0bprivate_key\x18\x02\x20\x01(\x0cR\nprivat\
@@ -2418,8 +3011,15 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     e\x18\x05\x20\x01(\rR\x07private\x12\x16\n\x06public\x18\x06\x20\x01(\rR\
     \x06public\x12\x16\n\x06prefix\x18\x07\x20\x01(\tR\x06prefix\x12\x19\n\
     \x08chain_id\x18\x08\x20\x01(\rR\x07chainId\"&\n\x07Configs\x12\x1b\n\
-    \x04list\x18\x01\x20\x03(\x0b2\x07.ConfigR\x04listB-\n\x1acom.example.wa\
-    llet_flutterB\x06Protos\xa2\x02\x06Protosb\x06proto3\
+    \x04list\x18\x01\x20\x03(\x0b2\x07.ConfigR\x04list\"P\n\x0eGetWalletInpu\
+    t\x12\x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\x12\"\n\x07confi\
+    gs\x18\x02\x20\x01(\x0b2\x08.ConfigsR\x07configs\"\xa7\x01\n\x0eGenSendT\
+    xInput\x12\x1f\n\x06config\x18\x01\x20\x01(\x0b2\x07.ConfigR\x06config\
+    \x12\x10\n\x03api\x18\x02\x20\x01(\tR\x03api\x12\x1f\n\x0bprivate_key\
+    \x18\x03\x20\x01(\x0cR\nprivateKey\x12\x1d\n\npublic_key\x18\x04\x20\x01\
+    (\x0cR\tpublicKey\x12\"\n\x07outputs\x18\x06\x20\x01(\x0b2\x08.OutputsR\
+    \x07outputsB-\n\x1acom.example.wallet_flutterB\x06Protos\xa2\x02\x06Prot\
+    osb\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

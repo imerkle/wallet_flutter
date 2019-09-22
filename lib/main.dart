@@ -1,14 +1,17 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet_flutter/screens/settings.dart';
+import 'package:wallet_flutter/screens/wallet.dart';
+import 'package:wallet_flutter/screens/web_qr_connect.dart';
 import 'package:wallet_flutter/stores/main.dart';
+import 'package:wallet_flutter/utils/app_localization.dart';
+import 'package:wallet_flutter/widgets/drawer_widget.dart';
 
-import 'screens/wallet.dart';
-import 'widgets/DrawerWidget.dart';
-
-void main() => runApp(EasyLocalization(child: MyApp()));
+void main() => runApp(MyApp());
 
 final mainStore = new MainStore();
 
@@ -29,27 +32,21 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     
-    var data = EasyLocalizationProvider.of(context).data;
     return MultiProvider(
       providers: [
         Provider<MainStore>(builder: (_) => mainStore)
       ],
-      child:  EasyLocalizationProvider(
-        data: data,
-        child: MaterialApp(
+      child: MaterialApp(
           title: 'Wallet',
           theme: ThemeData(
             primarySwatch: Colors.blue,
             //primaryColor: primaryColor,
             accentColor: Colors.white,
-            brightness: Brightness.dark,
+            brightness: Brightness.dark
           ),
-          home: MyHomePage(title: 'Home'),
+          home: MyHomePage(),
           localizationsDelegates: [
-            EasylocaLizationDelegate(
-              locale: data.locale ?? Locale('en', 'US'),
-              path: 'lang'
-            ),
+            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],
@@ -57,8 +54,7 @@ class _MyAppState extends State<MyApp> {
               const Locale('en', 'US'),
               const Locale('sk', 'SK'),
           ],
-        ),
-      )
+        )
     );
   }
 }
@@ -66,10 +62,7 @@ class _MyAppState extends State<MyApp> {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({
     Key key,
-    this.title,
   }) : super(key: key);
-
-  final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -79,51 +72,52 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
   static List<Widget> _widgetOptions = <Widget>[
     Wallet(),
-    Text("1"),
+    Settings(),
     Text("2"),
   ];
 
   @override
   Widget build(BuildContext context) {
-      final walletStore = Provider.of<MainStore>(context).walletStore;
-      return Observer(
-        builder: (_) {
-          if(walletStore.ws.list.length == 0){
-            return Container();
+    final walletStore = Provider.of<MainStore>(context).walletStore;
+    return Observer(
+      builder: (_){
+        if(walletStore.ws.list.length == 0){
+          if(kIsWeb){
+            return WebQrConnect();
           }else{
-            return SafeArea(
-              child: Scaffold(
-                //backgroundColor: Theme.of(context).primaryColor,
-                appBar: AppBar(
-                  title: Text(widget.title),
-                ),
-                drawer: Drawer(
-                  child: DrawerWidget(),
-                ),
-                body: _widgetOptions.elementAt(_currentIndex),
-                bottomNavigationBar: BottomNavigationBar(
-                  currentIndex: _currentIndex,
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: new Icon(Icons.home),
-                      title: new Text('Home'),
-                    ),
-                    BottomNavigationBarItem(
-                      icon: new Icon(Icons.settings),
-                      title: new Text('Settings'),
-                    ),
-                    BottomNavigationBarItem(
-                      icon: new Icon(Icons.info),
-                      title: new Text('About'),
-                    ),
-                  ],
-                  onTap: (int index){
-                      setState(() { _currentIndex = index; });
-                  },
-                )
-              ),
-            );            
+            return Container();
           }
-      });
+        }
+        return SafeArea(
+          child: Scaffold(
+            //backgroundColor: Theme.of(context).primaryColor,
+            drawer: Drawer(
+              child: DrawerWidget(),
+            ),
+            body: _widgetOptions.elementAt(_currentIndex),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: _currentIndex,
+              items: [
+                BottomNavigationBarItem(
+                  icon: new Icon(Icons.home),
+                  title: new Text('Home'),
+                ),
+                BottomNavigationBarItem(
+                  icon: new Icon(Icons.settings),
+                  title: new Text('Settings'),
+                ),
+                BottomNavigationBarItem(
+                  icon: new Icon(Icons.info),
+                  title: new Text('About'),
+                ),
+              ],
+              onTap: (int index){
+                  setState(() { _currentIndex = index; });
+              },
+            )
+          ),
+        );
+      },
+    );
   }
 }

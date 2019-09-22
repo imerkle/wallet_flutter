@@ -34,17 +34,3 @@ Map<String, dynamic> _$BalancesToJson(Balances instance) => <String, dynamic>{
       'base': instance.base,
       'balances': instance.balances,
     };
-
-BalParams _$BalParamsFromJson(Map<String, dynamic> json) {
-  return BalParams(
-    rel: json['rel'] as String,
-    base: json['base'] as String,
-    address: json['address'] as String,
-  );
-}
-
-Map<String, dynamic> _$BalParamsToJson(BalParams instance) => <String, dynamic>{
-      'rel': instance.rel,
-      'base': instance.base,
-      'address': instance.address,
-    };

@@ -7,6 +7,7 @@ final bool isTestnet = true;
 final int CRYPTO_PRECISION = 8;
 final int FIAT_PRECISION = 2;
 final String explorerApi = "http://10.0.2.2:4000/api";
+final String APPNAME = "Wallet";
 
 Future writePaste(TextEditingController c) async {
   ClipboardData data = await Clipboard.getData("text/plain");
@@ -19,8 +20,8 @@ double textToDouble(String text){
     return double.parse(text);
 }
 final Map<String, ExplorerConfig> explorer_config_list = {
-  "btc": ExplorerConfig(api: "https://btc1.trezor.io/api/v2", kind: "trezor"),
-  "eth": ExplorerConfig(api: "https://eth1.trezor.io/api/v2", kind: "trezorToken"),
+  "btc": ExplorerConfig(api: "https://tbtc1.trezor.io/api/v2", kind: "trezor"),
+  "eth": ExplorerConfig(api: "https://ac-dev0.net:29136/api/v2", kind: "trezorToken"),
   "vet": ExplorerConfig(api: "https://testnet.veforge.com/api", kind: "vet"),
   "xlm": ExplorerConfig(api: "https://horizon-testnet.stellar.org", kind: "xlm"),
   "ont": ExplorerConfig(api: "https://polarisexplorer.ont.io/api/v1", kind: "ont"),
@@ -30,7 +31,7 @@ final Map<String, ExplorerConfig> explorer_config_list = {
   "bnb": ExplorerConfig(api: "https://testnet-dex.binance.org/api/v1", kind: "bnb"),
 };
 
-var configs = [
+List<Config> configs = [
   Config()
   ..rel = "btc"
   ..base = "btc" 
@@ -39,7 +40,7 @@ var configs = [
   ..precision = 8
   ..private = 239
   ..public = 111
-  ..prefix = "bc",
+  ..prefix = "tb",
 
   Config()
   ..rel = "eth"
@@ -49,3 +50,8 @@ var configs = [
   ..precision = 18
   ..chainId = 4,
 ];
+
+Map<String, int> precisions  = {
+  "btc": 8,
+  "eth": 18,
+};

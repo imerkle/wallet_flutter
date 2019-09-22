@@ -80,14 +80,14 @@ mixin _$WalletStore on _WalletStore, Store {
   final _$initPrepAsyncAction = AsyncAction('initPrep');
 
   @override
-  Future<void> initPrep() {
-    return _$initPrepAsyncAction.run(() => super.initPrep());
+  Future<void> initPrep(Rust rust) {
+    return _$initPrepAsyncAction.run(() => super.initPrep(rust));
   }
 
-  final _$initFetchBalancesAsyncAction = AsyncAction('initFetchBalances');
+  final _$refreshBalancesAsyncAction = AsyncAction('refreshBalances');
 
   @override
-  Future<List<Balances>> initFetchBalances() {
-    return _$initFetchBalancesAsyncAction.run(() => super.initFetchBalances());
+  Future<void> refreshBalances() {
+    return _$refreshBalancesAsyncAction.run(() => super.refreshBalances());
   }
 }

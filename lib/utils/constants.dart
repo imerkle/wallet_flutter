@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:wallet_flutter/gen/cargo/protos/coin.pbserver.dart';
@@ -6,7 +7,7 @@ import 'package:wallet_flutter/models/config.dart';
 final bool isTestnet = true;
 final int CRYPTO_PRECISION = 8;
 final int FIAT_PRECISION = 2;
-final String explorerApi = "http://10.0.2.2:4000/api";
+final String explorerApi = kIsWeb ? "http://127.0.0.1:4000/api" : "http://10.0.2.2:4000/api";
 final String APPNAME = "Wallet";
 
 Future writePaste(TextEditingController c) async {

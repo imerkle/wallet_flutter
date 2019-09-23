@@ -77,17 +77,18 @@ mixin _$WalletStore on _WalletStore, Store {
     }, _$blAtom, name: '${_$blAtom.name}_set');
   }
 
-  final _$initPrepAsyncAction = AsyncAction('initPrep');
-
-  @override
-  Future<void> initPrep(Rust rust) {
-    return _$initPrepAsyncAction.run(() => super.initPrep(rust));
-  }
-
   final _$refreshBalancesAsyncAction = AsyncAction('refreshBalances');
 
   @override
   Future<void> refreshBalances() {
     return _$refreshBalancesAsyncAction.run(() => super.refreshBalances());
+  }
+
+  final _$initWalletIfAbsentAsyncAction = AsyncAction('initWalletIfAbsent');
+
+  @override
+  Future<void> initWalletIfAbsent(Rust rust) {
+    return _$initWalletIfAbsentAsyncAction
+        .run(() => super.initWalletIfAbsent(rust));
   }
 }

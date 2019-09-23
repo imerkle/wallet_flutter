@@ -39,9 +39,8 @@ abstract class _WalletStore with Store {
   @observable
   List<Balances> bl = [];
   
-  @action
   Future<void> initPrep(Rust rust) async{
-    ws = await initWalletIfAbsent(rust);
+    await initWalletIfAbsent(rust);
     await refreshBalances();
   }
 
@@ -80,42 +79,42 @@ abstract class _WalletStore with Store {
       var value = x.value/pow(10,precisions[rel]);
       return BalanceOutput(balance: value, fiat: value*x.fiat);
   }
+
+  @action
+  Future<void> initWalletIfAbsent(Rust rust) async {
+      storage.clear();
+      //storage.deleteAll();
+      const String key = "wallets";
+      //String walletsJson = await storage.read(key: key);
+      String walletsJson = storage.getItem(key);
+        
+      String mnemonic = "";
+      if(walletsJson == null){
+        //mnemonic = bip39.generateMnemonic();
+        mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
+
+        var input = GetWalletInput()
+        ..mnemonic = mnemonic
+        ..configs = getConfigs();
+        rust.invokeRustMethod("get_wallets", input.writeToBuffer(), (x){
+          Wallet w = Wallet()
+          ..coinsList = CoinsList.fromBuffer(x)
+          ..mnemonic = mnemonic;
+
+          ws.list.add(w);
+          //storage.write(key: key, value: ws.writeToJson());
+          storage.setItem(key, ws.writeToJson());
+        });
+      }else{
+        ws = Wallets.fromJson(walletsJson);
+      }
+  }  
 }
 
 String replaceAll(String str, String r, String w){
     return str.replaceAll(new RegExp(r), w);
 }
 
-Future<Wallets> initWalletIfAbsent(Rust rust) async {
-    storage.clear();
-    //storage.deleteAll();
-    const String key = "wallets";
-    //String walletsJson = await storage.read(key: key);
-    String walletsJson = storage.getItem(key);
-      
-    String mnemonic = "";
-    Wallets ws = Wallets();
-    if(walletsJson == null){
-      //mnemonic = bip39.generateMnemonic();
-      mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
-
-      var input = GetWalletInput()
-      ..mnemonic = mnemonic
-      ..configs = getConfigs();
-      var x = await rust.invokeRustMethod("get_wallets", input.writeToBuffer());
-
-      Wallet w = Wallet()
-      ..coinsList = CoinsList.fromBuffer(x)
-      ..mnemonic = mnemonic;
-
-      ws.list.add(w);
-      //storage.write(key: key, value: ws.writeToJson());
-      storage.setItem(key, ws.writeToJson());
-    }else{
-      ws = Wallets.fromJson(walletsJson);
-    }
-    return ws;
-}
 Configs getConfigs(){
     var c = Configs();
     configs.forEach((x){ c.list.add(x); });

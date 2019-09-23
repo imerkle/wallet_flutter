@@ -10,22 +10,23 @@ class Rust{
   MethodChannel platform = const MethodChannel('flutter.dev/rust');
   WebSocketChannel channel;
   int roomId = 100;  //change to random
+
+  Function tmpFn;
   void initChannel(){
     channel = WebSocketChannel.platform('ws://connect.websocket.in/$APPNAME?room_id=$roomId');
     if(!kIsWeb){
       channel.stream.listen((message) async {
         WebPlatformChannel x = WebPlatformChannel.fromJson(message);
-        var y = await invokeRustMethod(x.methodName, x.input);
+        var y = await invokeRustDirect(x.methodName, x.input);
         var z = WebPlatformChannel()
         ..input = y;
         channel.sink.add(z.writeToJson());
-        channel.sink.close();
       });
     }else{
       channel.stream.listen((message){
         WebPlatformChannel x = WebPlatformChannel.fromJson(message);
-        print(x);
-      });
+        tmpFn(x.input);
+      });      
     }
   }
   /// Mobile will call rust then return ir
@@ -34,16 +35,21 @@ class Rust{
   /// Send result bytes back to web encrypted 
   /// Then decrypt it on web 
   /// return it
-  Future<dynamic> invokeRustMethod(String methodName, dynamic input) async {
+  void invokeRustMethod(String methodName, dynamic input, Function callback) async {
     if(!kIsWeb){
-      return await platform.invokeMethod(methodName,{
-        "input": input,
-      });
+      var x = await invokeRustDirect(methodName, input);
+      callback(x);
     }else{
       var wpc = WebPlatformChannel()
       ..methodName = methodName
       ..input = input;
+      tmpFn = callback;
       channel.sink.add(wpc.writeToJson());
     }
+  }
+  Future<dynamic> invokeRustDirect(String methodName, dynamic input,) async {
+      return await platform.invokeMethod(methodName,{
+        "input": input,
+      });    
   }
 }

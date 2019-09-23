@@ -143,10 +143,10 @@ class _WalletState extends State<Wallet> {
                         ..publicKey = x.publicKey
                         ..outputs = os;
 
-                        var txSignedHex = await mainStore.rust.invokeRustMethod('gen_send_transaction', input.writeToBuffer());
-                        var t = Tx.fromBuffer(txSignedHex);
-                        //sendTransaction(x.rel, a.base, t.txHex);           
-                        //send tx_signed_hex
+                        //mainStore.rust.invokeRustMethod('gen_send_transaction', input.writeToBuffer(),(x){
+                         // var t = Tx.fromBuffer(x);
+                          //sendTransaction(x.rel, a.base, t.txHex);
+                        //});
                       },
 
                       //padding: EdgeInsets.all(15),

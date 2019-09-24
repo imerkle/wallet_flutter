@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/models/rust.dart';
 import 'package:wallet_flutter/utils/constants.dart';
@@ -16,7 +14,7 @@ import 'package:bip39/bip39.dart' as bip39;
 part 'wallet.g.dart';
 
 
-final LocalStorage storage = new LocalStorage(APPNAME);
+//final LocalStorage storage = new LocalStorage(APPNAME);
 
 // This is the class used by rest of your codebase
 class WalletStore = _WalletStore with _$WalletStore;
@@ -82,13 +80,17 @@ abstract class _WalletStore with Store {
 
   @action
   Future<void> initWalletIfAbsent(Rust rust) async {
-      storage.clear();
+      //storage.clear();
       //storage.deleteAll();
       const String key = "wallets";
       //String walletsJson = await storage.read(key: key);
-      String walletsJson = storage.getItem(key);
+      //String walletsJson = storage.getItem(key);
+      String walletsJson = null;
         
       String mnemonic = "";
+      
+      // For some reason mobx in web doesnt loads when modifying to existing object so replace it completely
+      Wallets wsx = Wallets();
       if(walletsJson == null){
         //mnemonic = bip39.generateMnemonic();
         mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
@@ -96,15 +98,14 @@ abstract class _WalletStore with Store {
         var input = GetWalletInput()
         ..mnemonic = mnemonic
         ..configs = getConfigs();
-        rust.invokeRustMethod("get_wallets", input.writeToBuffer(), (x){
-          Wallet w = Wallet()
-          ..coinsList = CoinsList.fromBuffer(x)
-          ..mnemonic = mnemonic;
-
-          ws.list.add(w);
+        var x = await rust.invokeRustMethod("get_wallets", input.writeToBuffer());
+        Wallet w = Wallet()
+        ..coinsList = CoinsList.fromBuffer(x)
+        ..mnemonic = mnemonic;
+        wsx.list.add(w);
+        ws = wsx;
           //storage.write(key: key, value: ws.writeToJson());
-          storage.setItem(key, ws.writeToJson());
-        });
+          //storage.setItem(key, ws.writeToJson());        
       }else{
         ws = Wallets.fromJson(walletsJson);
       }

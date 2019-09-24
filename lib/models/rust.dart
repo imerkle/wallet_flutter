@@ -11,8 +11,7 @@ class Rust{
   WebSocketChannel channel;
   int roomId = 100;  //change to random
 
-  Function tmpFn;
-  void initChannel(){
+  void initChannel() {
     channel = WebSocketChannel.platform('ws://connect.websocket.in/$APPNAME?room_id=$roomId');
     if(!kIsWeb){
       channel.stream.listen((message) async {
@@ -22,11 +21,6 @@ class Rust{
         ..input = y;
         channel.sink.add(z.writeToJson());
       });
-    }else{
-      channel.stream.listen((message){
-        WebPlatformChannel x = WebPlatformChannel.fromJson(message);
-        tmpFn(x.input);
-      });      
     }
   }
   /// Mobile will call rust then return ir
@@ -35,16 +29,18 @@ class Rust{
   /// Send result bytes back to web encrypted 
   /// Then decrypt it on web 
   /// return it
-  void invokeRustMethod(String methodName, dynamic input, Function callback) async {
+  Future<dynamic> invokeRustMethod(String methodName, dynamic input) async {
     if(!kIsWeb){
       var x = await invokeRustDirect(methodName, input);
-      callback(x);
+      return x;
     }else{
       var wpc = WebPlatformChannel()
       ..methodName = methodName
       ..input = input;
-      tmpFn = callback;
       channel.sink.add(wpc.writeToJson());
+      var message = await channel.stream.first;
+      WebPlatformChannel x = WebPlatformChannel.fromJson(message);
+      return x.input;
     }
   }
   Future<dynamic> invokeRustDirect(String methodName, dynamic input,) async {

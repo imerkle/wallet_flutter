@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
@@ -21,9 +23,9 @@ abstract class _MainStore with Store {
   @action
   Future<void> initPrep() async{
     rust.initChannel();
+    walletStore.initPrep(rust);
     sortStore.sortables.add(Sortable("Coin", true, true));
     sortStore.sortables.add(Sortable("Amount", false, true));
-    walletStore.initPrep(rust);
   }
 
   @computed

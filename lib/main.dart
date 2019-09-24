@@ -88,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
             return Container();
           }
         }
+
         return SafeArea(
           child: Scaffold(
             //backgroundColor: Theme.of(context).primaryColor,

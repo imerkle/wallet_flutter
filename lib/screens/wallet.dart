@@ -59,7 +59,7 @@ class _WalletState extends State<Wallet> {
           
           var b = walletStore.getBalance(rel: x.rel, base: a.base);
           return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             child: SingleChildScrollView(
               child: Wrap(
                 runSpacing: 30,

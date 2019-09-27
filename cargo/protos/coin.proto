@@ -43,7 +43,6 @@ message Tx{
 
 message Config{
     string rel = 1;
-    string base = 9;
     string protocol = 2;
     uint32 code = 3;
     uint32 precision = 4;
@@ -51,21 +50,31 @@ message Config{
     uint32 public = 6;
     string prefix = 7;
     uint32 chain_id = 8;
+    string base = 9;
+    string curve_name = 10;
+    bool is_compressed = 11;
 }
 message Configs{
     repeated Config list = 1;
 }
-
+message Input{
+    string id = 1;
+    uint64 value = 2;
+}
+message TxOpts{
+    repeated Input inputs = 1;
+    uint64 nonce = 2;
+}
 message GetWalletInput{
     string mnemonic = 1;
     Configs configs = 2;
 }
 message GenSendTxInput{
     Config config = 1;
-    string api = 2;
-    bytes private_key = 3;
-    bytes public_key = 4;
-    Outputs outputs = 6;
+    bytes private_key = 2;
+    bytes public_key = 3;
+    Outputs outputs = 4;
+    TxOpts tx_opts = 5;
 }
 message WebPlatformChannel{
     string method_name = 1;

@@ -47,9 +47,9 @@ List<Config> configs = [
   ..rel = "eth"
   ..base = "eth"
   ..protocol = "eth"
-  ..code = 1
+  ..code = 60
   ..precision = 18
-  ..chainId = 4,
+  ..chainId = 3,
 ];
 
 Map<String, int> precisions  = {

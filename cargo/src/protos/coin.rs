@@ -1764,6 +1764,7 @@ pub struct Config {
     pub base: ::std::string::String,
     pub curve_name: ::std::string::String,
     pub is_compressed: bool,
+    pub is_bech32: bool,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -1999,6 +2000,21 @@ impl Config {
     pub fn set_is_compressed(&mut self, v: bool) {
         self.is_compressed = v;
     }
+
+    // bool is_bech32 = 12;
+
+
+    pub fn get_is_bech32(&self) -> bool {
+        self.is_bech32
+    }
+    pub fn clear_is_bech32(&mut self) {
+        self.is_bech32 = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_is_bech32(&mut self, v: bool) {
+        self.is_bech32 = v;
+    }
 }
 
 impl ::protobuf::Message for Config {
@@ -2067,6 +2083,13 @@ impl ::protobuf::Message for Config {
                     let tmp = is.read_bool()?;
                     self.is_compressed = tmp;
                 },
+                12 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.is_bech32 = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -2112,6 +2135,9 @@ impl ::protobuf::Message for Config {
         if self.is_compressed != false {
             my_size += 2;
         }
+        if self.is_bech32 != false {
+            my_size += 2;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -2150,6 +2176,9 @@ impl ::protobuf::Message for Config {
         }
         if self.is_compressed != false {
             os.write_bool(11, self.is_compressed)?;
+        }
+        if self.is_bech32 != false {
+            os.write_bool(12, self.is_bech32)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -2248,6 +2277,11 @@ impl ::protobuf::Message for Config {
                     |m: &Config| { &m.is_compressed },
                     |m: &mut Config| { &mut m.is_compressed },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                    "is_bech32",
+                    |m: &Config| { &m.is_bech32 },
+                    |m: &mut Config| { &mut m.is_bech32 },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<Config>(
                     "Config",
                     fields,
@@ -2281,6 +2315,7 @@ impl ::protobuf::Clear for Config {
         self.base.clear();
         self.curve_name.clear();
         self.is_compressed = false;
+        self.is_bech32 = false;
         self.unknown_fields.clear();
     }
 }
@@ -3722,7 +3757,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x02\x20\x01(\x01R\x05value\x12\x12\n\x04memo\x18\x03\x20\x01(\tR\x04mem\
     o\"&\n\x07Outputs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.OutputR\
     \x04list\"\x1b\n\x02Tx\x12\x15\n\x06tx_hex\x18\x01\x20\x01(\tR\x05txHex\
-    \"\xa5\x02\n\x06Config\x12\x10\n\x03rel\x18\x01\x20\x01(\tR\x03rel\x12\
+    \"\xc2\x02\n\x06Config\x12\x10\n\x03rel\x18\x01\x20\x01(\tR\x03rel\x12\
     \x1a\n\x08protocol\x18\x02\x20\x01(\tR\x08protocol\x12\x12\n\x04code\x18\
     \x03\x20\x01(\rR\x04code\x12\x1c\n\tprecision\x18\x04\x20\x01(\rR\tpreci\
     sion\x12\x18\n\x07private\x18\x05\x20\x01(\rR\x07private\x12\x16\n\x06pu\
@@ -3730,21 +3765,21 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \tR\x06prefix\x12\x19\n\x08chain_id\x18\x08\x20\x01(\rR\x07chainId\x12\
     \x12\n\x04base\x18\t\x20\x01(\tR\x04base\x12\x1d\n\ncurve_name\x18\n\x20\
     \x01(\tR\tcurveName\x12#\n\ris_compressed\x18\x0b\x20\x01(\x08R\x0cisCom\
-    pressed\"&\n\x07Configs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.Conf\
-    igR\x04list\"-\n\x05Input\x12\x0e\n\x02id\x18\x01\x20\x01(\tR\x02id\x12\
-    \x14\n\x05value\x18\x02\x20\x01(\x04R\x05value\">\n\x06TxOpts\x12\x1e\n\
-    \x06inputs\x18\x01\x20\x03(\x0b2\x06.InputR\x06inputs\x12\x14\n\x05nonce\
-    \x18\x02\x20\x01(\x04R\x05nonce\"P\n\x0eGetWalletInput\x12\x1a\n\x08mnem\
-    onic\x18\x01\x20\x01(\tR\x08mnemonic\x12\"\n\x07configs\x18\x02\x20\x01(\
-    \x0b2\x08.ConfigsR\x07configs\"\xb7\x01\n\x0eGenSendTxInput\x12\x1f\n\
-    \x06config\x18\x01\x20\x01(\x0b2\x07.ConfigR\x06config\x12\x1f\n\x0bpriv\
-    ate_key\x18\x02\x20\x01(\x0cR\nprivateKey\x12\x1d\n\npublic_key\x18\x03\
-    \x20\x01(\x0cR\tpublicKey\x12\"\n\x07outputs\x18\x04\x20\x01(\x0b2\x08.O\
-    utputsR\x07outputs\x12\x20\n\x07tx_opts\x18\x05\x20\x01(\x0b2\x07.TxOpts\
-    R\x06txOpts\"K\n\x12WebPlatformChannel\x12\x1f\n\x0bmethod_name\x18\x01\
-    \x20\x01(\tR\nmethodName\x12\x14\n\x05input\x18\x02\x20\x01(\x0cR\x05inp\
-    utB-\n\x1acom.example.wallet_flutterB\x06Protos\xa2\x02\x06Protosb\x06pr\
-    oto3\
+    pressed\x12\x1b\n\tis_bech32\x18\x0c\x20\x01(\x08R\x08isBech32\"&\n\x07C\
+    onfigs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.ConfigR\x04list\"-\n\
+    \x05Input\x12\x0e\n\x02id\x18\x01\x20\x01(\tR\x02id\x12\x14\n\x05value\
+    \x18\x02\x20\x01(\x04R\x05value\">\n\x06TxOpts\x12\x1e\n\x06inputs\x18\
+    \x01\x20\x03(\x0b2\x06.InputR\x06inputs\x12\x14\n\x05nonce\x18\x02\x20\
+    \x01(\x04R\x05nonce\"P\n\x0eGetWalletInput\x12\x1a\n\x08mnemonic\x18\x01\
+    \x20\x01(\tR\x08mnemonic\x12\"\n\x07configs\x18\x02\x20\x01(\x0b2\x08.Co\
+    nfigsR\x07configs\"\xb7\x01\n\x0eGenSendTxInput\x12\x1f\n\x06config\x18\
+    \x01\x20\x01(\x0b2\x07.ConfigR\x06config\x12\x1f\n\x0bprivate_key\x18\
+    \x02\x20\x01(\x0cR\nprivateKey\x12\x1d\n\npublic_key\x18\x03\x20\x01(\
+    \x0cR\tpublicKey\x12\"\n\x07outputs\x18\x04\x20\x01(\x0b2\x08.OutputsR\
+    \x07outputs\x12\x20\n\x07tx_opts\x18\x05\x20\x01(\x0b2\x07.TxOptsR\x06tx\
+    Opts\"K\n\x12WebPlatformChannel\x12\x1f\n\x0bmethod_name\x18\x01\x20\x01\
+    (\tR\nmethodName\x12\x14\n\x05input\x18\x02\x20\x01(\x0cR\x05inputB-\n\
+    \x1acom.example.wallet_flutterB\x06Protos\xa2\x02\x06Protosb\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

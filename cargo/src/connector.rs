@@ -98,7 +98,7 @@ pub fn gen_send_transaction(config: &protos::coin::Config, private_key: Vec<u8>,
 
 
 macro_rules! btc {
-    ($btc:ident, $private:expr, $public:expr, $prefix:expr, $is_compressed:expr) => {
+    ($btc:ident, $private:expr, $public:expr, $prefix:expr, $is_compressed:expr, $is_bech32:expr) => {
         Some(Box::new(coin::$btc::$btc{
             network: Base58Network{
                 private: vec![$private],
@@ -106,6 +106,7 @@ macro_rules! btc {
             },
             prefix: $prefix.to_string(),
             is_compressed: $is_compressed,
+            is_bech32: $is_bech32,
         }))
     }
 }
@@ -147,8 +148,8 @@ pub fn from_config(config: &protos::coin::Config) -> (Option<Box<coin::GenericCo
 
     let p: &str = &config.protocol;
     let gc: Option<Box<coin::GenericCoin + 'static>> = match p {
-        "btc" => btc!(btc, private, public, config.prefix, config.is_compressed),
-        "eos" => btc!(eos, private, public, config.prefix, config.is_compressed),
+        "btc" => btc!(btc, private, public, config.prefix, config.is_compressed, config.is_bech32),
+        "eos" => btc!(eos, private, public, config.prefix, config.is_compressed, config.is_bech32),
         "eth" => eth!(eth, chain_id),
         "xlm" => xlm!(xlm, config.prefix.clone()),
         "xrp" => xrp!(xrp),
@@ -179,7 +180,7 @@ mod tests {
 use super::*;
 
     macro_rules! config {
-        ( $rel:expr, $base:expr, $protocol:expr, $code:expr, $precision:expr, $private:expr, $public:expr, $prefix:expr , $chain_id:expr, $curve_name:expr, $is_compressed:expr ) => {
+        ( $rel:expr, $base:expr, $protocol:expr, $code:expr, $precision:expr, $private:expr, $public:expr, $prefix:expr , $chain_id:expr, $curve_name:expr, $is_compressed:expr, $is_bech32:expr ) => {
             protos::coin::Config{
                 rel:  $rel.to_string(),
                 base:  $base.to_string(),
@@ -192,6 +193,7 @@ use super::*;
                 chain_id:  $chain_id,
                 curve_name:  $curve_name.to_string(),
                 is_compressed:  $is_compressed,
+                is_bech32:  $is_bech32,
                 ..Default::default()
             }
         }
@@ -201,13 +203,13 @@ use super::*;
         protos::coin::Configs{
             list: protobuf::RepeatedField::from_vec(
                 vec![
-                    config!("btc", "btc", "btc", 0, 8, 128, 0, "bc", 0, "", true),
-                    config!("eth", "eth", "eth", 60, 18, 0, 0, "", 1, "", true),
-                    config!("xlm", "xlm", "xlm", 148, 6, 0, 0, "Public Global Stellar Network ; September 2015", 0, "ed25519", true),
-                    config!("xrp", "xrp", "xrp", 144, 6, 0, 0, "", 0, "", true),
-                    config!("eos", "eos", "eos", 194, 18, 128, 0, "EOS", 0, "", false),
-                    config!("neo", "neo", "neo", 888, 0, 0, 0, "", 0, "secp256r1", true),
-                    config!("ont", "ont", "neo", 1024, 0, 0, 0, "", 0, "secp256r1", true)
+                    config!("btc", "btc", "btc", 0, 8, 128, 0, "bc", 0, "", true, true),
+                    config!("eth", "eth", "eth", 60, 18, 0, 0, "", 1, "", true, false),
+                    config!("xlm", "xlm", "xlm", 148, 6, 0, 0, "Public Global Stellar Network ; September 2015", 0, "ed25519", true, false),
+                    config!("xrp", "xrp", "xrp", 144, 6, 0, 0, "", 0, "", true, false),
+                    config!("eos", "eos", "eos", 194, 18, 128, 0, "EOS", 0, "", false, false),
+                    config!("neo", "neo", "neo", 888, 0, 0, 0, "", 0, "secp256r1", true, false),
+                    config!("ont", "ont", "neo", 1024, 0, 0, 0, "", 0, "secp256r1", true, false)
                 ]
             ),
             ..Default::default()
@@ -217,13 +219,13 @@ use super::*;
         protos::coin::Configs{
             list: protobuf::RepeatedField::from_vec(
                 vec![
-                    config!("btc", "btc", "btc", 1, 8, 239, 111, "tb", 0, "", true),
-                    config!("eth", "eth", "eth", 60, 18, 0, 0, "", 1, "", true),
-                    config!("xlm", "xlm", "xlm", 148, 6, 0, 0, "Public Global Stellar Network ; September 2015", 0, "", true),
-                    config!("xrp", "xrp", "xrp", 144, 6, 0, 0, "", 0, "", true),
-                    config!("eos", "eos", "eos", 194, 18, 128, 0, "EOS", 0, "", false),
-                    config!("neo", "neo", "neo", 888, 0, 0, 0, "", 0, "secp256r1", true),
-                    config!("ont", "ont", "neo", 1024, 0, 0, 0, "", 0, "secp256r1", true)
+                    config!("btc", "btc", "btc", 1, 8, 239, 111, "tb", 0, "", true, false),
+                    config!("eth", "eth", "eth", 60, 18, 0, 0, "", 1, "", true, false),
+                    config!("xlm", "xlm", "xlm", 148, 6, 0, 0, "Public Global Stellar Network ; September 2015", 0, "", true, false),
+                    config!("xrp", "xrp", "xrp", 144, 6, 0, 0, "", 0, "", true, false),
+                    config!("eos", "eos", "eos", 194, 18, 128, 0, "EOS", 0, "", false, false),
+                    config!("neo", "neo", "neo", 888, 0, 0, 0, "", 0, "secp256r1", true, false),
+                    config!("ont", "ont", "neo", 1024, 0, 0, 0, "", 0, "secp256r1", true, false)
                 ]
             ),
             ..Default::default()
@@ -235,7 +237,8 @@ use super::*;
         let t = t();
         let y = get_wallets(&t, "connect ritual news sand rapid scale behind swamp damp brief explain ankle".to_string());
         let x = y.list.into_vec();
-        
+        println!("{:?}", hex_encode(&get_by(&x, "btc")[0].public_key));
+        println!("{:?}", hex_encode(&get_by(&x, "btc")[0].private_key));
         let tx = gen_send_transaction(&t.list[0], get_by(&x, "btc")[0].private_key.clone(), get_by(&x, "btc")[0].public_key.clone(), protos::coin::Outputs{
             list: protobuf::RepeatedField::from_vec(
                 vec![

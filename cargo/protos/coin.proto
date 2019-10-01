@@ -53,6 +53,7 @@ message Config{
     string base = 9;
     string curve_name = 10;
     bool is_compressed = 11;
+    bool is_bech32 = 12;
 }
 message Configs{
     repeated Config list = 1;

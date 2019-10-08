@@ -138,7 +138,6 @@ class _WalletState extends State<Wallet> {
 
                         var input = GenSendTxInput()
                         ..config = getConfig(x.rel, a.base)
-                        ..api = explorerApi
                         ..privateKey = x.privateKey
                         ..publicKey = x.publicKey
                         ..outputs = os;

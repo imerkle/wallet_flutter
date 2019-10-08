@@ -2511,6 +2511,7 @@ impl ::protobuf::reflect::ProtobufValue for Configs {
 #[derive(PartialEq,Clone,Default)]
 pub struct Input {
     // message fields
+    pub vout: u32,
     pub id: ::std::string::String,
     pub value: u64,
     // special fields
@@ -2529,7 +2530,22 @@ impl Input {
         ::std::default::Default::default()
     }
 
-    // string id = 1;
+    // uint32 vout = 1;
+
+
+    pub fn get_vout(&self) -> u32 {
+        self.vout
+    }
+    pub fn clear_vout(&mut self) {
+        self.vout = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_vout(&mut self, v: u32) {
+        self.vout = v;
+    }
+
+    // string id = 2;
 
 
     pub fn get_id(&self) -> &str {
@@ -2555,7 +2571,7 @@ impl Input {
         ::std::mem::replace(&mut self.id, ::std::string::String::new())
     }
 
-    // uint64 value = 2;
+    // uint64 value = 3;
 
 
     pub fn get_value(&self) -> u64 {
@@ -2581,9 +2597,16 @@ impl ::protobuf::Message for Input {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.id)?;
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint32()?;
+                    self.vout = tmp;
                 },
                 2 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.id)?;
+                },
+                3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
@@ -2602,11 +2625,14 @@ impl ::protobuf::Message for Input {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if self.vout != 0 {
+            my_size += ::protobuf::rt::value_size(1, self.vout, ::protobuf::wire_format::WireTypeVarint);
+        }
         if !self.id.is_empty() {
-            my_size += ::protobuf::rt::string_size(1, &self.id);
+            my_size += ::protobuf::rt::string_size(2, &self.id);
         }
         if self.value != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.value, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(3, self.value, ::protobuf::wire_format::WireTypeVarint);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -2614,11 +2640,14 @@ impl ::protobuf::Message for Input {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
+        if self.vout != 0 {
+            os.write_uint32(1, self.vout)?;
+        }
         if !self.id.is_empty() {
-            os.write_string(1, &self.id)?;
+            os.write_string(2, &self.id)?;
         }
         if self.value != 0 {
-            os.write_uint64(2, self.value)?;
+            os.write_uint64(3, self.value)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -2662,6 +2691,11 @@ impl ::protobuf::Message for Input {
         unsafe {
             descriptor.get(|| {
                 let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint32>(
+                    "vout",
+                    |m: &Input| { &m.vout },
+                    |m: &mut Input| { &mut m.vout },
+                ));
                 fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
                     "id",
                     |m: &Input| { &m.id },
@@ -2694,6 +2728,7 @@ impl ::protobuf::Message for Input {
 
 impl ::protobuf::Clear for Input {
     fn clear(&mut self) {
+        self.vout = 0;
         self.id.clear();
         self.value = 0;
         self.unknown_fields.clear();
@@ -3766,20 +3801,21 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x12\n\x04base\x18\t\x20\x01(\tR\x04base\x12\x1d\n\ncurve_name\x18\n\x20\
     \x01(\tR\tcurveName\x12#\n\ris_compressed\x18\x0b\x20\x01(\x08R\x0cisCom\
     pressed\x12\x1b\n\tis_bech32\x18\x0c\x20\x01(\x08R\x08isBech32\"&\n\x07C\
-    onfigs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.ConfigR\x04list\"-\n\
-    \x05Input\x12\x0e\n\x02id\x18\x01\x20\x01(\tR\x02id\x12\x14\n\x05value\
-    \x18\x02\x20\x01(\x04R\x05value\">\n\x06TxOpts\x12\x1e\n\x06inputs\x18\
-    \x01\x20\x03(\x0b2\x06.InputR\x06inputs\x12\x14\n\x05nonce\x18\x02\x20\
-    \x01(\x04R\x05nonce\"P\n\x0eGetWalletInput\x12\x1a\n\x08mnemonic\x18\x01\
-    \x20\x01(\tR\x08mnemonic\x12\"\n\x07configs\x18\x02\x20\x01(\x0b2\x08.Co\
-    nfigsR\x07configs\"\xb7\x01\n\x0eGenSendTxInput\x12\x1f\n\x06config\x18\
-    \x01\x20\x01(\x0b2\x07.ConfigR\x06config\x12\x1f\n\x0bprivate_key\x18\
-    \x02\x20\x01(\x0cR\nprivateKey\x12\x1d\n\npublic_key\x18\x03\x20\x01(\
-    \x0cR\tpublicKey\x12\"\n\x07outputs\x18\x04\x20\x01(\x0b2\x08.OutputsR\
-    \x07outputs\x12\x20\n\x07tx_opts\x18\x05\x20\x01(\x0b2\x07.TxOptsR\x06tx\
-    Opts\"K\n\x12WebPlatformChannel\x12\x1f\n\x0bmethod_name\x18\x01\x20\x01\
-    (\tR\nmethodName\x12\x14\n\x05input\x18\x02\x20\x01(\x0cR\x05inputB-\n\
-    \x1acom.example.wallet_flutterB\x06Protos\xa2\x02\x06Protosb\x06proto3\
+    onfigs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.ConfigR\x04list\"A\n\
+    \x05Input\x12\x12\n\x04vout\x18\x01\x20\x01(\rR\x04vout\x12\x0e\n\x02id\
+    \x18\x02\x20\x01(\tR\x02id\x12\x14\n\x05value\x18\x03\x20\x01(\x04R\x05v\
+    alue\">\n\x06TxOpts\x12\x1e\n\x06inputs\x18\x01\x20\x03(\x0b2\x06.InputR\
+    \x06inputs\x12\x14\n\x05nonce\x18\x02\x20\x01(\x04R\x05nonce\"P\n\x0eGet\
+    WalletInput\x12\x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\x12\"\
+    \n\x07configs\x18\x02\x20\x01(\x0b2\x08.ConfigsR\x07configs\"\xb7\x01\n\
+    \x0eGenSendTxInput\x12\x1f\n\x06config\x18\x01\x20\x01(\x0b2\x07.ConfigR\
+    \x06config\x12\x1f\n\x0bprivate_key\x18\x02\x20\x01(\x0cR\nprivateKey\
+    \x12\x1d\n\npublic_key\x18\x03\x20\x01(\x0cR\tpublicKey\x12\"\n\x07outpu\
+    ts\x18\x04\x20\x01(\x0b2\x08.OutputsR\x07outputs\x12\x20\n\x07tx_opts\
+    \x18\x05\x20\x01(\x0b2\x07.TxOptsR\x06txOpts\"K\n\x12WebPlatformChannel\
+    \x12\x1f\n\x0bmethod_name\x18\x01\x20\x01(\tR\nmethodName\x12\x14\n\x05i\
+    nput\x18\x02\x20\x01(\x0cR\x05inputB-\n\x1acom.example.wallet_flutterB\
+    \x06Protos\xa2\x02\x06Protosb\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

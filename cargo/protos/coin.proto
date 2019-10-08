@@ -59,8 +59,9 @@ message Configs{
     repeated Config list = 1;
 }
 message Input{
-    string id = 1;
-    uint64 value = 2;
+    uint32 vout = 1;
+    string id = 2;
+    uint64 value = 3;
 }
 message TxOpts{
     repeated Input inputs = 1;

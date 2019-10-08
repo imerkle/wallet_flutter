@@ -4,6 +4,7 @@ use wallet::{
         bip32::{self, Node},
         base58::{Base58Network},
         CurveName,
+        hex_decode,
     },
     coin::{
         self,
@@ -11,7 +12,6 @@ use wallet::{
     shuttle_core,
     bitcoin_hashes,
 };
-use bitcoin_hashes::hex::FromHex;
 use super::protos;
 
 pub fn get_wallets(configs: &protos::coin::Configs, mnemonic: String) -> protos::coin::CoinsList{
@@ -85,8 +85,8 @@ pub fn gen_send_transaction(config: &protos::coin::Config, private_key: Vec<u8>,
     coin::TxOpts{
         inputs: txi.inputs.iter().enumerate().map(|(i, o)|{
                 coin::btc::transaction::Input{
-                    index: i as u32,
-                    id: bitcoin_hashes::sha256d::Hash::from_hex(&o.id).unwrap(),
+                    vout: o.vout,
+                    id: hex_decode(&o.id),
                     value: o.value
                 }
             }).collect::<Vec<_>>(),

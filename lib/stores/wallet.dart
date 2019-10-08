@@ -5,20 +5,19 @@ import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/models/rust.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:wallet_flutter/models/balance.dart';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:plugfox_localstorage/localstorage.dart';
 
 // Include generated file
 part 'wallet.g.dart';
 
 
-//final LocalStorage storage = new LocalStorage(APPNAME);
+final LocalStorage storage = new LocalStorage();
 
 // This is the class used by rest of your codebase
 class WalletStore = _WalletStore with _$WalletStore;
-
 
 class Fiat{
   Fiat({this.symbol, this.ticker});
@@ -38,6 +37,7 @@ abstract class _WalletStore with Store {
   List<Balances> bl = [];
   
   Future<void> initPrep(Rust rust) async{
+    await storage.init();
     await initWalletIfAbsent(rust);
     await refreshBalances();
   }
@@ -85,7 +85,8 @@ abstract class _WalletStore with Store {
       const String key = "wallets";
       //String walletsJson = await storage.read(key: key);
       //String walletsJson = storage.getItem(key);
-      String walletsJson = null;
+      String walletsJson = storage[key];
+      //String walletsJson = null;
         
       String mnemonic = "";
       

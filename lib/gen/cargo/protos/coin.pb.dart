@@ -7,6 +7,7 @@
 
 import 'dart:core' as $core;
 
+import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 
 class Coin extends $pb.GeneratedMessage {
@@ -264,6 +265,9 @@ class Config extends $pb.GeneratedMessage {
     ..aOS(7, 'prefix')
     ..a<$core.int>(8, 'chainId', $pb.PbFieldType.OU3)
     ..aOS(9, 'base')
+    ..aOS(10, 'curveName')
+    ..aOB(11, 'isCompressed')
+    ..aOB(12, 'isBech32')
     ..hasRequiredFields = false
   ;
 
@@ -325,6 +329,21 @@ class Config extends $pb.GeneratedMessage {
   set base($core.String v) { $_setString(8, v); }
   $core.bool hasBase() => $_has(8);
   void clearBase() => clearField(9);
+
+  $core.String get curveName => $_getS(9, '');
+  set curveName($core.String v) { $_setString(9, v); }
+  $core.bool hasCurveName() => $_has(9);
+  void clearCurveName() => clearField(10);
+
+  $core.bool get isCompressed => $_get(10, false);
+  set isCompressed($core.bool v) { $_setBool(10, v); }
+  $core.bool hasIsCompressed() => $_has(10);
+  void clearIsCompressed() => clearField(11);
+
+  $core.bool get isBech32 => $_get(11, false);
+  set isBech32($core.bool v) { $_setBool(11, v); }
+  $core.bool hasIsBech32() => $_has(11);
+  void clearIsBech32() => clearField(12);
 }
 
 class Configs extends $pb.GeneratedMessage {
@@ -348,6 +367,73 @@ class Configs extends $pb.GeneratedMessage {
   static Configs _defaultInstance;
 
   $core.List<Config> get list => $_getList(0);
+}
+
+class Input extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Input', createEmptyInstance: create)
+    ..a<$core.int>(1, 'vout', $pb.PbFieldType.OU3)
+    ..aOS(2, 'id')
+    ..a<Int64>(3, 'value', $pb.PbFieldType.OU6, defaultOrMaker: Int64.ZERO)
+    ..hasRequiredFields = false
+  ;
+
+  Input._() : super();
+  factory Input() => create();
+  factory Input.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Input.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Input clone() => Input()..mergeFromMessage(this);
+  Input copyWith(void Function(Input) updates) => super.copyWith((message) => updates(message as Input));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Input create() => Input._();
+  Input createEmptyInstance() => create();
+  static $pb.PbList<Input> createRepeated() => $pb.PbList<Input>();
+  static Input getDefault() => _defaultInstance ??= create()..freeze();
+  static Input _defaultInstance;
+
+  $core.int get vout => $_get(0, 0);
+  set vout($core.int v) { $_setUnsignedInt32(0, v); }
+  $core.bool hasVout() => $_has(0);
+  void clearVout() => clearField(1);
+
+  $core.String get id => $_getS(1, '');
+  set id($core.String v) { $_setString(1, v); }
+  $core.bool hasId() => $_has(1);
+  void clearId() => clearField(2);
+
+  Int64 get value => $_getI64(2);
+  set value(Int64 v) { $_setInt64(2, v); }
+  $core.bool hasValue() => $_has(2);
+  void clearValue() => clearField(3);
+}
+
+class TxOpts extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('TxOpts', createEmptyInstance: create)
+    ..pc<Input>(1, 'inputs', $pb.PbFieldType.PM, subBuilder: Input.create)
+    ..a<Int64>(2, 'nonce', $pb.PbFieldType.OU6, defaultOrMaker: Int64.ZERO)
+    ..hasRequiredFields = false
+  ;
+
+  TxOpts._() : super();
+  factory TxOpts() => create();
+  factory TxOpts.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory TxOpts.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  TxOpts clone() => TxOpts()..mergeFromMessage(this);
+  TxOpts copyWith(void Function(TxOpts) updates) => super.copyWith((message) => updates(message as TxOpts));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static TxOpts create() => TxOpts._();
+  TxOpts createEmptyInstance() => create();
+  static $pb.PbList<TxOpts> createRepeated() => $pb.PbList<TxOpts>();
+  static TxOpts getDefault() => _defaultInstance ??= create()..freeze();
+  static TxOpts _defaultInstance;
+
+  $core.List<Input> get inputs => $_getList(0);
+
+  Int64 get nonce => $_getI64(1);
+  set nonce(Int64 v) { $_setInt64(1, v); }
+  $core.bool hasNonce() => $_has(1);
+  void clearNonce() => clearField(2);
 }
 
 class GetWalletInput extends $pb.GeneratedMessage {
@@ -385,10 +471,10 @@ class GetWalletInput extends $pb.GeneratedMessage {
 class GenSendTxInput extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GenSendTxInput', createEmptyInstance: create)
     ..a<Config>(1, 'config', $pb.PbFieldType.OM, defaultOrMaker: Config.getDefault, subBuilder: Config.create)
-    ..aOS(2, 'api')
-    ..a<$core.List<$core.int>>(3, 'privateKey', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(4, 'publicKey', $pb.PbFieldType.OY)
-    ..a<Outputs>(6, 'outputs', $pb.PbFieldType.OM, defaultOrMaker: Outputs.getDefault, subBuilder: Outputs.create)
+    ..a<$core.List<$core.int>>(2, 'privateKey', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(3, 'publicKey', $pb.PbFieldType.OY)
+    ..a<Outputs>(4, 'outputs', $pb.PbFieldType.OM, defaultOrMaker: Outputs.getDefault, subBuilder: Outputs.create)
+    ..a<TxOpts>(5, 'txOpts', $pb.PbFieldType.OM, defaultOrMaker: TxOpts.getDefault, subBuilder: TxOpts.create)
     ..hasRequiredFields = false
   ;
 
@@ -411,25 +497,25 @@ class GenSendTxInput extends $pb.GeneratedMessage {
   $core.bool hasConfig() => $_has(0);
   void clearConfig() => clearField(1);
 
-  $core.String get api => $_getS(1, '');
-  set api($core.String v) { $_setString(1, v); }
-  $core.bool hasApi() => $_has(1);
-  void clearApi() => clearField(2);
+  $core.List<$core.int> get privateKey => $_getN(1);
+  set privateKey($core.List<$core.int> v) { $_setBytes(1, v); }
+  $core.bool hasPrivateKey() => $_has(1);
+  void clearPrivateKey() => clearField(2);
 
-  $core.List<$core.int> get privateKey => $_getN(2);
-  set privateKey($core.List<$core.int> v) { $_setBytes(2, v); }
-  $core.bool hasPrivateKey() => $_has(2);
-  void clearPrivateKey() => clearField(3);
+  $core.List<$core.int> get publicKey => $_getN(2);
+  set publicKey($core.List<$core.int> v) { $_setBytes(2, v); }
+  $core.bool hasPublicKey() => $_has(2);
+  void clearPublicKey() => clearField(3);
 
-  $core.List<$core.int> get publicKey => $_getN(3);
-  set publicKey($core.List<$core.int> v) { $_setBytes(3, v); }
-  $core.bool hasPublicKey() => $_has(3);
-  void clearPublicKey() => clearField(4);
+  Outputs get outputs => $_getN(3);
+  set outputs(Outputs v) { setField(4, v); }
+  $core.bool hasOutputs() => $_has(3);
+  void clearOutputs() => clearField(4);
 
-  Outputs get outputs => $_getN(4);
-  set outputs(Outputs v) { setField(6, v); }
-  $core.bool hasOutputs() => $_has(4);
-  void clearOutputs() => clearField(6);
+  TxOpts get txOpts => $_getN(4);
+  set txOpts(TxOpts v) { setField(5, v); }
+  $core.bool hasTxOpts() => $_has(4);
+  void clearTxOpts() => clearField(5);
 }
 
 class WebPlatformChannel extends $pb.GeneratedMessage {

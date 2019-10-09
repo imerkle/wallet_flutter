@@ -1,3 +1,4 @@
+import 'package:plugfox_localstorage/localstorage.dart';
 import 'package:universal_io/prefer_universal/io.dart';
 
 import 'package:flutter/foundation.dart';
@@ -19,9 +20,13 @@ class Rust{
           var socket = await WebSocketTransformer.upgrade(req);
           socket.listen((message) async{
             WebPlatformChannel x = WebPlatformChannel.fromBuffer(message);
-            var y = await invokeRustDirect(x.methodName, x.input);
-            
-            socket.add(y);
+            if(x.methodName == SYNC_WALLETS){
+              final LocalStorage storage = new LocalStorage();
+              socket.add(storage[SYNC_WALLETS]);
+            }else{
+              var y = await invokeRustDirect(x.methodName, x.input);
+              socket.add(y);
+            }
           });
         }
       }

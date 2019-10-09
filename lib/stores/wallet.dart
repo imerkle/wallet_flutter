@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/models/rust.dart';
 import 'package:wallet_flutter/utils/constants.dart';
@@ -80,33 +81,32 @@ abstract class _WalletStore with Store {
 
   @action
   Future<void> initWalletIfAbsent(Rust rust) async {
-      //storage.clear();
-      //storage.deleteAll();
-      const String key = "wallets";
-      //String walletsJson = await storage.read(key: key);
-      //String walletsJson = storage.getItem(key);
-      String walletsJson = storage[key];
-      //String walletsJson = null;
-        
+      String walletsJson = storage[SYNC_WALLETS];
+      
       String mnemonic = "";
       
       // For some reason mobx in web doesnt loads when modifying to existing object so replace it completely
-      Wallets wsx = Wallets();
-      if(walletsJson == null){
-        //mnemonic = bip39.generateMnemonic();
-        mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
+      if(walletsJson == null || walletsJson.length == 0){
+        if(kIsWeb){
+          List<int> inp = [];
+          var walletsJson = await rust.invokeRustMethod(SYNC_WALLETS, inp);
+          ws = Wallets.fromJson(walletsJson);
+        }else{
+          Wallets wsx = Wallets();
+          mnemonic = bip39.generateMnemonic();
+          //mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
 
-        var input = GetWalletInput()
-        ..mnemonic = mnemonic
-        ..configs = getConfigs();
-        var x = await rust.invokeRustMethod("get_wallets", input.writeToBuffer());
-        Wallet w = Wallet()
-        ..coinsList = CoinsList.fromBuffer(x)
-        ..mnemonic = mnemonic;
-        wsx.list.add(w);
-        ws = wsx;
-          //storage.write(key: key, value: ws.writeToJson());
-          //storage.setItem(key, ws.writeToJson());        
+          var input = GetWalletInput()
+          ..mnemonic = mnemonic
+          ..configs = getConfigs();
+          var x = await rust.invokeRustMethod("get_wallets", input.writeToBuffer());
+          Wallet w = Wallet()
+          ..coinsList = CoinsList.fromBuffer(x)
+          ..mnemonic = mnemonic;
+          wsx.list.add(w);
+          ws = wsx;
+          storage[SYNC_WALLETS] = ws.writeToJson();
+        }
       }else{
         ws = Wallets.fromJson(walletsJson);
       }

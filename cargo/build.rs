@@ -1,5 +1,5 @@
-use std::{env};
 use protoc_rust::Customize;
+use std::env;
 fn main() {
     // don't simplify this to if the target contains the substring "android" --
     // these lines also serve as a guard so only true android triples receive
@@ -17,13 +17,14 @@ fn main() {
         //gen_for_android();
     }
 }
-fn gen_protobuf(){
-	protoc_rust::run(protoc_rust::Args {
-	    out_dir: "src/protos",
-	    input: &["protos/coin.proto"],
-	    includes: &["protos"],
-	    customize: Customize {
-	      ..Default::default()
-	    },
-	}).expect("protoc");
+fn gen_protobuf() {
+    protoc_rust::run(protoc_rust::Args {
+        out_dir: "src/protos",
+        input: &["protos/coin.proto"],
+        includes: &["protos"],
+        customize: Customize {
+            ..Default::default()
+        },
+    })
+    .expect("protoc");
 }

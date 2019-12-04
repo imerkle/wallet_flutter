@@ -9,7 +9,7 @@ class Tx {
     this.value,
   });
   String address;
-  int value;
+  double value;
 
   factory Tx.fromJson(Map<String, dynamic> json) => _$TxFromJson(json);
 
@@ -32,9 +32,9 @@ class Transaction {
   List<Tx> inputs;
   List<Tx> outputs;
   String kind;
-  int fees;
-  int timestamp;
-  int confirmations;
+  double fees;
+  double timestamp;
+  double confirmations;
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);

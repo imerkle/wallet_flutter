@@ -39,13 +39,16 @@ class _TrasactionScreenState extends State<TrasactionScreen> {
         header: ClassicHeader(),
         footer: RefreshFooter(),
         child: Observer(builder: (_) {
-          print(walletStore.txs);
-          List transactions = [];
-          return Container(child: Text("woo")
-              /*ListView.builder(
-                  itemCount: transactions.length,
-                  itemBuilder: (context, i) {})*/
-              );
+          print(walletStore.txs.length);
+          if (walletStore.txs.length > 0) {
+            return ListView.builder(
+                itemCount: walletStore.txs.length,
+                itemBuilder: (context, i) {
+                  return Text(walletStore.txs[i].id);
+                });
+          } else {
+            return Container(child: Text("woo"));
+          }
         }));
   }
 }

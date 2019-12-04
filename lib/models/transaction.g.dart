@@ -9,7 +9,7 @@ part of 'transaction.dart';
 Tx _$TxFromJson(Map<String, dynamic> json) {
   return Tx(
     address: json['address'] as String,
-    value: json['value'] as int,
+    value: (json['value'] as num)?.toDouble(),
   );
 }
 
@@ -28,9 +28,9 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) {
         ?.map((e) => e == null ? null : Tx.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     kind: json['kind'] as String,
-    fees: json['fees'] as int,
-    timestamp: json['timestamp'] as int,
-    confirmations: json['confirmations'] as int,
+    fees: (json['fees'] as num)?.toDouble(),
+    timestamp: (json['timestamp'] as num)?.toDouble(),
+    confirmations: (json['confirmations'] as num)?.toDouble(),
   );
 }
 

@@ -1,8 +1,7 @@
-
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
-import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
-import 'package:wallet_flutter/utils/constants.dart';
+import '../gen/cargo/protos/coin.pb.dart';
+import '../utils/constants.dart';
 
 Future scan(Function onScan) async {
   try {
@@ -18,12 +17,13 @@ Future scan(Function onScan) async {
     } else {
       //setState(() => this.barcode = 'Unknown error: $e');
     }
-  } on FormatException{
+  } on FormatException {
     // setState(() => this.barcode = 'null (User returned using the "back"-button before scanning anything. Result)');
   } catch (e) {
     //setState(() => this.barcode = 'Unknown error: $e');
   }
 }
-Config getConfig(String rel, String base){
+
+Config getConfig(String rel, String base) {
   return configs.singleWhere((c) => c.base == base && c.rel == rel);
 }

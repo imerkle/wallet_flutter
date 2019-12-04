@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:wallet_flutter/stores/main.dart';
+import '../stores/main.dart';
 import 'package:provider/provider.dart';
 
 final double iconSize = 45;
-String cryptoIconUrl(String ticker, {int size = 128,String color = "color"}){
+String cryptoIconUrl(String ticker, {int size = 128, String color = "color"}) {
   return 'https://raw.githack.com/atomiclabs/cryptocurrency-icons/master/$size/$color/${ticker.toLowerCase()}.png';
 }
 
@@ -14,33 +14,33 @@ final cryptoColors = {
   'ltc': Colors.grey,
 };
 
-class Fabs extends StatelessWidget{
+class Fabs extends StatelessWidget {
   @override
-  Widget build(context){
+  Widget build(context) {
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
 
     return ListView.builder(
-      itemCount: walletStore.ws.list[0].coinsList.list.length,
-      itemBuilder: (context, i) {
-        return Observer(
-          builder: (_) {
-            return 
-            GestureDetector(
+        itemCount: walletStore.ws.list[0].coinsList.list.length,
+        itemBuilder: (context, i) {
+          return Observer(builder: (_) {
+            return GestureDetector(
               onTap: () => fabStore.setBaseIndex(i),
               child: Padding(
                 padding: EdgeInsets.only(top: 7, bottom: 7),
                 child: Row(
                   children: <Widget>[
                     Container(
-                      height: iconSize-0.2*iconSize,
+                      height: iconSize - 0.2 * iconSize,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: fabStore.baseIndex == i ? Theme.of(context).accentColor: Colors.transparent,
+                          color: fabStore.baseIndex == i
+                              ? Theme.of(context).accentColor
+                              : Colors.transparent,
                           width: 2.0,
                         ),
                         borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ), 
+                      ),
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 5),
@@ -48,13 +48,15 @@ class Fabs extends StatelessWidget{
                         height: iconSize,
                         width: iconSize,
                         decoration: BoxDecoration(
-                          color: cryptoColors[walletStore.ws.list[0].coinsList.list[i].base],
+                          color: cryptoColors[
+                              walletStore.ws.list[0].coinsList.list[i].base],
                           image: DecorationImage(
-                            image: NetworkImage(cryptoIconUrl(walletStore.ws.list[0].coinsList.list[i].base)),
-                            fit: BoxFit.cover
-                          ),
+                              image: NetworkImage(cryptoIconUrl(walletStore
+                                  .ws.list[0].coinsList.list[i].base)),
+                              fit: BoxFit.cover),
                           //shape: BoxShape.circle,
-                          borderRadius: BorderRadius.all(Radius.circular(fabStore.baseIndex == i ? 10 : 100)),
+                          borderRadius: BorderRadius.all(Radius.circular(
+                              fabStore.baseIndex == i ? 10 : 100)),
                         ),
                       ),
                     ),
@@ -62,9 +64,7 @@ class Fabs extends StatelessWidget{
                 ),
               ),
             );
-          }
-        );
-      }
-    );
+          });
+        });
   }
 }

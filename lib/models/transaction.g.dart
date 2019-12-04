@@ -6,14 +6,29 @@ part of 'transaction.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+Tx _$TxFromJson(Map<String, dynamic> json) {
+  return Tx(
+    address: json['address'] as String,
+    value: json['value'] as int,
+  );
+}
+
+Map<String, dynamic> _$TxToJson(Tx instance) => <String, dynamic>{
+      'address': instance.address,
+      'value': instance.value,
+    };
+
 Transaction _$TransactionFromJson(Map<String, dynamic> json) {
   return Transaction(
-    address: json['address'] as String,
-    from: json['from'] as String,
-    hash: json['hash'] as String,
-    value: json['value'] as int,
+    id: json['id'] as String,
+    inputs: (json['inputs'] as List)
+        ?.map((e) => e == null ? null : Tx.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+    outputs: (json['outputs'] as List)
+        ?.map((e) => e == null ? null : Tx.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
     kind: json['kind'] as String,
-    fee: json['fee'] as int,
+    fees: json['fees'] as int,
     timestamp: json['timestamp'] as int,
     confirmations: json['confirmations'] as int,
   );
@@ -21,12 +36,11 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     <String, dynamic>{
-      'address': instance.address,
-      'from': instance.from,
-      'hash': instance.hash,
-      'value': instance.value,
+      'id': instance.id,
+      'inputs': instance.inputs,
+      'outputs': instance.outputs,
       'kind': instance.kind,
-      'fee': instance.fee,
+      'fees': instance.fees,
       'timestamp': instance.timestamp,
       'confirmations': instance.confirmations,
     };

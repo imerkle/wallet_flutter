@@ -3,23 +3,36 @@ import 'package:json_annotation/json_annotation.dart';
 part 'transaction.g.dart';
 
 @JsonSerializable()
-class Transaction {
-  Transaction(
-      {this.address,
-      this.from,
-      this.hash,
-      this.value,
-      this.kind,
-      this.fee,
-      this.timestamp,
-      this.confirmations});
-
+class Tx {
+  Tx({
+    this.address,
+    this.value,
+  });
   String address;
-  String from;
-  String hash;
   int value;
+
+  factory Tx.fromJson(Map<String, dynamic> json) => _$TxFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TxToJson(this);
+}
+
+@JsonSerializable()
+class Transaction {
+  Transaction({
+    this.id,
+    this.inputs,
+    this.outputs,
+    this.kind,
+    this.fees,
+    this.timestamp,
+    this.confirmations,
+  });
+
+  String id;
+  List<Tx> inputs;
+  List<Tx> outputs;
   String kind;
-  int fee;
+  int fees;
   int timestamp;
   int confirmations;
 

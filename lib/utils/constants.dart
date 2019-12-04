@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:wallet_flutter/gen/cargo/protos/coin.pbserver.dart';
-import 'package:wallet_flutter/models/config.dart';
+import '../gen/cargo/protos/coin.pbserver.dart';
+import '../models/config.dart';
 
 const bool isTestnet = true;
 const String SYNC_WALLETS = "sync_wallets";

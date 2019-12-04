@@ -1,20 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
-import 'package:wallet_flutter/models/transaction.dart';
+import '../gen/cargo/protos/coin.pb.dart';
+import '../models/transaction.dart';
 
 import 'constants.dart';
 
 Future<dynamic> getTransactions(
     {String rel, String base, String address}) async {
-  var response = await http.post("$explorerApi/get_txs",
-      headers: {"Content-type": "application/json"},
-      body: jsonEncode({
-        "api": explorerConfigList[rel].api,
-        "rel": rel,
-        "base": base,
-        "address": address,
-      }));
+  var response = await http.get(
+      "$explorerApi/get_txs?api=${explorerConfigList[rel].api}&rel=$rel&base=$base&address=$address",
+      headers: {"Content-type": "application/json"});
+  print(response.body);
   List txs = json.decode(response.body);
   txs = txs.map((t) => {Transaction.fromJson(t)}).toList();
   return txs;

@@ -3,13 +3,16 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wallet_flutter/models/rust.dart';
-import 'package:wallet_flutter/utils/constants.dart';
-import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
 import 'package:http/http.dart' as http;
-import 'package:wallet_flutter/models/balance.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:plugfox_localstorage/localstorage.dart';
+
+import '../models/rust.dart';
+import '../models/transaction.dart';
+import '../utils/api.dart';
+import '../utils/constants.dart';
+import '../gen/cargo/protos/coin.pb.dart';
+import '../models/balance.dart';
 
 // Include generated file
 part 'wallet.g.dart';
@@ -37,10 +40,20 @@ abstract class _WalletStore with Store {
   @observable
   List<Balances> bl = [];
 
+  @observable
+  List<Transaction> txs = [];
+
   Future<void> initPrep(Rust rust) async {
     await storage.init();
     await initWalletIfAbsent(rust);
     await refreshBalances();
+  }
+
+  @action
+  Future<void> refreshTxs({String rel, String base, String address}) async {
+    try {
+      txs = await getTransactions(rel: rel, base: base, address: address);
+    } catch (e) {}
   }
 
   @action

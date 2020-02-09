@@ -22,7 +22,7 @@ class Transaction {
     this.id,
     this.inputs,
     this.outputs,
-    this.kind,
+    this.direction,
     this.fees,
     this.timestamp,
     this.confirmations,
@@ -31,9 +31,9 @@ class Transaction {
   String id;
   List<Tx> inputs;
   List<Tx> outputs;
-  String kind;
+  int direction;
   double fees;
-  double timestamp;
+  int timestamp;
   double confirmations;
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>

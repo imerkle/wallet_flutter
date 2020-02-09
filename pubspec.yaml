@@ -42,6 +42,7 @@ dependencies:
   plugfox_localstorage: ^0.1.1+1
   bip39: ^1.0.3
   protoc_plugin: ^19.0.1  
+  timeago: ^2.0.26
 
 dev_dependencies:
   flutter_test:

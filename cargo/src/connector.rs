@@ -256,7 +256,7 @@ pub fn from_config(
         gc,
         coin::CoinOpts {
             slips44_code: config.code,
-            precision: precision,
+            precision,
             rel: config.rel.to_string(),
             curve_name,
         },

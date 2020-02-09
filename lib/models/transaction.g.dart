@@ -27,9 +27,9 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) {
     outputs: (json['outputs'] as List)
         ?.map((e) => e == null ? null : Tx.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    kind: json['kind'] as String,
+    direction: json['direction'] as int,
     fees: (json['fees'] as num)?.toDouble(),
-    timestamp: (json['timestamp'] as num)?.toDouble(),
+    timestamp: (json['timestamp'] as num)?.toInt(),
     confirmations: (json['confirmations'] as num)?.toDouble(),
   );
 }
@@ -39,7 +39,7 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
       'id': instance.id,
       'inputs': instance.inputs,
       'outputs': instance.outputs,
-      'kind': instance.kind,
+      'direction': instance.direction,
       'fees': instance.fees,
       'timestamp': instance.timestamp,
       'confirmations': instance.confirmations,

@@ -87,7 +87,6 @@ class DrawerWidget extends StatelessWidget {
     if (walletStore.ws.list.length == 0) {
       return Container();
     }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

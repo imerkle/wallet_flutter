@@ -42,8 +42,9 @@ dependencies:
   plugfox_localstorage: ^0.1.1+1
   bip39: ^1.0.3
   protoc_plugin: ^19.0.1  
-  timeago: ^2.0.26
-
+  timeago:
+    git:
+      url: git://github.com/imerkle/timeago.dart.git
 dev_dependencies:
   flutter_test:
     sdk: flutter

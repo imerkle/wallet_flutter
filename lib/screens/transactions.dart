@@ -57,7 +57,8 @@ class _TrasactionScreenState extends State<TrasactionScreen> {
                           DataCell(Text(smartTrim(tx.id, 10))),
                           DataCell(Text(timeago.format(
                               DateTime.fromMillisecondsSinceEpoch(
-                                  tx.timestamp * 1000)))),
+                                  tx.timestamp * 1000),
+                              maxSuffix: 3))),
                           DataCell(Container(
                             padding: EdgeInsets.all(6),
                             color:

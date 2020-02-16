@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import '../gen/cargo/protos/coin.pb.dart';
@@ -22,6 +24,10 @@ Future scan(Function onScan) async {
   } catch (e) {
     //setState(() => this.barcode = 'Unknown error: $e');
   }
+}
+
+double valueToPrecision(double value, String rel) {
+  return value / pow(10, precisions[rel]);
 }
 
 Config getConfig(String rel, String base) {

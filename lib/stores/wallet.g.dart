@@ -43,23 +43,6 @@ mixin _$WalletStore on _WalletStore, Store {
     }, _$walletIndexAtom, name: '${_$walletIndexAtom.name}_set');
   }
 
-  final _$fiatAtom = Atom(name: '_WalletStore.fiat');
-
-  @override
-  Fiat get fiat {
-    _$fiatAtom.context.enforceReadPolicy(_$fiatAtom);
-    _$fiatAtom.reportObserved();
-    return super.fiat;
-  }
-
-  @override
-  set fiat(Fiat value) {
-    _$fiatAtom.context.conditionallyRunInAction(() {
-      super.fiat = value;
-      _$fiatAtom.reportChanged();
-    }, _$fiatAtom, name: '${_$fiatAtom.name}_set');
-  }
-
   final _$blAtom = Atom(name: '_WalletStore.bl');
 
   @override
@@ -80,8 +63,8 @@ mixin _$WalletStore on _WalletStore, Store {
   final _$refreshBalancesAsyncAction = AsyncAction('refreshBalances');
 
   @override
-  Future<void> refreshBalances() {
-    return _$refreshBalancesAsyncAction.run(() => super.refreshBalances());
+  Future<void> refreshBalances(dynamic fiat) {
+    return _$refreshBalancesAsyncAction.run(() => super.refreshBalances(fiat));
   }
 
   final _$initWalletIfAbsentAsyncAction = AsyncAction('initWalletIfAbsent');

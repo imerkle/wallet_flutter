@@ -21,6 +21,23 @@ mixin _$MainStore on _MainStore, Store {
   Coin get coinFromRel =>
       (_$coinFromRelComputed ??= Computed<Coin>(() => super.coinFromRel)).value;
 
+  final _$fiatAtom = Atom(name: '_MainStore.fiat');
+
+  @override
+  Fiat get fiat {
+    _$fiatAtom.context.enforceReadPolicy(_$fiatAtom);
+    _$fiatAtom.reportObserved();
+    return super.fiat;
+  }
+
+  @override
+  set fiat(Fiat value) {
+    _$fiatAtom.context.conditionallyRunInAction(() {
+      super.fiat = value;
+      _$fiatAtom.reportChanged();
+    }, _$fiatAtom, name: '${_$fiatAtom.name}_set');
+  }
+
   final _$initPrepAsyncAction = AsyncAction('initPrep');
 
   @override

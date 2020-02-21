@@ -42,7 +42,7 @@ class _WalletState extends State<Wallet> {
       enablePullUp: true,
       controller: _refreshController,
       onRefresh: () async {
-        await walletStore.refreshBalances();
+        await walletStore.refreshBalances(mainStore.fiat);
         _refreshController.refreshCompleted();
       },
       header: ClassicHeader(),
@@ -61,7 +61,7 @@ class _WalletState extends State<Wallet> {
                 BalanceHeader(
                     rel: x.rel,
                     bal: valueToPretty(b.balance, CRYPTO_PRECISION),
-                    fiatSymbol: walletStore.fiat.symbol,
+                    fiatSymbol: mainStore.fiat.symbol,
                     fiatBal: valueToPretty(b.balance * b.fiat, FIAT_PRECISION)),
                 AddressHeader(rel: x.rel, address: x.address),
                 Text(AppLocalizations.of(context).tr('send_tx').toUpperCase(),
@@ -79,7 +79,7 @@ class _WalletState extends State<Wallet> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: this._amountInFiat
-                        ? '${walletStore.fiat.ticker.toUpperCase()} Amount'
+                        ? '${mainStore.fiat.ticker.toUpperCase()} Amount'
                         : '${x.rel.toUpperCase()} Amount',
                     prefixIcon: FlatButton(
                       child: Text("MAX"),
@@ -93,7 +93,7 @@ class _WalletState extends State<Wallet> {
                     ),
                     suffixIcon: FlatButton(
                       child: Text(this._amountInFiat
-                          ? walletStore.fiat.ticker.toUpperCase()
+                          ? mainStore.fiat.ticker.toUpperCase()
                           : x.rel.toUpperCase()),
                       onPressed: () {
                         setState(() {

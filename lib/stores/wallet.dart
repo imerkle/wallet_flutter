@@ -6,6 +6,7 @@ import 'package:mobx/mobx.dart';
 import 'package:http/http.dart' as http;
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:plugfox_localstorage/localstorage.dart';
+import 'package:wallet_flutter/stores/main.dart';
 
 import '../models/rust.dart';
 import '../models/transaction.dart';
@@ -21,38 +22,30 @@ final LocalStorage storage = new LocalStorage();
 // This is the class used by rest of your codebase
 class WalletStore = _WalletStore with _$WalletStore;
 
-class Fiat {
-  Fiat({this.symbol, this.ticker});
-  String symbol;
-  String ticker;
-}
-
 abstract class _WalletStore with Store {
   @observable
   Wallets ws = Wallets();
 
   @observable
   int walletIndex = 0;
-  @observable
-  Fiat fiat = Fiat(symbol: "\$", ticker: "usd");
 
   @observable
   List<Balances> bl = [];
 
-  Future<void> initPrep(Rust rust) async {
+  Future<void> initPrep(Rust rust, Fiat fiat) async {
     await storage.init();
     await initWalletIfAbsent(rust);
-    await refreshBalances();
+    await refreshBalances(fiat);
   }
 
   @action
-  Future<void> refreshBalances() async {
+  Future<void> refreshBalances(fiat) async {
     try {
-      bl = await initFetchBalances();
+      bl = await initFetchBalances(fiat);
     } catch (e) {}
   }
 
-  Future<List<Balances>> initFetchBalances() async {
+  Future<List<Balances>> initFetchBalances(fiat) async {
     var url = '$explorerApi/get_balances';
     Map<String, String> headers = {"Content-type": "application/json"};
     List<Map<String, String>> bp = [];

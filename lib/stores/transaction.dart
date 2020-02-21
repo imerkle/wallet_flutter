@@ -17,7 +17,6 @@ abstract class _TransactionStore with Store {
   @action
   Future<void> refreshTxs({String rel, String base, String address}) async {
     try {
-      print("okk");
       var t = await getTransactions(rel: rel, base: base, address: address);
       if (!txs.containsKey(base)) {
         txs = {
@@ -31,20 +30,5 @@ abstract class _TransactionStore with Store {
     } catch (e) {
       print(e);
     }
-  }
-
-  @computed
-  List<Transaction> getTxs(MainStore mainStore) {
-    Coins a = mainStore.coinListFromBase;
-    Coin x = mainStore.coinFromRel;
-    if (txs.containsKey(a.base) && txs[a.base].containsKey(x.rel)) {
-      return txs[a.base][x.rel];
-    }
-    return [];
-  }
-
-  @computed
-  int getTxsLen(MainStore mainStore) {
-    return getTxs(mainStore).length;
   }
 }

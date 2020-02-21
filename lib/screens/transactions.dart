@@ -40,20 +40,22 @@ class _TrasactionScreenState extends State<TrasactionScreen>
   @override
   void didInitState() {
     final mainStore = Provider.of<MainStore>(context);
-    final transactionStore = Provider.of<MainStore>(context).transactionStore;
 
-    if (transactionStore.getTxsLen(mainStore) == 0) {
+    if (mainStore.txs.length == 0) {
       refresh(context);
     }
   }
 
   void _showModalSheet(T.Transaction tx, Balance b, String base, String rel) {
+    final mainStore = Provider.of<MainStore>(context);
+
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
         context: context,
         builder: (builder) {
+          var fees = valueToPrecision(tx.fees, rel);
           return Container(
             height: 500,
             child: SingleChildScrollView(
@@ -80,8 +82,8 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                     TxLabels(label: "Id", value: tx.id),
                     TxLabels(
                         label: "Fee",
-                        value: valueToPretty(
-                            valueToPrecision(tx.fees, rel), CRYPTO_PRECISION)),
+                        value:
+                            "${valueToPretty(fees, CRYPTO_PRECISION)}${rel.toUpperCase()} (${mainStore.fiat.symbol}${valueToPretty(b.fiat * fees, FIAT_PRECISION)})"),
                     SizedBox(height: 10),
                     TxIOL(header: "Inputs", iol: tx.inputs, rel: rel),
                     SizedBox(height: 10),
@@ -118,7 +120,7 @@ class _TrasactionScreenState extends State<TrasactionScreen>
         header: ClassicHeader(),
         footer: RefreshFooter(),
         child: Observer(builder: (_) {
-          if (transactionStore.getTxsLen(mainStore) > 0) {
+          if (mainStore.txs.length > 0) {
             return MyDataTable(
                 columnSpacing: 0,
                 columns: [
@@ -127,7 +129,7 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                   MyDataColumn(label: Text("")),
                   MyDataColumn(label: Text("Value")),
                 ],
-                rows: transactionStore.getTxs(mainStore).map((tx) {
+                rows: mainStore.txs.map((tx) {
                   double valueRaw = 0.0;
                   if (tx.direction == 0) {
                     valueRaw = (tx.outputs.fold(0, (a, y) {
@@ -168,7 +170,7 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                             Text(
                                 "${valueToPretty(value, CRYPTO_PRECISION)} ${x.rel.toUpperCase()}"),
                             Text(
-                                "${walletStore.fiat.symbol}${valueToPretty(b.fiat * value, FIAT_PRECISION)}",
+                                "${mainStore.fiat.symbol}${valueToPretty(b.fiat * value, FIAT_PRECISION)}",
                                 style: TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.bold)),
                           ],

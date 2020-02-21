@@ -61,7 +61,7 @@ class DrawerList extends StatelessWidget {
                       child: ListTile(
                         title: Text(valueToPretty(b.balance, CRYPTO_PRECISION)),
                         subtitle: Text(
-                            "${walletStore.fiat.symbol}${valueToPretty(b.balance * b.fiat, FIAT_PRECISION)}"),
+                            "${mainStore.fiat.symbol}${valueToPretty(b.balance * b.fiat, FIAT_PRECISION)}"),
                         onTap: () {
                           fabStore.setRelIndex(i);
                         },

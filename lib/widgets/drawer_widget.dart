@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet_flutter/utils/fn.dart';
 import '../utils/constants.dart';
 import '../stores/main.dart';
 import '../widgets/fabs.dart';
@@ -58,10 +59,9 @@ class DrawerList extends StatelessWidget {
                     ),
                     Expanded(
                       child: ListTile(
-                        title:
-                            Text(b.balance.toStringAsFixed(CRYPTO_PRECISION)),
+                        title: Text(valueToPretty(b.balance, CRYPTO_PRECISION)),
                         subtitle: Text(
-                            "${walletStore.fiat.symbol}${b.fiat.toStringAsFixed(FIAT_PRECISION)}"),
+                            "${walletStore.fiat.symbol}${valueToPretty(b.balance * b.fiat, FIAT_PRECISION)}"),
                         onTap: () {
                           fabStore.setRelIndex(i);
                         },

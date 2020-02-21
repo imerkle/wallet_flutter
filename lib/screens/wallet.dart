@@ -27,6 +27,8 @@ class Wallet extends StatefulWidget {
 RefreshController _refreshController = RefreshController(initialRefresh: false);
 
 class _WalletState extends State<Wallet> {
+  bool _amountInFiat = false;
+
   final receivingAddress = TextEditingController();
   final amount = TextEditingController();
 
@@ -58,9 +60,9 @@ class _WalletState extends State<Wallet> {
               children: <Widget>[
                 BalanceHeader(
                     rel: x.rel,
-                    bal: b.balance.toStringAsFixed(CRYPTO_PRECISION),
+                    bal: valueToPretty(b.balance, CRYPTO_PRECISION),
                     fiatSymbol: walletStore.fiat.symbol,
-                    fiatBal: b.fiat.toStringAsFixed(FIAT_PRECISION)),
+                    fiatBal: valueToPretty(b.balance * b.fiat, FIAT_PRECISION)),
                 AddressHeader(rel: x.rel, address: x.address),
                 Text(AppLocalizations.of(context).tr('send_tx').toUpperCase(),
                     style: TextStyle(
@@ -76,11 +78,27 @@ class _WalletState extends State<Wallet> {
                   controller: amount,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: '${x.rel.toUpperCase()} Amount',
-                    suffixIcon: FlatButton(
+                    labelText: this._amountInFiat
+                        ? '${walletStore.fiat.ticker.toUpperCase()} Amount'
+                        : '${x.rel.toUpperCase()} Amount',
+                    prefixIcon: FlatButton(
                       child: Text("MAX"),
                       onPressed: () {
-                        amount.text = b.balance.toString();
+                        if (_amountInFiat) {
+                          amount.text = (b.fiat * b.balance).toString();
+                        } else {
+                          amount.text = b.balance.toString();
+                        }
+                      },
+                    ),
+                    suffixIcon: FlatButton(
+                      child: Text(this._amountInFiat
+                          ? walletStore.fiat.ticker.toUpperCase()
+                          : x.rel.toUpperCase()),
+                      onPressed: () {
+                        setState(() {
+                          _amountInFiat = !this._amountInFiat;
+                        });
                       },
                     ),
                   ),
@@ -92,10 +110,13 @@ class _WalletState extends State<Wallet> {
                       Outputs os = Outputs();
                       Output o = Output()
                         ..address = receivingAddress.text
-                        ..value = textToDouble(amount.text)
+                        ..value = _amountInFiat
+                            ? textToDouble(amount.text) / b.fiat
+                            : textToDouble(amount.text)
                         ..memo = "";
                       o.address = receivingAddress.text;
                       os.list.add(o);
+                      print(o.value);
 
                       var txOpts = await getTransactionOpts(
                           rel: x.rel, base: a.base, address: x.address);

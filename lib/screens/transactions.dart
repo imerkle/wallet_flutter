@@ -14,6 +14,8 @@ import 'package:wallet_flutter/widgets/transaction/tx_labels.dart';
 import '../gen/cargo/protos/coin.pb.dart';
 import '../stores/main.dart';
 import '../widgets/refresh_footer.dart';
+import 'package:after_layout/after_layout.dart';
+import 'package:after_init/after_init.dart';
 
 RefreshController _refreshController = RefreshController(initialRefresh: false);
 
@@ -22,10 +24,27 @@ class TrasactionScreen extends StatefulWidget {
   _TrasactionScreenState createState() => _TrasactionScreenState();
 }
 
-class _TrasactionScreenState extends State<TrasactionScreen> {
+class _TrasactionScreenState extends State<TrasactionScreen>
+    with AfterInitMixin<TrasactionScreen> {
+  refresh(BuildContext context) {
+    final transactionStore = Provider.of<MainStore>(context).transactionStore;
+    final mainStore = Provider.of<MainStore>(context);
+
+    Coins a = mainStore.coinListFromBase;
+    Coin x = mainStore.coinFromRel;
+
+    transactionStore.refreshTxs(base: a.base, rel: x.rel, address: x.address);
+    _refreshController.refreshCompleted();
+  }
+
   @override
-  void initState() {
-    super.initState();
+  void didInitState() {
+    final mainStore = Provider.of<MainStore>(context);
+    final transactionStore = Provider.of<MainStore>(context).transactionStore;
+
+    if (transactionStore.getTxsLen(mainStore) == 0) {
+      refresh(context);
+    }
   }
 
   void _showModalSheet(T.Transaction tx, Balance b, String base, String rel) {
@@ -61,8 +80,8 @@ class _TrasactionScreenState extends State<TrasactionScreen> {
                     TxLabels(label: "Id", value: tx.id),
                     TxLabels(
                         label: "Fee",
-                        value: valueToPrecision(tx.fees, rel)
-                            .toStringAsFixed(CRYPTO_PRECISION)),
+                        value: valueToPretty(
+                            valueToPrecision(tx.fees, rel), CRYPTO_PRECISION)),
                     SizedBox(height: 10),
                     TxIOL(header: "Inputs", iol: tx.inputs, rel: rel),
                     SizedBox(height: 10),
@@ -77,6 +96,7 @@ class _TrasactionScreenState extends State<TrasactionScreen> {
   @override
   Widget build(BuildContext context) {
     final walletStore = Provider.of<MainStore>(context).walletStore;
+    final transactionStore = Provider.of<MainStore>(context).transactionStore;
     final mainStore = Provider.of<MainStore>(context);
 
     Coins a = mainStore.coinListFromBase;
@@ -91,14 +111,14 @@ class _TrasactionScreenState extends State<TrasactionScreen> {
         enablePullUp: true,
         controller: _refreshController,
         onRefresh: () async {
-          await walletStore.refreshTxs(
+          await transactionStore.refreshTxs(
               base: a.base, rel: x.rel, address: x.address);
           _refreshController.refreshCompleted();
         },
         header: ClassicHeader(),
         footer: RefreshFooter(),
         child: Observer(builder: (_) {
-          if (walletStore.txs.length > 0) {
+          if (transactionStore.getTxsLen(mainStore) > 0) {
             return MyDataTable(
                 columnSpacing: 0,
                 columns: [
@@ -107,13 +127,15 @@ class _TrasactionScreenState extends State<TrasactionScreen> {
                   MyDataColumn(label: Text("")),
                   MyDataColumn(label: Text("Value")),
                 ],
-                rows: walletStore.txs.map((tx) {
-                  double valueRaw = (tx.inputs.fold(0, (a, y) {
-                    return x.address == y.address ? a + y.value : a;
-                  }));
-                  if (valueRaw == 0) {
+                rows: transactionStore.getTxs(mainStore).map((tx) {
+                  double valueRaw = 0.0;
+                  if (tx.direction == 0) {
                     valueRaw = (tx.outputs.fold(0, (a, y) {
                       return x.address == y.address ? a + y.value : a;
+                    }));
+                  } else {
+                    valueRaw = (tx.outputs.fold(0, (a, y) {
+                      return x.address != y.address ? a + y.value : a;
                     }));
                   }
                   double value = valueToPrecision(valueRaw, x.rel);
@@ -125,23 +147,28 @@ class _TrasactionScreenState extends State<TrasactionScreen> {
                             DateTime.fromMillisecondsSinceEpoch(
                                 tx.timestamp * 1000),
                             maxSuffix: 3))),
-                        MyDataCell(Container(
-                          padding: EdgeInsets.all(4),
-                          color: tx.direction == 0 ? Colors.green : Colors.red,
-                          child: Text(tx.direction == 0 ? "IN" : "OUT"),
+                        MyDataCell(ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: Container(
+                            width: 35,
+                            padding: EdgeInsets.all(4),
+                            color:
+                                tx.direction == 0 ? Colors.green : Colors.red,
+                            child: Text(
+                              tx.direction == 0 ? "IN" : "OUT",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         )),
                         MyDataCell(Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(value.toStringAsFixed(CRYPTO_PRECISION) +
-                                " " +
-                                x.rel.toUpperCase()),
                             Text(
-                                walletStore.fiat.symbol +
-                                    "" +
-                                    (b.fiat * value)
-                                        .toStringAsFixed(FIAT_PRECISION),
+                                "${valueToPretty(value, CRYPTO_PRECISION)} ${x.rel.toUpperCase()}"),
+                            Text(
+                                "${walletStore.fiat.symbol}${valueToPretty(b.fiat * value, FIAT_PRECISION)}",
                                 style: TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.bold)),
                           ],

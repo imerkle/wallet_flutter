@@ -17,8 +17,8 @@ class TxIO extends StatelessWidget {
         TxLabels(label: "Address", value: t.address),
         TxLabels(
             label: "Value",
-            value: valueToPrecision(t.value, rel)
-                .toStringAsFixed(CRYPTO_PRECISION)),
+            value: valueToPretty(
+                valueToPrecision(t.value, rel), CRYPTO_PRECISION)),
         Divider(),
       ],
     );

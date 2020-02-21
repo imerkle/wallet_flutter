@@ -77,31 +77,6 @@ mixin _$WalletStore on _WalletStore, Store {
     }, _$blAtom, name: '${_$blAtom.name}_set');
   }
 
-  final _$txsAtom = Atom(name: '_WalletStore.txs');
-
-  @override
-  List<Transaction> get txs {
-    _$txsAtom.context.enforceReadPolicy(_$txsAtom);
-    _$txsAtom.reportObserved();
-    return super.txs;
-  }
-
-  @override
-  set txs(List<Transaction> value) {
-    _$txsAtom.context.conditionallyRunInAction(() {
-      super.txs = value;
-      _$txsAtom.reportChanged();
-    }, _$txsAtom, name: '${_$txsAtom.name}_set');
-  }
-
-  final _$refreshTxsAsyncAction = AsyncAction('refreshTxs');
-
-  @override
-  Future<void> refreshTxs({String rel, String base, String address}) {
-    return _$refreshTxsAsyncAction
-        .run(() => super.refreshTxs(rel: rel, base: base, address: address));
-  }
-
   final _$refreshBalancesAsyncAction = AsyncAction('refreshBalances');
 
   @override

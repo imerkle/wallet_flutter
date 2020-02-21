@@ -9,7 +9,6 @@ import 'package:plugfox_localstorage/localstorage.dart';
 
 import '../models/rust.dart';
 import '../models/transaction.dart';
-import '../utils/api.dart';
 import '../utils/constants.dart';
 import '../gen/cargo/protos/coin.pb.dart';
 import '../models/balance.dart';
@@ -40,20 +39,10 @@ abstract class _WalletStore with Store {
   @observable
   List<Balances> bl = [];
 
-  @observable
-  List<Transaction> txs = [];
-
   Future<void> initPrep(Rust rust) async {
     await storage.init();
     await initWalletIfAbsent(rust);
     await refreshBalances();
-  }
-
-  @action
-  Future<void> refreshTxs({String rel, String base, String address}) async {
-    try {
-      txs = await getTransactions(rel: rel, base: base, address: address);
-    } catch (e) {}
   }
 
   @action
@@ -98,7 +87,7 @@ abstract class _WalletStore with Store {
         .balances
         .singleWhere((b) => b.rel == rel);
     var value = x.value / pow(10, precisions[rel]);
-    return BalanceOutput(balance: value, fiat: value * x.fiat);
+    return BalanceOutput(balance: value, fiat: x.fiat);
   }
 
   @action

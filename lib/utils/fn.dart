@@ -33,3 +33,13 @@ double valueToPrecision(double value, String rel) {
 Config getConfig(String rel, String base) {
   return configs.singleWhere((c) => c.base == base && c.rel == rel);
 }
+
+String valueToPretty(double n, int precision) {
+  String str = n.toStringAsFixed(precision);
+  RegExp exp = RegExp(r"0+$");
+  String matches = str.replaceAll(exp, "");
+  if (matches == "0." || matches == "") {
+    return "0";
+  }
+  return matches;
+}

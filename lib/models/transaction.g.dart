@@ -29,7 +29,7 @@ Transaction _$TransactionFromJson(Map<String, dynamic> json) {
         ?.toList(),
     direction: json['direction'] as int,
     fees: (json['fees'] as num)?.toDouble(),
-    timestamp: (json['timestamp'] as num)?.toInt(),
+    timestamp: json['timestamp'] as int,
     confirmations: (json['confirmations'] as num)?.toDouble(),
   );
 }

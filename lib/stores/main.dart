@@ -7,6 +7,7 @@ import '../models/rust.dart';
 import '../stores/sort.dart';
 import '../stores/wallet.dart';
 import '../stores/fab.dart';
+import '../stores/transaction.dart';
 
 part 'main.g.dart';
 
@@ -16,6 +17,7 @@ abstract class _MainStore with Store {
   FabStore fabStore = FabStore();
   SortStore sortStore = SortStore();
   WalletStore walletStore = WalletStore();
+  TransactionStore transactionStore = TransactionStore();
   Rust rust = Rust();
 
   @action

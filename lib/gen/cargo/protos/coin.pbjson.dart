@@ -13,6 +13,7 @@ const Coin$json = const {
     const {'1': 'wif', '3': 3, '4': 1, '5': 9, '10': 'wif'},
     const {'1': 'address', '3': 4, '4': 1, '5': 9, '10': 'address'},
     const {'1': 'rel', '3': 5, '4': 1, '5': 9, '10': 'rel'},
+    const {'1': 'base', '3': 6, '4': 1, '5': 9, '10': 'base'},
   ],
 };
 
@@ -20,14 +21,6 @@ const Coins$json = const {
   '1': 'Coins',
   '2': const [
     const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Coin', '10': 'list'},
-    const {'1': 'base', '3': 2, '4': 1, '5': 9, '10': 'base'},
-  ],
-};
-
-const CoinsList$json = const {
-  '1': 'CoinsList',
-  '2': const [
-    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Coins', '10': 'list'},
   ],
 };
 
@@ -35,7 +28,7 @@ const Wallet$json = const {
   '1': 'Wallet',
   '2': const [
     const {'1': 'mnemonic', '3': 1, '4': 1, '5': 9, '10': 'mnemonic'},
-    const {'1': 'coins_list', '3': 2, '4': 1, '5': 11, '6': '.CoinsList', '10': 'coinsList'},
+    const {'1': 'coins', '3': 2, '4': 1, '5': 11, '6': '.Coins', '10': 'coins'},
   ],
 };
 

@@ -45,7 +45,6 @@ dependencies:
   timeago:
     git:
       url: git://github.com/imerkle/timeago.dart.git
-  after_layout: ^1.0.7+2
   after_init: ^0.1.2
 dev_dependencies:
   flutter_test:

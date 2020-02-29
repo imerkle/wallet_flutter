@@ -17,6 +17,7 @@ class Coin extends $pb.GeneratedMessage {
     ..aOS(3, 'wif')
     ..aOS(4, 'address')
     ..aOS(5, 'rel')
+    ..aOS(6, 'base')
     ..hasRequiredFields = false
   ;
 
@@ -58,12 +59,16 @@ class Coin extends $pb.GeneratedMessage {
   set rel($core.String v) { $_setString(4, v); }
   $core.bool hasRel() => $_has(4);
   void clearRel() => clearField(5);
+
+  $core.String get base => $_getS(5, '');
+  set base($core.String v) { $_setString(5, v); }
+  $core.bool hasBase() => $_has(5);
+  void clearBase() => clearField(6);
 }
 
 class Coins extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Coins', createEmptyInstance: create)
     ..pc<Coin>(1, 'list', $pb.PbFieldType.PM, subBuilder: Coin.create)
-    ..aOS(2, 'base')
     ..hasRequiredFields = false
   ;
 
@@ -82,40 +87,12 @@ class Coins extends $pb.GeneratedMessage {
   static Coins _defaultInstance;
 
   $core.List<Coin> get list => $_getList(0);
-
-  $core.String get base => $_getS(1, '');
-  set base($core.String v) { $_setString(1, v); }
-  $core.bool hasBase() => $_has(1);
-  void clearBase() => clearField(2);
-}
-
-class CoinsList extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('CoinsList', createEmptyInstance: create)
-    ..pc<Coins>(1, 'list', $pb.PbFieldType.PM, subBuilder: Coins.create)
-    ..hasRequiredFields = false
-  ;
-
-  CoinsList._() : super();
-  factory CoinsList() => create();
-  factory CoinsList.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory CoinsList.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  CoinsList clone() => CoinsList()..mergeFromMessage(this);
-  CoinsList copyWith(void Function(CoinsList) updates) => super.copyWith((message) => updates(message as CoinsList));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static CoinsList create() => CoinsList._();
-  CoinsList createEmptyInstance() => create();
-  static $pb.PbList<CoinsList> createRepeated() => $pb.PbList<CoinsList>();
-  static CoinsList getDefault() => _defaultInstance ??= create()..freeze();
-  static CoinsList _defaultInstance;
-
-  $core.List<Coins> get list => $_getList(0);
 }
 
 class Wallet extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallet', createEmptyInstance: create)
     ..aOS(1, 'mnemonic')
-    ..a<CoinsList>(2, 'coinsList', $pb.PbFieldType.OM, defaultOrMaker: CoinsList.getDefault, subBuilder: CoinsList.create)
+    ..a<Coins>(2, 'coins', $pb.PbFieldType.OM, defaultOrMaker: Coins.getDefault, subBuilder: Coins.create)
     ..hasRequiredFields = false
   ;
 
@@ -138,10 +115,10 @@ class Wallet extends $pb.GeneratedMessage {
   $core.bool hasMnemonic() => $_has(0);
   void clearMnemonic() => clearField(1);
 
-  CoinsList get coinsList => $_getN(1);
-  set coinsList(CoinsList v) { setField(2, v); }
-  $core.bool hasCoinsList() => $_has(1);
-  void clearCoinsList() => clearField(2);
+  Coins get coins => $_getN(1);
+  set coins(Coins v) { setField(2, v); }
+  $core.bool hasCoins() => $_has(1);
+  void clearCoins() => clearField(2);
 }
 
 class Wallets extends $pb.GeneratedMessage {

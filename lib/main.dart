@@ -4,13 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'screens/drawer.dart';
 import 'screens/settings.dart';
 import 'screens/transactions.dart';
 import 'screens/wallet.dart';
 import 'screens/web_qr_connect.dart';
 import 'stores/main.dart';
 import 'utils/app_localization.dart';
-import 'widgets/drawer_widget.dart';
 
 void main() => runApp(MyApp());
 

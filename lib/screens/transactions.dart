@@ -14,8 +14,8 @@ import 'package:wallet_flutter/widgets/transaction/tx_labels.dart';
 import '../gen/cargo/protos/coin.pb.dart';
 import '../stores/main.dart';
 import '../widgets/refresh_footer.dart';
-import 'package:after_layout/after_layout.dart';
 import 'package:after_init/after_init.dart';
+import 'package:intl/intl.dart';
 
 RefreshController _refreshController = RefreshController(initialRefresh: false);
 
@@ -29,11 +29,12 @@ class _TrasactionScreenState extends State<TrasactionScreen>
   refresh(BuildContext context) {
     final transactionStore = Provider.of<MainStore>(context).transactionStore;
     final mainStore = Provider.of<MainStore>(context);
+    final configStore = Provider.of<MainStore>(context).configStore;
 
-    Coins a = mainStore.coinListFromBase;
-    Coin x = mainStore.coinFromRel;
-
-    transactionStore.refreshTxs(base: a.base, rel: x.rel, address: x.address);
+    transactionStore.refreshTxs(
+        base: configStore.base,
+        rel: configStore.rel,
+        address: mainStore.coin.address);
     _refreshController.refreshCompleted();
   }
 
@@ -48,6 +49,7 @@ class _TrasactionScreenState extends State<TrasactionScreen>
 
   void _showModalSheet(T.Transaction tx, Balance b, String base, String rel) {
     final mainStore = Provider.of<MainStore>(context);
+    final balanceStore = Provider.of<MainStore>(context).balanceStore;
 
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -81,13 +83,28 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                                 style: TextStyle(fontSize: 28)))),
                     TxLabels(label: "Id", value: tx.id),
                     TxLabels(
+                        label: "Timestamp",
+                        value: DateFormat("MMM-dd-yyyy hh:mm:ss a").format(
+                            DateTime.fromMillisecondsSinceEpoch(
+                                tx.timestamp * 1000))),
+                    TxLabels(
                         label: "Fee",
                         value:
-                            "${valueToPretty(fees, CRYPTO_PRECISION)}${rel.toUpperCase()} (${mainStore.fiat.symbol}${valueToPretty(b.fiat * fees, FIAT_PRECISION)})"),
+                            "${valueToPretty(fees, CRYPTO_PRECISION)}${rel.toUpperCase()} (${balanceStore.fiat.symbol}${valueToPretty(b.price * fees, FIAT_PRECISION)})"),
                     SizedBox(height: 10),
-                    TxIOL(header: "Inputs", iol: tx.inputs, rel: rel),
+                    TxIOL(
+                        header: "Inputs",
+                        iol: tx.inputs,
+                        rel: rel,
+                        fiat: balanceStore.fiat,
+                        b: b),
                     SizedBox(height: 10),
-                    TxIOL(header: "Outputs", iol: tx.outputs, rel: rel),
+                    TxIOL(
+                        header: "Outputs",
+                        iol: tx.outputs,
+                        rel: rel,
+                        fiat: balanceStore.fiat,
+                        b: b),
                   ]),
             ),
             padding: EdgeInsets.all(15.0),
@@ -97,24 +114,22 @@ class _TrasactionScreenState extends State<TrasactionScreen>
 
   @override
   Widget build(BuildContext context) {
-    final walletStore = Provider.of<MainStore>(context).walletStore;
+    final balanceStore = Provider.of<MainStore>(context).balanceStore;
+    final configStore = Provider.of<MainStore>(context).configStore;
     final transactionStore = Provider.of<MainStore>(context).transactionStore;
     final mainStore = Provider.of<MainStore>(context);
 
-    Coins a = mainStore.coinListFromBase;
-    Coin x = mainStore.coinFromRel;
+    var base = configStore.base;
+    var rel = configStore.rel;
 
-    var b = walletStore.bl
-        .singleWhere((b) => b.base == a.base)
-        .balances
-        .singleWhere((b) => b.rel == x.rel);
+    var b = balanceStore.getBalance(rel: rel, base: rel);
     return SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
         controller: _refreshController,
         onRefresh: () async {
           await transactionStore.refreshTxs(
-              base: a.base, rel: x.rel, address: x.address);
+              base: base, rel: rel, address: mainStore.coin.address);
           _refreshController.refreshCompleted();
         },
         header: ClassicHeader(),
@@ -133,14 +148,18 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                   double valueRaw = 0.0;
                   if (tx.direction == 0) {
                     valueRaw = (tx.outputs.fold(0, (a, y) {
-                      return x.address == y.address ? a + y.value : a;
+                      return mainStore.coin.address == y.address
+                          ? a + y.value
+                          : a;
                     }));
                   } else {
                     valueRaw = (tx.outputs.fold(0, (a, y) {
-                      return x.address != y.address ? a + y.value : a;
+                      return mainStore.coin.address != y.address
+                          ? a + y.value
+                          : a;
                     }));
                   }
-                  double value = valueToPrecision(valueRaw, x.rel);
+                  double value = valueToPrecision(valueRaw, rel);
 
                   return MyDataRow(
                       cells: [
@@ -168,9 +187,9 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                                "${valueToPretty(value, CRYPTO_PRECISION)} ${x.rel.toUpperCase()}"),
+                                "${valueToPretty(value, CRYPTO_PRECISION)} ${rel.toUpperCase()}"),
                             Text(
-                                "${mainStore.fiat.symbol}${valueToPretty(b.fiat * value, FIAT_PRECISION)}",
+                                "${balanceStore.fiat.symbol}${valueToPretty(b.price * value, FIAT_PRECISION)}",
                                 style: TextStyle(
                                     fontSize: 12, fontWeight: FontWeight.bold)),
                           ],
@@ -178,8 +197,7 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                       ],
                       onSelectChanged: (bool _abc) {
                         print(tx.inputs[0].value);
-
-                        _showModalSheet(tx, b, a.base, x.rel);
+                        _showModalSheet(tx, b, base, rel);
                       });
                 }).toList());
           } else {

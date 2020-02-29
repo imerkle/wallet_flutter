@@ -34,6 +34,7 @@ pub struct Coin {
     pub wif: ::std::string::String,
     pub address: ::std::string::String,
     pub rel: ::std::string::String,
+    pub base: ::std::string::String,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -179,6 +180,32 @@ impl Coin {
     pub fn take_rel(&mut self) -> ::std::string::String {
         ::std::mem::replace(&mut self.rel, ::std::string::String::new())
     }
+
+    // string base = 6;
+
+
+    pub fn get_base(&self) -> &str {
+        &self.base
+    }
+    pub fn clear_base(&mut self) {
+        self.base.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_base(&mut self, v: ::std::string::String) {
+        self.base = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_base(&mut self) -> &mut ::std::string::String {
+        &mut self.base
+    }
+
+    // Take field
+    pub fn take_base(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.base, ::std::string::String::new())
+    }
 }
 
 impl ::protobuf::Message for Coin {
@@ -204,6 +231,9 @@ impl ::protobuf::Message for Coin {
                 },
                 5 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.rel)?;
+                },
+                6 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.base)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -232,6 +262,9 @@ impl ::protobuf::Message for Coin {
         if !self.rel.is_empty() {
             my_size += ::protobuf::rt::string_size(5, &self.rel);
         }
+        if !self.base.is_empty() {
+            my_size += ::protobuf::rt::string_size(6, &self.base);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -252,6 +285,9 @@ impl ::protobuf::Message for Coin {
         }
         if !self.rel.is_empty() {
             os.write_string(5, &self.rel)?;
+        }
+        if !self.base.is_empty() {
+            os.write_string(6, &self.base)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -320,6 +356,11 @@ impl ::protobuf::Message for Coin {
                     |m: &Coin| { &m.rel },
                     |m: &mut Coin| { &mut m.rel },
                 ));
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                    "base",
+                    |m: &Coin| { &m.base },
+                    |m: &mut Coin| { &mut m.base },
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<Coin>(
                     "Coin",
                     fields,
@@ -347,6 +388,7 @@ impl ::protobuf::Clear for Coin {
         self.wif.clear();
         self.address.clear();
         self.rel.clear();
+        self.base.clear();
         self.unknown_fields.clear();
     }
 }
@@ -367,7 +409,6 @@ impl ::protobuf::reflect::ProtobufValue for Coin {
 pub struct Coins {
     // message fields
     pub list: ::protobuf::RepeatedField<Coin>,
-    pub base: ::std::string::String,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -408,32 +449,6 @@ impl Coins {
     pub fn take_list(&mut self) -> ::protobuf::RepeatedField<Coin> {
         ::std::mem::replace(&mut self.list, ::protobuf::RepeatedField::new())
     }
-
-    // string base = 2;
-
-
-    pub fn get_base(&self) -> &str {
-        &self.base
-    }
-    pub fn clear_base(&mut self) {
-        self.base.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_base(&mut self, v: ::std::string::String) {
-        self.base = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_base(&mut self) -> &mut ::std::string::String {
-        &mut self.base
-    }
-
-    // Take field
-    pub fn take_base(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.base, ::std::string::String::new())
-    }
 }
 
 impl ::protobuf::Message for Coins {
@@ -453,9 +468,6 @@ impl ::protobuf::Message for Coins {
                 1 => {
                     ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.list)?;
                 },
-                2 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.base)?;
-                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -472,9 +484,6 @@ impl ::protobuf::Message for Coins {
             let len = value.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
-        if !self.base.is_empty() {
-            my_size += ::protobuf::rt::string_size(2, &self.base);
-        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -486,9 +495,6 @@ impl ::protobuf::Message for Coins {
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
         };
-        if !self.base.is_empty() {
-            os.write_string(2, &self.base)?;
-        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -536,11 +542,6 @@ impl ::protobuf::Message for Coins {
                     |m: &Coins| { &m.list },
                     |m: &mut Coins| { &mut m.list },
                 ));
-                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                    "base",
-                    |m: &Coins| { &m.base },
-                    |m: &mut Coins| { &mut m.base },
-                ));
                 ::protobuf::reflect::MessageDescriptor::new::<Coins>(
                     "Coins",
                     fields,
@@ -564,7 +565,6 @@ impl ::protobuf::Message for Coins {
 impl ::protobuf::Clear for Coins {
     fn clear(&mut self) {
         self.list.clear();
-        self.base.clear();
         self.unknown_fields.clear();
     }
 }
@@ -582,186 +582,10 @@ impl ::protobuf::reflect::ProtobufValue for Coins {
 }
 
 #[derive(PartialEq,Clone,Default)]
-pub struct CoinsList {
-    // message fields
-    pub list: ::protobuf::RepeatedField<Coins>,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a CoinsList {
-    fn default() -> &'a CoinsList {
-        <CoinsList as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl CoinsList {
-    pub fn new() -> CoinsList {
-        ::std::default::Default::default()
-    }
-
-    // repeated .Coins list = 1;
-
-
-    pub fn get_list(&self) -> &[Coins] {
-        &self.list
-    }
-    pub fn clear_list(&mut self) {
-        self.list.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_list(&mut self, v: ::protobuf::RepeatedField<Coins>) {
-        self.list = v;
-    }
-
-    // Mutable pointer to the field.
-    pub fn mut_list(&mut self) -> &mut ::protobuf::RepeatedField<Coins> {
-        &mut self.list
-    }
-
-    // Take field
-    pub fn take_list(&mut self) -> ::protobuf::RepeatedField<Coins> {
-        ::std::mem::replace(&mut self.list, ::protobuf::RepeatedField::new())
-    }
-}
-
-impl ::protobuf::Message for CoinsList {
-    fn is_initialized(&self) -> bool {
-        for v in &self.list {
-            if !v.is_initialized() {
-                return false;
-            }
-        };
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                1 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.list)?;
-                },
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        for value in &self.list {
-            let len = value.compute_size();
-            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
-        };
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream) -> ::protobuf::ProtobufResult<()> {
-        for v in &self.list {
-            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
-            os.write_raw_varint32(v.get_cached_size())?;
-            v.write_to_with_cached_sizes(os)?;
-        };
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> CoinsList {
-        CoinsList::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
-            lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
-        };
-        unsafe {
-            descriptor.get(|| {
-                let mut fields = ::std::vec::Vec::new();
-                fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Coins>>(
-                    "list",
-                    |m: &CoinsList| { &m.list },
-                    |m: &mut CoinsList| { &mut m.list },
-                ));
-                ::protobuf::reflect::MessageDescriptor::new::<CoinsList>(
-                    "CoinsList",
-                    fields,
-                    file_descriptor_proto()
-                )
-            })
-        }
-    }
-
-    fn default_instance() -> &'static CoinsList {
-        static mut instance: ::protobuf::lazy::Lazy<CoinsList> = ::protobuf::lazy::Lazy {
-            lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const CoinsList,
-        };
-        unsafe {
-            instance.get(CoinsList::new)
-        }
-    }
-}
-
-impl ::protobuf::Clear for CoinsList {
-    fn clear(&mut self) {
-        self.list.clear();
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for CoinsList {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for CoinsList {
-    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
-        ::protobuf::reflect::ProtobufValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq,Clone,Default)]
 pub struct Wallet {
     // message fields
     pub mnemonic: ::std::string::String,
-    pub coins_list: ::protobuf::SingularPtrField<CoinsList>,
+    pub coins: ::protobuf::SingularPtrField<Coins>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -804,43 +628,43 @@ impl Wallet {
         ::std::mem::replace(&mut self.mnemonic, ::std::string::String::new())
     }
 
-    // .CoinsList coins_list = 2;
+    // .Coins coins = 2;
 
 
-    pub fn get_coins_list(&self) -> &CoinsList {
-        self.coins_list.as_ref().unwrap_or_else(|| CoinsList::default_instance())
+    pub fn get_coins(&self) -> &Coins {
+        self.coins.as_ref().unwrap_or_else(|| Coins::default_instance())
     }
-    pub fn clear_coins_list(&mut self) {
-        self.coins_list.clear();
+    pub fn clear_coins(&mut self) {
+        self.coins.clear();
     }
 
-    pub fn has_coins_list(&self) -> bool {
-        self.coins_list.is_some()
+    pub fn has_coins(&self) -> bool {
+        self.coins.is_some()
     }
 
     // Param is passed by value, moved
-    pub fn set_coins_list(&mut self, v: CoinsList) {
-        self.coins_list = ::protobuf::SingularPtrField::some(v);
+    pub fn set_coins(&mut self, v: Coins) {
+        self.coins = ::protobuf::SingularPtrField::some(v);
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_coins_list(&mut self) -> &mut CoinsList {
-        if self.coins_list.is_none() {
-            self.coins_list.set_default();
+    pub fn mut_coins(&mut self) -> &mut Coins {
+        if self.coins.is_none() {
+            self.coins.set_default();
         }
-        self.coins_list.as_mut().unwrap()
+        self.coins.as_mut().unwrap()
     }
 
     // Take field
-    pub fn take_coins_list(&mut self) -> CoinsList {
-        self.coins_list.take().unwrap_or_else(|| CoinsList::new())
+    pub fn take_coins(&mut self) -> Coins {
+        self.coins.take().unwrap_or_else(|| Coins::new())
     }
 }
 
 impl ::protobuf::Message for Wallet {
     fn is_initialized(&self) -> bool {
-        for v in &self.coins_list {
+        for v in &self.coins {
             if !v.is_initialized() {
                 return false;
             }
@@ -856,7 +680,7 @@ impl ::protobuf::Message for Wallet {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.mnemonic)?;
                 },
                 2 => {
-                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.coins_list)?;
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.coins)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -873,7 +697,7 @@ impl ::protobuf::Message for Wallet {
         if !self.mnemonic.is_empty() {
             my_size += ::protobuf::rt::string_size(1, &self.mnemonic);
         }
-        if let Some(ref v) = self.coins_list.as_ref() {
+        if let Some(ref v) = self.coins.as_ref() {
             let len = v.compute_size();
             my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         }
@@ -886,7 +710,7 @@ impl ::protobuf::Message for Wallet {
         if !self.mnemonic.is_empty() {
             os.write_string(1, &self.mnemonic)?;
         }
-        if let Some(ref v) = self.coins_list.as_ref() {
+        if let Some(ref v) = self.coins.as_ref() {
             os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
             os.write_raw_varint32(v.get_cached_size())?;
             v.write_to_with_cached_sizes(os)?;
@@ -938,10 +762,10 @@ impl ::protobuf::Message for Wallet {
                     |m: &Wallet| { &m.mnemonic },
                     |m: &mut Wallet| { &mut m.mnemonic },
                 ));
-                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<CoinsList>>(
-                    "coins_list",
-                    |m: &Wallet| { &m.coins_list },
-                    |m: &mut Wallet| { &mut m.coins_list },
+                fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Coins>>(
+                    "coins",
+                    |m: &Wallet| { &m.coins },
+                    |m: &mut Wallet| { &mut m.coins },
                 ));
                 ::protobuf::reflect::MessageDescriptor::new::<Wallet>(
                     "Wallet",
@@ -966,7 +790,7 @@ impl ::protobuf::Message for Wallet {
 impl ::protobuf::Clear for Wallet {
     fn clear(&mut self) {
         self.mnemonic.clear();
-        self.coins_list.clear();
+        self.coins.clear();
         self.unknown_fields.clear();
     }
 }
@@ -3778,36 +3602,35 @@ impl ::protobuf::reflect::ProtobufValue for WebPlatformChannel {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\ncoin.proto\"\x84\x01\n\x04Coin\x12\x1d\n\npublic_key\x18\x01\x20\x01\
+    \n\ncoin.proto\"\x98\x01\n\x04Coin\x12\x1d\n\npublic_key\x18\x01\x20\x01\
     (\x0cR\tpublicKey\x12\x1f\n\x0bprivate_key\x18\x02\x20\x01(\x0cR\nprivat\
     eKey\x12\x10\n\x03wif\x18\x03\x20\x01(\tR\x03wif\x12\x18\n\x07address\
     \x18\x04\x20\x01(\tR\x07address\x12\x10\n\x03rel\x18\x05\x20\x01(\tR\x03\
-    rel\"6\n\x05Coins\x12\x19\n\x04list\x18\x01\x20\x03(\x0b2\x05.CoinR\x04l\
-    ist\x12\x12\n\x04base\x18\x02\x20\x01(\tR\x04base\"'\n\tCoinsList\x12\
-    \x1a\n\x04list\x18\x01\x20\x03(\x0b2\x06.CoinsR\x04list\"O\n\x06Wallet\
-    \x12\x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\x12)\n\ncoins_lis\
-    t\x18\x02\x20\x01(\x0b2\n.CoinsListR\tcoinsList\"&\n\x07Wallets\x12\x1b\
-    \n\x04list\x18\x01\x20\x03(\x0b2\x07.WalletR\x04list\"L\n\x06Output\x12\
-    \x18\n\x07address\x18\x01\x20\x01(\tR\x07address\x12\x14\n\x05value\x18\
-    \x02\x20\x01(\x01R\x05value\x12\x12\n\x04memo\x18\x03\x20\x01(\tR\x04mem\
-    o\"&\n\x07Outputs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.OutputR\
-    \x04list\"\x1b\n\x02Tx\x12\x15\n\x06tx_hex\x18\x01\x20\x01(\tR\x05txHex\
-    \"\xc2\x02\n\x06Config\x12\x10\n\x03rel\x18\x01\x20\x01(\tR\x03rel\x12\
-    \x1a\n\x08protocol\x18\x02\x20\x01(\tR\x08protocol\x12\x12\n\x04code\x18\
-    \x03\x20\x01(\rR\x04code\x12\x1c\n\tprecision\x18\x04\x20\x01(\rR\tpreci\
-    sion\x12\x18\n\x07private\x18\x05\x20\x01(\rR\x07private\x12\x16\n\x06pu\
-    blic\x18\x06\x20\x01(\rR\x06public\x12\x16\n\x06prefix\x18\x07\x20\x01(\
-    \tR\x06prefix\x12\x19\n\x08chain_id\x18\x08\x20\x01(\rR\x07chainId\x12\
-    \x12\n\x04base\x18\t\x20\x01(\tR\x04base\x12\x1d\n\ncurve_name\x18\n\x20\
-    \x01(\tR\tcurveName\x12#\n\ris_compressed\x18\x0b\x20\x01(\x08R\x0cisCom\
-    pressed\x12\x1b\n\tis_bech32\x18\x0c\x20\x01(\x08R\x08isBech32\"&\n\x07C\
-    onfigs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.ConfigR\x04list\"A\n\
-    \x05Input\x12\x12\n\x04vout\x18\x01\x20\x01(\rR\x04vout\x12\x0e\n\x02id\
-    \x18\x02\x20\x01(\tR\x02id\x12\x14\n\x05value\x18\x03\x20\x01(\x04R\x05v\
-    alue\">\n\x06TxOpts\x12\x1e\n\x06inputs\x18\x01\x20\x03(\x0b2\x06.InputR\
-    \x06inputs\x12\x14\n\x05nonce\x18\x02\x20\x01(\x04R\x05nonce\"P\n\x0eGet\
-    WalletInput\x12\x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\x12\"\
-    \n\x07configs\x18\x02\x20\x01(\x0b2\x08.ConfigsR\x07configs\"\xb7\x01\n\
+    rel\x12\x12\n\x04base\x18\x06\x20\x01(\tR\x04base\"\"\n\x05Coins\x12\x19\
+    \n\x04list\x18\x01\x20\x03(\x0b2\x05.CoinR\x04list\"B\n\x06Wallet\x12\
+    \x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\x12\x1c\n\x05coins\
+    \x18\x02\x20\x01(\x0b2\x06.CoinsR\x05coins\"&\n\x07Wallets\x12\x1b\n\x04\
+    list\x18\x01\x20\x03(\x0b2\x07.WalletR\x04list\"L\n\x06Output\x12\x18\n\
+    \x07address\x18\x01\x20\x01(\tR\x07address\x12\x14\n\x05value\x18\x02\
+    \x20\x01(\x01R\x05value\x12\x12\n\x04memo\x18\x03\x20\x01(\tR\x04memo\"&\
+    \n\x07Outputs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.OutputR\x04lis\
+    t\"\x1b\n\x02Tx\x12\x15\n\x06tx_hex\x18\x01\x20\x01(\tR\x05txHex\"\xc2\
+    \x02\n\x06Config\x12\x10\n\x03rel\x18\x01\x20\x01(\tR\x03rel\x12\x1a\n\
+    \x08protocol\x18\x02\x20\x01(\tR\x08protocol\x12\x12\n\x04code\x18\x03\
+    \x20\x01(\rR\x04code\x12\x1c\n\tprecision\x18\x04\x20\x01(\rR\tprecision\
+    \x12\x18\n\x07private\x18\x05\x20\x01(\rR\x07private\x12\x16\n\x06public\
+    \x18\x06\x20\x01(\rR\x06public\x12\x16\n\x06prefix\x18\x07\x20\x01(\tR\
+    \x06prefix\x12\x19\n\x08chain_id\x18\x08\x20\x01(\rR\x07chainId\x12\x12\
+    \n\x04base\x18\t\x20\x01(\tR\x04base\x12\x1d\n\ncurve_name\x18\n\x20\x01\
+    (\tR\tcurveName\x12#\n\ris_compressed\x18\x0b\x20\x01(\x08R\x0cisCompres\
+    sed\x12\x1b\n\tis_bech32\x18\x0c\x20\x01(\x08R\x08isBech32\"&\n\x07Confi\
+    gs\x12\x1b\n\x04list\x18\x01\x20\x03(\x0b2\x07.ConfigR\x04list\"A\n\x05I\
+    nput\x12\x12\n\x04vout\x18\x01\x20\x01(\rR\x04vout\x12\x0e\n\x02id\x18\
+    \x02\x20\x01(\tR\x02id\x12\x14\n\x05value\x18\x03\x20\x01(\x04R\x05value\
+    \">\n\x06TxOpts\x12\x1e\n\x06inputs\x18\x01\x20\x03(\x0b2\x06.InputR\x06\
+    inputs\x12\x14\n\x05nonce\x18\x02\x20\x01(\x04R\x05nonce\"P\n\x0eGetWall\
+    etInput\x12\x1a\n\x08mnemonic\x18\x01\x20\x01(\tR\x08mnemonic\x12\"\n\
+    \x07configs\x18\x02\x20\x01(\x0b2\x08.ConfigsR\x07configs\"\xb7\x01\n\
     \x0eGenSendTxInput\x12\x1f\n\x06config\x18\x01\x20\x01(\x0b2\x07.ConfigR\
     \x06config\x12\x1f\n\x0bprivate_key\x18\x02\x20\x01(\x0cR\nprivateKey\
     \x12\x1d\n\npublic_key\x18\x03\x20\x01(\x0cR\tpublicKey\x12\"\n\x07outpu\

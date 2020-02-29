@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:wallet_flutter/models/balance.dart';
 import 'package:wallet_flutter/models/transaction.dart' as T;
+import 'package:wallet_flutter/stores/balance.dart';
 
 import 'tx_io.dart';
 
 class TxIOL extends StatelessWidget {
   final String header, rel;
   final List<T.Tx> iol;
-  TxIOL({this.iol, this.header, this.rel});
+
+  final Fiat fiat;
+  final Balance b;
+  TxIOL({this.iol, this.header, this.rel, this.fiat, this.b});
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -20,7 +25,7 @@ class TxIOL extends StatelessWidget {
             Text(header, style: TextStyle(fontSize: 20)),
             Column(
               children: iol.map((x) {
-                return TxIO(t: x, rel: rel);
+                return TxIO(t: x, rel: rel, fiat: fiat, b: b);
               }).toList(),
             ),
           ],

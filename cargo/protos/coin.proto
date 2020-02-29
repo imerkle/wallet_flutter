@@ -2,83 +2,69 @@ syntax = "proto3";
 
 option java_package = "com.example.wallet_flutter";
 option java_outer_classname = "Protos";
-//option swift_class_prefix = "Protos";
+// option swift_class_prefix = "Protos";
 option objc_class_prefix = "Protos";
 
 message Coin {
-    bytes public_key = 1;
-    bytes private_key = 2;
-    string wif = 3;
-    string address = 4;
-    string rel = 5;
+  bytes public_key = 1;
+  bytes private_key = 2;
+  string wif = 3;
+  string address = 4;
+  string rel = 5;
+  string base = 6;
 }
-message Coins{
-    repeated Coin list = 1;
-    string base = 2;
-}
+message Coins { repeated Coin list = 1; }
 
-message CoinsList{
-    repeated Coins list = 1;
+message Wallet {
+  string mnemonic = 1;
+  Coins coins = 2;
 }
+message Wallets { repeated Wallet list = 1; }
+message Output {
+  string address = 1;
+  double value = 2;
+  string memo = 3;
+}
+message Outputs { repeated Output list = 1; }
 
-message Wallet{
-    string mnemonic = 1;
-    CoinsList coins_list = 2;
-}
-message Wallets{
-    repeated Wallet list = 1;
-}
-message Output{
-    string address = 1;
-    double value = 2;
-    string memo = 3;
-}
-message Outputs{
-    repeated Output list = 1;
-}
+message Tx { string tx_hex = 1; }
 
-message Tx{
-    string tx_hex = 1;
+message Config {
+  string rel = 1;
+  string protocol = 2;
+  uint32 code = 3;
+  uint32 precision = 4;
+  uint32 private = 5;
+  uint32 public = 6;
+  string prefix = 7;
+  uint32 chain_id = 8;
+  string base = 9;
+  string curve_name = 10;
+  bool is_compressed = 11;
+  bool is_bech32 = 12;
 }
-
-message Config{
-    string rel = 1;
-    string protocol = 2;
-    uint32 code = 3;
-    uint32 precision = 4;
-    uint32 private = 5;
-    uint32 public = 6;
-    string prefix = 7;
-    uint32 chain_id = 8;
-    string base = 9;
-    string curve_name = 10;
-    bool is_compressed = 11;
-    bool is_bech32 = 12;
+message Configs { repeated Config list = 1; }
+message Input {
+  uint32 vout = 1;
+  string id = 2;
+  uint64 value = 3;
 }
-message Configs{
-    repeated Config list = 1;
+message TxOpts {
+  repeated Input inputs = 1;
+  uint64 nonce = 2;
 }
-message Input{
-    uint32 vout = 1;
-    string id = 2;
-    uint64 value = 3;
+message GetWalletInput {
+  string mnemonic = 1;
+  Configs configs = 2;
 }
-message TxOpts{
-    repeated Input inputs = 1;
-    uint64 nonce = 2;
+message GenSendTxInput {
+  Config config = 1;
+  bytes private_key = 2;
+  bytes public_key = 3;
+  Outputs outputs = 4;
+  TxOpts tx_opts = 5;
 }
-message GetWalletInput{
-    string mnemonic = 1;
-    Configs configs = 2;
-}
-message GenSendTxInput{
-    Config config = 1;
-    bytes private_key = 2;
-    bytes public_key = 3;
-    Outputs outputs = 4;
-    TxOpts tx_opts = 5;
-}
-message WebPlatformChannel{
-    string method_name = 1;
-    bytes input = 2;
+message WebPlatformChannel {
+  string method_name = 1;
+  bytes input = 2;
 }

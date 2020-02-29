@@ -9,34 +9,10 @@ part of 'main.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$MainStore on _MainStore, Store {
-  Computed<Coins> _$coinListFromBaseComputed;
+  Computed<Coin> _$coinComputed;
 
   @override
-  Coins get coinListFromBase => (_$coinListFromBaseComputed ??=
-          Computed<Coins>(() => super.coinListFromBase))
-      .value;
-  Computed<Coin> _$coinFromRelComputed;
-
-  @override
-  Coin get coinFromRel =>
-      (_$coinFromRelComputed ??= Computed<Coin>(() => super.coinFromRel)).value;
-
-  final _$fiatAtom = Atom(name: '_MainStore.fiat');
-
-  @override
-  Fiat get fiat {
-    _$fiatAtom.context.enforceReadPolicy(_$fiatAtom);
-    _$fiatAtom.reportObserved();
-    return super.fiat;
-  }
-
-  @override
-  set fiat(Fiat value) {
-    _$fiatAtom.context.conditionallyRunInAction(() {
-      super.fiat = value;
-      _$fiatAtom.reportChanged();
-    }, _$fiatAtom, name: '${_$fiatAtom.name}_set');
-  }
+  Coin get coin => (_$coinComputed ??= Computed<Coin>(() => super.coin)).value;
 
   final _$initPrepAsyncAction = AsyncAction('initPrep');
 

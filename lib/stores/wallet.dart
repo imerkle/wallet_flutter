@@ -29,58 +29,9 @@ abstract class _WalletStore with Store {
   @observable
   int walletIndex = 0;
 
-  @observable
-  List<Balances> bl = [];
-
-  Future<void> initPrep(Rust rust, Fiat fiat) async {
+  Future<void> initPrep(Rust rust) async {
     await storage.init();
     await initWalletIfAbsent(rust);
-    await refreshBalances(fiat);
-  }
-
-  @action
-  Future<void> refreshBalances(fiat) async {
-    try {
-      bl = await initFetchBalances(fiat);
-    } catch (e) {}
-  }
-
-  Future<List<Balances>> initFetchBalances(fiat) async {
-    var url = '$explorerApi/get_balances';
-    Map<String, String> headers = {"Content-type": "application/json"};
-    List<Map<String, String>> bp = [];
-    ws.list[walletIndex].coinsList.list.forEach((l) => {
-          l.list.forEach((c) => {
-                bp.add({
-                  "api": explorerConfigList[c.rel].api,
-                  "kind": explorerConfigList[c.rel].kind,
-                  "rel": c.rel,
-                  "base": l.base,
-                  "address": c.address,
-                })
-              })
-        });
-    var response = await http.post(url,
-        headers: headers,
-        body: jsonEncode({
-          "fiat": fiat.ticker,
-          "list": bp,
-        }));
-    return (jsonDecode(response.body) as List)
-        .map((e) => Balances.fromJson(e))
-        .toList();
-  }
-
-  BalanceOutput getBalance({String rel, String base}) {
-    if (bl.length == 0) {
-      return BalanceOutput(balance: 0.0, fiat: 0.0);
-    }
-    var x = bl
-        .singleWhere((b) => b.base == base)
-        .balances
-        .singleWhere((b) => b.rel == rel);
-    var value = x.value / pow(10, precisions[rel]);
-    return BalanceOutput(balance: value, fiat: x.fiat);
   }
 
   @action
@@ -108,7 +59,7 @@ abstract class _WalletStore with Store {
         var x =
             await rust.invokeRustMethod("get_wallets", input.writeToBuffer());
         Wallet w = Wallet()
-          ..coinsList = CoinsList.fromBuffer(x)
+          ..coins = Coins.fromBuffer(x)
           ..mnemonic = mnemonic;
         wsx.list.add(w);
         ws = wsx;

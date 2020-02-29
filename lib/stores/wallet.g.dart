@@ -43,30 +43,6 @@ mixin _$WalletStore on _WalletStore, Store {
     }, _$walletIndexAtom, name: '${_$walletIndexAtom.name}_set');
   }
 
-  final _$blAtom = Atom(name: '_WalletStore.bl');
-
-  @override
-  List<Balances> get bl {
-    _$blAtom.context.enforceReadPolicy(_$blAtom);
-    _$blAtom.reportObserved();
-    return super.bl;
-  }
-
-  @override
-  set bl(List<Balances> value) {
-    _$blAtom.context.conditionallyRunInAction(() {
-      super.bl = value;
-      _$blAtom.reportChanged();
-    }, _$blAtom, name: '${_$blAtom.name}_set');
-  }
-
-  final _$refreshBalancesAsyncAction = AsyncAction('refreshBalances');
-
-  @override
-  Future<void> refreshBalances(dynamic fiat) {
-    return _$refreshBalancesAsyncAction.run(() => super.refreshBalances(fiat));
-  }
-
   final _$initWalletIfAbsentAsyncAction = AsyncAction('initWalletIfAbsent');
 
   @override

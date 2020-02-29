@@ -17,15 +17,14 @@ final cryptoColors = {
 class Fabs extends StatelessWidget {
   @override
   Widget build(context) {
-    final walletStore = Provider.of<MainStore>(context).walletStore;
-    final fabStore = Provider.of<MainStore>(context).fabStore;
-
+    final configStore = Provider.of<MainStore>(context).configStore;
+    var keys = configStore.coins.keys.toList();
     return ListView.builder(
-        itemCount: walletStore.ws.list[0].coinsList.list.length,
+        itemCount: keys.length,
         itemBuilder: (context, i) {
           return Observer(builder: (_) {
             return GestureDetector(
-              onTap: () => fabStore.setBaseIndex(i),
+              onTap: () => configStore.setBase(keys[i]),
               child: Padding(
                 padding: EdgeInsets.only(top: 7, bottom: 7),
                 child: Row(
@@ -34,7 +33,7 @@ class Fabs extends StatelessWidget {
                       height: iconSize - 0.2 * iconSize,
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: fabStore.baseIndex == i
+                          color: configStore.base == keys[i]
                               ? Theme.of(context).accentColor
                               : Colors.transparent,
                           width: 2.0,
@@ -48,15 +47,13 @@ class Fabs extends StatelessWidget {
                         height: iconSize,
                         width: iconSize,
                         decoration: BoxDecoration(
-                          color: cryptoColors[
-                              walletStore.ws.list[0].coinsList.list[i].base],
+                          color: cryptoColors[keys[i]],
                           image: DecorationImage(
-                              image: NetworkImage(cryptoIconUrl(walletStore
-                                  .ws.list[0].coinsList.list[i].base)),
+                              image: NetworkImage(cryptoIconUrl(keys[i])),
                               fit: BoxFit.cover),
                           //shape: BoxShape.circle,
                           borderRadius: BorderRadius.all(Radius.circular(
-                              fabStore.baseIndex == i ? 10 : 100)),
+                              configStore.base == keys[i] ? 10 : 100)),
                         ),
                       ),
                     ),

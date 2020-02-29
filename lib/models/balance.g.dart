@@ -10,14 +10,14 @@ Balance _$BalanceFromJson(Map<String, dynamic> json) {
   return Balance(
     rel: json['rel'] as String,
     value: (json['value'] as num)?.toDouble(),
-    fiat: (json['fiat'] as num)?.toDouble(),
+    price: (json['price'] as num)?.toDouble(),
   );
 }
 
 Map<String, dynamic> _$BalanceToJson(Balance instance) => <String, dynamic>{
       'rel': instance.rel,
       'value': instance.value,
-      'fiat': instance.fiat,
+      'price': instance.price,
     };
 
 Balances _$BalancesFromJson(Map<String, dynamic> json) {

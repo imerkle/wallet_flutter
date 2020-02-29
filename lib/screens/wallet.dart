@@ -35,6 +35,8 @@ class _WalletState extends State<Wallet> {
   @override
   Widget build(context) {
     final walletStore = Provider.of<MainStore>(context).walletStore;
+    final balanceStore = Provider.of<MainStore>(context).balanceStore;
+    final configStore = Provider.of<MainStore>(context).configStore;
     final mainStore = Provider.of<MainStore>(context);
 
     return SmartRefresher(
@@ -42,16 +44,18 @@ class _WalletState extends State<Wallet> {
       enablePullUp: true,
       controller: _refreshController,
       onRefresh: () async {
-        await walletStore.refreshBalances(mainStore.fiat);
+        //await balanceStore.refreshBalances(mainStore.fiat);
         _refreshController.refreshCompleted();
       },
       header: ClassicHeader(),
       footer: RefreshFooter(),
       child: Observer(builder: (_) {
-        Coins a = mainStore.coinListFromBase;
-        Coin x = mainStore.coinFromRel;
+        var rel = configStore.rel;
+        var base = configStore.base;
+        var coin = mainStore.coin;
 
-        var b = walletStore.getBalance(rel: x.rel, base: a.base);
+        var b = balanceStore.getBalance(rel: rel, base: base);
+
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           child: SingleChildScrollView(
@@ -59,11 +63,11 @@ class _WalletState extends State<Wallet> {
               runSpacing: 30,
               children: <Widget>[
                 BalanceHeader(
-                    rel: x.rel,
-                    bal: valueToPretty(b.balance, CRYPTO_PRECISION),
-                    fiatSymbol: mainStore.fiat.symbol,
-                    fiatBal: valueToPretty(b.balance * b.fiat, FIAT_PRECISION)),
-                AddressHeader(rel: x.rel, address: x.address),
+                    rel: rel,
+                    bal: valueToPretty(b.value, CRYPTO_PRECISION),
+                    fiatSymbol: balanceStore.fiat.symbol,
+                    fiatBal: valueToPretty(b.value * b.price, FIAT_PRECISION)),
+                AddressHeader(rel: rel, address: coin.address),
                 Text(AppLocalizations.of(context).tr('send_tx').toUpperCase(),
                     style: TextStyle(
                       color: Color(0xffbec0c4),
@@ -79,22 +83,22 @@ class _WalletState extends State<Wallet> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: this._amountInFiat
-                        ? '${mainStore.fiat.ticker.toUpperCase()} Amount'
-                        : '${x.rel.toUpperCase()} Amount',
+                        ? '${balanceStore.fiat.ticker.toUpperCase()} Amount'
+                        : '${rel.toUpperCase()} Amount',
                     prefixIcon: FlatButton(
                       child: Text("MAX"),
                       onPressed: () {
                         if (_amountInFiat) {
-                          amount.text = (b.fiat * b.balance).toString();
+                          amount.text = (b.price * b.value).toString();
                         } else {
-                          amount.text = b.balance.toString();
+                          amount.text = b.value.toString();
                         }
                       },
                     ),
                     suffixIcon: FlatButton(
                       child: Text(this._amountInFiat
-                          ? mainStore.fiat.ticker.toUpperCase()
-                          : x.rel.toUpperCase()),
+                          ? balanceStore.fiat.ticker.toUpperCase()
+                          : rel.toUpperCase()),
                       onPressed: () {
                         setState(() {
                           _amountInFiat = !this._amountInFiat;
@@ -111,7 +115,7 @@ class _WalletState extends State<Wallet> {
                       Output o = Output()
                         ..address = receivingAddress.text
                         ..value = _amountInFiat
-                            ? textToDouble(amount.text) / b.fiat
+                            ? textToDouble(amount.text) / b.price
                             : textToDouble(amount.text)
                         ..memo = "";
                       o.address = receivingAddress.text;
@@ -119,11 +123,11 @@ class _WalletState extends State<Wallet> {
                       print(o.value);
 
                       var txOpts = await getTransactionOpts(
-                          rel: x.rel, base: a.base, address: x.address);
+                          rel: rel, base: base, address: coin.address);
                       var input = GenSendTxInput()
-                        ..config = getConfig(x.rel, a.base)
-                        ..privateKey = x.privateKey
-                        ..publicKey = x.publicKey
+                        ..config = getConfig(rel, base)
+                        ..privateKey = coin.privateKey
+                        ..publicKey = coin.publicKey
                         ..outputs = os
                         ..txOpts = txOpts;
 
@@ -131,7 +135,7 @@ class _WalletState extends State<Wallet> {
                           'gen_send_transaction', input.writeToBuffer());
                       var t = Tx.fromBuffer(res);
                       print(t);
-                      sendTransaction(rel: x.rel, base: a.base, rawTx: t.txHex);
+                      sendTransaction(rel: rel, base: base, rawTx: t.txHex);
                     },
 
                     //padding: EdgeInsets.all(15),

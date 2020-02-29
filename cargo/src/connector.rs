@@ -10,7 +10,7 @@ use wallet::{
 
 use super::protos;
 
-pub fn get_wallets(configs: &protos::coin::Configs, mnemonic: String) -> protos::coin::CoinsList {
+pub fn get_wallets(configs: &protos::coin::Configs, mnemonic: String) -> protos::coin::Coins {
     let seed = bip32::generate_seed(Some(&mnemonic), None);
     let node1 = Node::new(
         &SeedOrVect::Seed(seed.clone()),
@@ -28,51 +28,36 @@ pub fn get_wallets(configs: &protos::coin::Configs, mnemonic: String) -> protos:
         b"ed25519 seed",
     );
 
-    let mut coinlist = protos::coin::CoinsList::new();
+    let mut coins = protos::coin::Coins::new();
 
-    for config in &configs.list {
-        let (gcw, opts, _) = from_config(&config, None);
-        let n = match opts.curve_name {
-            CurveName::Secp256k1 => node1.clone(),
-            CurveName::Secp256r1 => node2.clone(),
-            CurveName::Ed25519 => node3.clone(),
-        };
-        let (sk, pk) = coin::generate_keypair(&opts, Some(n));
-        let gc = gcw.unwrap();
+    coins.set_list(protobuf::RepeatedField::from_vec(
+        configs
+            .list
+            .iter()
+            .map(|config| {
+                let (gcw, opts, _) = from_config(&config, None);
+                let n = match opts.curve_name {
+                    CurveName::Secp256k1 => node1.clone(),
+                    CurveName::Secp256r1 => node2.clone(),
+                    CurveName::Ed25519 => node3.clone(),
+                };
+                let (sk, pk) = coin::generate_keypair(&opts, Some(n));
+                let gc = gcw.unwrap();
 
-        //let coin = Coin::new(ctype, opts, None, None,Some(n));
-        let output_coin = protos::coin::Coin {
-            rel: config.rel.clone(),
-            private_key: sk.to_vec(),
-            address: gc.pub_to_address(&pk),
-            wif: gc.priv_to_wif(&sk),
-            public_key: pk,
-            ..Default::default()
-        };
-
-        /*
-            Protobuf cant have list without a named param so
-
-            Coinlist = {list: [Coins]}
-            Coins = {base: "", list: [Coin]}
-            Coin = {private_key: "", wif:"" ,....}
-
-            This block below takes [Coin] and converts into  Coinlist based on config.base value of current input in loop
-        */
-        match coinlist.list.iter().position(|x| x.base == config.base) {
-            Some(i) => {
-                coinlist.mut_list()[i].mut_list().push(output_coin);
-            }
-            None => {
-                let mut c = protos::coin::Coins::new();
-                c.set_base(config.base.clone());
-                c.mut_list().push(output_coin);
-
-                coinlist.mut_list().push(c);
-            }
-        };
-    }
-    coinlist
+                //let coin = Coin::new(ctype, opts, None, None,Some(n));
+                protos::coin::Coin {
+                    rel: config.rel.clone(),
+                    base: config.base.clone(),
+                    private_key: sk.to_vec(),
+                    address: gc.pub_to_address(&pk),
+                    wif: gc.priv_to_wif(&sk),
+                    public_key: pk,
+                    ..Default::default()
+                }
+            })
+            .collect::<Vec<_>>(),
+    ));
+    coins
 }
 
 pub fn gen_send_transaction(
@@ -399,16 +384,15 @@ mod tests {
     #[test]
     fn gen_tx_test() {
         let t = t();
-        let y = get_wallets(
+        let x = get_wallets(
             &t,
             "connect ritual news sand rapid scale behind swamp damp brief explain ankle"
                 .to_string(),
         );
-        let x = y.list.into_vec();
         let tx = gen_send_transaction(
             &t.list[0],
-            get_by(&x, "btc")[0].private_key.clone(),
-            get_by(&x, "btc")[0].public_key.clone(),
+            get_by(&x, "btc", "btc").private_key.clone(),
+            get_by(&x, "btc", "btc").public_key.clone(),
             protos::coin::Outputs {
                 list: protobuf::RepeatedField::from_vec(vec![protos::coin::Output {
                     address: "2NFUzGLdgrU2qgMBQG9ADts5qR8uPTzZa2H".to_string(),
@@ -432,11 +416,11 @@ mod tests {
 
         let tx = gen_send_transaction(
             &t.list[1],
-            get_by(&x, "eth")[0].private_key.clone(),
-            get_by(&x, "eth")[0].public_key.clone(),
+            get_by(&x, "eth", "eth").private_key.clone(),
+            get_by(&x, "eth", "eth").public_key.clone(),
             protos::coin::Outputs {
                 list: protobuf::RepeatedField::from_vec(vec![protos::coin::Output {
-                    address: get_by(&x, "eth")[0].address.clone(),
+                    address: get_by(&x, "eth", "eth").address.clone(),
                     value: 1.0,
                     ..Default::default()
                 }]),
@@ -453,58 +437,62 @@ mod tests {
     fn connector_test() {
         let t = m();
 
-        let y = get_wallets(
+        let x = get_wallets(
             &t,
             "connect ritual news sand rapid scale behind swamp damp brief explain ankle"
                 .to_string(),
         );
-        let x = y.list.into_vec();
         assert_eq!(
-            get_by(&x, "btc")[0].wif,
+            get_by(&x, "btc", "btc").wif,
             "KwxFiVzM64x3SEgyYnzCDf8xh3s3Ber66GeD23HkdGrsdKvhGAnf"
         );
         assert_eq!(
-            hex_encode(&get_by(&x, "btc")[0].public_key),
+            hex_encode(&get_by(&x, "btc", "btc").public_key),
             "03bc140f5f9970ea9b2888f808b117e25949fcf4825ca14929ba12b7a310c6b351"
         );
         assert_eq!(
-            get_by(&x, "btc")[0].address,
+            get_by(&x, "btc", "btc").address,
             "bc1qhee7awenpfzmn7tuk95vrkuhctj8h5mh7yrxnu"
         );
         assert_eq!(
-            get_by(&x, "eth")[0].address,
+            get_by(&x, "eth", "eth").address,
             "0xb023b80afad0363ab966cf10b5f76e5f625cf497"
         );
         assert_eq!(
-            get_by(&x, "xlm")[0].address,
+            get_by(&x, "xlm", "xlm").address,
             "GDEHOJPTD6I336QBOTSIADKTKAVWKVWEF5S2QFNPBWQN7TCTL5TFSPCR"
         );
         assert_eq!(
-            get_by(&x, "xlm")[0].wif,
+            get_by(&x, "xlm", "xlm").wif,
             "SAOR373KUDDGZ7QN4HNXFQKIFMZKFMRMWP6B7XAHMVEIQBVR5IDYVHXH"
         );
         assert_eq!(
-            get_by(&x, "xrp")[0].address,
+            get_by(&x, "xrp", "xrp").address,
             "rPphbLGemSQv4De1LUHYq6tupBkrrZUxNe"
         );
         assert_eq!(
-            get_by(&x, "eos")[0].address,
+            get_by(&x, "eos", "eos").address,
             "EOS5ZXHpkLdY9qqYLEL5D5VPwZop9BrF6pCMT4QauJJzkrA7xitfA"
         );
         assert_eq!(
-            get_by(&x, "eos")[0].wif,
+            get_by(&x, "eos", "eos").wif,
             "5K7V5He9abzwEavLTEVeWj4U9xEtVdnrGD4jc5piNvmbAz45mcS"
         );
         assert_eq!(
-            get_by(&x, "neo")[0].address,
+            get_by(&x, "neo", "neo").address,
             "AShDKgLSuCjGZr8Fs5SRLSYvmcSV7S4zwX"
         );
         assert_eq!(
-            get_by(&x, "ont")[0].address,
+            get_by(&x, "ont", "ont").address,
             "AZMnsLjJ5ykADJEXcy7CMA5UnGzKEL8WKQ"
         );
     }
-    fn get_by(v: &Vec<protos::coin::Coins>, base: &str) -> Vec<protos::coin::Coin> {
-        v.iter().find(|x| x.base == base).unwrap().list.to_vec()
+    fn get_by(v: &protos::coin::Coins, base: &str, rel: &str) -> protos::coin::Coin {
+        v.list
+            .iter()
+            .find(|x| x.base == base && x.rel == rel)
+            .unwrap()
+            .clone()
+        //v.iter().find(|x| x.base == base).unwrap().list.to_vec()
     }
 }

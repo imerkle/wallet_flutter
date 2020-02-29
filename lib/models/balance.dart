@@ -6,12 +6,12 @@ part 'balance.g.dart';
 class Balance {
   String rel;
   double value;
-  double fiat;
+  double price;
 
-  Balance({this.rel, this.value, this.fiat});
+  Balance({this.rel, this.value, this.price});
 
-
-  factory Balance.fromJson(Map<String, dynamic> json) => _$BalanceFromJson(json);
+  factory Balance.fromJson(Map<String, dynamic> json) =>
+      _$BalanceFromJson(json);
 
   Map<String, dynamic> toJson() => _$BalanceToJson(this);
 }
@@ -23,15 +23,8 @@ class Balances {
 
   Balances({this.base, this.balances});
 
-
-  factory Balances.fromJson(Map<String, dynamic> json) => _$BalancesFromJson(json);
+  factory Balances.fromJson(Map<String, dynamic> json) =>
+      _$BalancesFromJson(json);
 
   Map<String, dynamic> toJson() => _$BalancesToJson(this);
-}
-
-class BalanceOutput{
-  double balance;
-  double fiat;
-
-  BalanceOutput({this.balance, this.fiat});
 }

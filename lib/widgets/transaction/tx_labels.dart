@@ -13,7 +13,7 @@ class TxLabels extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text("$label:"),
-          Text(value, style: TextStyle(color: Colors.white70)),
+          SelectableText(value, style: TextStyle(color: Colors.white70)),
         ],
       )),
     );

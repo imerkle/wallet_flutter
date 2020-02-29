@@ -21,67 +21,11 @@ final cryptoNames = {
   'ont': "Ontology",
 };
 
-class DrawerList extends StatelessWidget {
-  @override
-  Widget build(context) {
-    final mainStore = Provider.of<MainStore>(context);
-    final walletStore = Provider.of<MainStore>(context).walletStore;
-    final fabStore = Provider.of<MainStore>(context).fabStore;
-    final sortStore = Provider.of<MainStore>(context).sortStore;
-
-    return Observer(
-      builder: (_) {
-        var relIndex = fabStore.relIndex;
-        var cl = mainStore.coinListFromBase;
-        var coins = cl.list;
-        if (sortStore.sortables[0].direction == false) {
-          coins = coins.reversed.toList();
-        }
-        return ListView.builder(
-            itemCount: coins.length,
-            itemBuilder: (context, i) {
-              var b = walletStore.getBalance(rel: coins[i].rel, base: cl.base);
-              return Container(
-                color: i == relIndex
-                    ? Color.fromRGBO(67, 67, 67, 1)
-                    : Colors.transparent,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: ListTile(
-                        title: Text(coins[i].rel.toUpperCase()),
-                        subtitle: Text(getName(coins[i].rel)),
-                        onTap: () {
-                          fabStore.setRelIndex(i);
-                        },
-                        selected: i == relIndex,
-                      ),
-                    ),
-                    Expanded(
-                      child: ListTile(
-                        title: Text(valueToPretty(b.balance, CRYPTO_PRECISION)),
-                        subtitle: Text(
-                            "${mainStore.fiat.symbol}${valueToPretty(b.balance * b.fiat, FIAT_PRECISION)}"),
-                        onTap: () {
-                          fabStore.setRelIndex(i);
-                        },
-                        selected: i == relIndex,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            });
-      },
-    );
-  }
-}
-
 class DrawerWidget extends StatelessWidget {
   @override
   Widget build(context) {
     final walletStore = Provider.of<MainStore>(context).walletStore;
-    final fabStore = Provider.of<MainStore>(context).fabStore;
+    final configStore = Provider.of<MainStore>(context).configStore;
     final sortStore = Provider.of<MainStore>(context).sortStore;
 
     if (walletStore.ws.list.length == 0) {
@@ -107,9 +51,7 @@ class DrawerWidget extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         padding: EdgeInsets.all(20),
                         child: Observer(builder: (_) {
-                          return Text(
-                              getName(walletStore.ws.list[0].coinsList
-                                  .list[fabStore.baseIndex].list[0].rel),
+                          return Text(getName(configStore.rel),
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 20,
@@ -148,6 +90,61 @@ class DrawerWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class DrawerList extends StatelessWidget {
+  @override
+  Widget build(context) {
+    final mainStore = Provider.of<MainStore>(context);
+    final balanceStore = Provider.of<MainStore>(context).balanceStore;
+    final configStore = Provider.of<MainStore>(context).configStore;
+    final sortStore = Provider.of<MainStore>(context).sortStore;
+
+    return Observer(
+      builder: (_) {
+        var coins = configStore.coins[configStore.base];
+        if (sortStore.sortables[0].direction == false) {
+          // coins = coins.reversed.toList();
+        }
+        return ListView.builder(
+            itemCount: coins.length,
+            itemBuilder: (context, i) {
+              var b = balanceStore.getBalance(
+                  rel: coins[i], base: configStore.base);
+              return Container(
+                color: coins[i] == configStore.rel
+                    ? Color.fromRGBO(67, 67, 67, 1)
+                    : Colors.transparent,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: ListTile(
+                        title: Text(coins[i].toUpperCase()),
+                        subtitle: Text(getName(coins[i])),
+                        onTap: () {
+                          configStore.setRel(coins[i]);
+                        },
+                        selected: coins[i] == configStore.rel,
+                      ),
+                    ),
+                    Expanded(
+                      child: ListTile(
+                        title: Text(valueToPretty(b.value, CRYPTO_PRECISION)),
+                        subtitle: Text(
+                            "${balanceStore.fiat.symbol}${valueToPretty(b.value * b.price, FIAT_PRECISION)}"),
+                        onTap: () {
+                          configStore.setRel(coins[i]);
+                        },
+                        selected: coins[i] == configStore.rel,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            });
+      },
     );
   }
 }

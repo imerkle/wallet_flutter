@@ -10,7 +10,7 @@ class TxIOL extends StatelessWidget {
   final List<T.Tx> iol;
 
   final Fiat fiat;
-  final Balance b;
+  final BalanceOut b;
   TxIOL({this.iol, this.header, this.rel, this.fiat, this.b});
   @override
   Widget build(BuildContext context) {

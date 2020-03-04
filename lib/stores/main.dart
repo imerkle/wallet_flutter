@@ -26,16 +26,21 @@ abstract class _MainStore with Store {
   @action
   Future<void> initPrep() async {
     rust.initChannel();
-    walletStore.initPrep(rust);
     sortStore.sortables.add(Sortable("Coin", true, true));
     sortStore.sortables.add(Sortable("Amount", false, true));
     configStore.init();
+    await walletStore.initPrep(rust);
+    balanceStore.fetchBalances(
+        configStore.base,
+        configStore.coins[configStore.base],
+        walletStore.ws.list[walletStore.walletIndex].coins.list);
+    balanceStore.fetchPrices(configStore.coins[configStore.base]);
   }
 
   @computed
-  Coin get coin =>
-      walletStore.ws.list[walletStore.walletIndex].coins.list.firstWhere(
-          (x) => x.base == configStore.base && x.rel == configStore.rel);
+  Coin get coin => walletStore.ws.list[walletStore.walletIndex].coins.list
+      .firstWhere((x) => x.base == configStore.base && x.rel == configStore.rel,
+          orElse: () => Coin());
 
   /*
   @computed

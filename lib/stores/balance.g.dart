@@ -12,14 +12,14 @@ mixin _$BalanceStore on _BalanceStore, Store {
   final _$blAtom = Atom(name: '_BalanceStore.bl');
 
   @override
-  List<Balances> get bl {
+  Map<String, dynamic> get bl {
     _$blAtom.context.enforceReadPolicy(_$blAtom);
     _$blAtom.reportObserved();
     return super.bl;
   }
 
   @override
-  set bl(List<Balances> value) {
+  set bl(Map<String, dynamic> value) {
     _$blAtom.context.conditionallyRunInAction(() {
       super.bl = value;
       _$blAtom.reportChanged();
@@ -47,8 +47,15 @@ mixin _$BalanceStore on _BalanceStore, Store {
 
   @override
   Future<void> fetchBalances(
-      String base, List<String> rels, WalletStore walletStore) {
+      String base, List<String> rels, List<Coin> coinList) {
     return _$fetchBalancesAsyncAction
-        .run(() => super.fetchBalances(base, rels, walletStore));
+        .run(() => super.fetchBalances(base, rels, coinList));
+  }
+
+  final _$fetchPricesAsyncAction = AsyncAction('fetchPrices');
+
+  @override
+  Future<void> fetchPrices(List<String> rels) {
+    return _$fetchPricesAsyncAction.run(() => super.fetchPrices(rels));
   }
 }

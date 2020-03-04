@@ -97,7 +97,6 @@ class DrawerWidget extends StatelessWidget {
 class DrawerList extends StatelessWidget {
   @override
   Widget build(context) {
-    final mainStore = Provider.of<MainStore>(context);
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
     final configStore = Provider.of<MainStore>(context).configStore;
     final sortStore = Provider.of<MainStore>(context).sortStore;

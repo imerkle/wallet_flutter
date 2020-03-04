@@ -18,13 +18,24 @@ class Fabs extends StatelessWidget {
   @override
   Widget build(context) {
     final configStore = Provider.of<MainStore>(context).configStore;
+    final balanceStore = Provider.of<MainStore>(context).balanceStore;
+    final walletStore = Provider.of<MainStore>(context).walletStore;
+
     var keys = configStore.coins.keys.toList();
     return ListView.builder(
         itemCount: keys.length,
         itemBuilder: (context, i) {
           return Observer(builder: (_) {
             return GestureDetector(
-              onTap: () => configStore.setBase(keys[i]),
+              onTap: () {
+                configStore.setBase(keys[i]);
+                configStore.setRel(configStore.coins[keys[i]][0]);
+                balanceStore.fetchBalances(
+                    configStore.base,
+                    configStore.coins[configStore.base],
+                    walletStore.ws.list[walletStore.walletIndex].coins.list);
+                balanceStore.fetchPrices(configStore.coins[configStore.base]);
+              },
               child: Padding(
                 padding: EdgeInsets.only(top: 7, bottom: 7),
                 child: Row(

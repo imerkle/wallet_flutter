@@ -11,7 +11,7 @@ class TxIO extends StatelessWidget {
   final T.Tx t;
   final String rel;
   final Fiat fiat;
-  final Balance b;
+  final BalanceOut b;
   TxIO({this.t, this.rel, this.fiat, this.b});
   @override
   Widget build(BuildContext context) {

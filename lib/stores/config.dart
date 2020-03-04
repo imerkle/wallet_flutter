@@ -9,9 +9,7 @@ class ConfigStore = _ConfigStore with _$ConfigStore;
 
 abstract class _ConfigStore with Store {
   @observable
-  Map<String, List<String>> coins = {
-    "btc": ["btc"]
-  };
+  Map<String, List<String>> coins = {};
 
   @observable
   String base = "btc";

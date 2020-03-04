@@ -120,7 +120,6 @@ class _WalletState extends State<Wallet> {
                         ..memo = "";
                       o.address = receivingAddress.text;
                       os.list.add(o);
-                      print(o.value);
 
                       var txOpts = await getTransactionOpts(
                           rel: rel, base: base, address: coin.address);

@@ -6,6 +6,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:wallet_flutter/models/balance.dart';
 import 'package:wallet_flutter/models/transaction.dart' as T;
+import 'package:wallet_flutter/stores/balance.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/utils/fn.dart';
 import 'package:wallet_flutter/widgets/data_table.dart';
@@ -47,7 +48,8 @@ class _TrasactionScreenState extends State<TrasactionScreen>
     }
   }
 
-  void _showModalSheet(T.Transaction tx, Balance b, String base, String rel) {
+  void _showModalSheet(
+      T.Transaction tx, BalanceOut b, String base, String rel) {
     final mainStore = Provider.of<MainStore>(context);
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
 

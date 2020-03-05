@@ -55,7 +55,7 @@ abstract class _BalanceStore with Store {
                     })
                 .toList(),
           }));
-      bl = jsonDecode(response.body);
+      bl = {...bl, ...jsonDecode(response.body)};
     }
   }
 
@@ -68,12 +68,14 @@ abstract class _BalanceStore with Store {
             "fiat": fiat.ticker,
             "list": rels,
           }));
-      prices = jsonDecode(response.body);
+      prices = {...prices, ...jsonDecode(response.body)};
     }
   }
 
   BalanceOut getBalance({String rel, String base}) {
-    if (bl.containsKey(base) && bl[base].containsKey(rel)) {
+    if (bl.containsKey(base) &&
+        bl[base].containsKey(rel) &&
+        prices.containsKey(rel)) {
       var x = bl[base][rel];
       double value = x["value"] / pow(10, precisions[rel]);
       return BalanceOut(value: value, price: prices[rel] ?? 0);

@@ -28,8 +28,7 @@ abstract class _MainStore with Store {
     rust.initChannel();
     sortStore.sortables.add(Sortable("Coin", true, true));
     sortStore.sortables.add(Sortable("Amount", false, true));
-    configStore.init();
-    await walletStore.initPrep(rust);
+    await walletStore.initPrep(configStore.configs, rust);
     balanceStore.fetchBalances(
         configStore.base,
         configStore.coins[configStore.base],
@@ -39,7 +38,7 @@ abstract class _MainStore with Store {
 
   @computed
   Coin get coin => walletStore.ws.list[walletStore.walletIndex].coins.list
-      .firstWhere((x) => x.base == configStore.base && x.rel == configStore.rel,
+      .firstWhere((x) => x.base == configStore.base && x.rel == configStore.id,
           orElse: () => Coin());
 
   /*
@@ -50,9 +49,12 @@ abstract class _MainStore with Store {
   @computed
   Coin get coinFromRel => coinListFromBase.list[fabStore.relIndex];
 */
+
+/*
   List<Transaction> get txs => transactionStore.txs
               .containsKey(configStore.base) &&
-          transactionStore.txs[configStore.base].containsKey(configStore.rel)
-      ? transactionStore.txs[configStore.base][configStore.rel]
+          transactionStore.txs[configStore.base].containsKey(configStore.id)
+      ? transactionStore.txs[configStore.base][configStore.id]
       : [];
+      */
 }

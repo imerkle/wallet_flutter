@@ -34,7 +34,7 @@ class _TrasactionScreenState extends State<TrasactionScreen>
 
     transactionStore.refreshTxs(
         base: configStore.base,
-        rel: configStore.rel,
+        rel: configStore.id,
         address: mainStore.coin.address);
     _refreshController.refreshCompleted();
   }
@@ -97,14 +97,14 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                     TxIOL(
                         header: "Inputs",
                         iol: tx.inputs,
-                        rel: rel,
+                        id: rel,
                         fiat: balanceStore.fiat,
                         b: b),
                     SizedBox(height: 10),
                     TxIOL(
                         header: "Outputs",
                         iol: tx.outputs,
-                        rel: rel,
+                        id: rel,
                         fiat: balanceStore.fiat,
                         b: b),
                   ]),

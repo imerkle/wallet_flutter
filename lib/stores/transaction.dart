@@ -11,11 +11,13 @@ part 'transaction.g.dart';
 class TransactionStore = _TransactionStore with _$TransactionStore;
 
 abstract class _TransactionStore with Store {
+  //id => tx
   @observable
-  Map<String, Map<String, List<Transaction>>> txs = {};
+  Map<String, List<Transaction>> txs = {};
 
   @action
   Future<void> refreshTxs({String rel, String base, String address}) async {
+    /*
     try {
       var t = await getTransactions(rel: rel, base: base, address: address);
       if (!txs.containsKey(base)) {
@@ -30,5 +32,6 @@ abstract class _TransactionStore with Store {
     } catch (e) {
       print(e);
     }
+  */
   }
 }

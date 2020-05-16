@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:mobx/mobx.dart';
+import 'package:mobx/mobx.dart' show Store, action, observable;
 import 'package:http/http.dart' as http;
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:plugfox_localstorage/localstorage.dart';
+import 'package:wallet_flutter/models/config.dart';
+import 'package:wallet_flutter/stores/config.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
 import '../models/rust.dart';
@@ -29,13 +31,14 @@ abstract class _WalletStore with Store {
   @observable
   int walletIndex = 0;
 
-  Future<void> initPrep(Rust rust) async {
+  Future<void> initPrep(Map<String, ConfigAtom> configs, Rust rust) async {
     await storage.init();
-    await initWalletIfAbsent(rust);
+    await initWalletIfAbsent(configs, rust);
   }
 
   @action
-  Future<void> initWalletIfAbsent(Rust rust) async {
+  Future<void> initWalletIfAbsent(
+      Map<String, ConfigAtom> configs, Rust rust) async {
     storage[SYNC_WALLETS] = null;
     String walletsJson = storage[SYNC_WALLETS];
 
@@ -49,13 +52,16 @@ abstract class _WalletStore with Store {
         ws = Wallets.fromJson(walletsJson);
       } else {
         Wallets wsx = Wallets();
+        Configs cnf = Configs();
+        configs.forEach((id, x) => {
+              if (x.config.hasProtocol()) {cnf.list.add(x.config)}
+            });
         //mnemonic = bip39.generateMnemonic();
         mnemonic =
             "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
-
         var input = GetWalletInput()
           ..mnemonic = mnemonic
-          ..configs = getConfigs();
+          ..configs = cnf;
         var x =
             await rust.invokeRustMethod("get_wallets", input.writeToBuffer());
         Wallet w = Wallet()
@@ -73,12 +79,4 @@ abstract class _WalletStore with Store {
 
 String replaceAll(String str, String r, String w) {
   return str.replaceAll(new RegExp(r), w);
-}
-
-Configs getConfigs() {
-  var c = Configs();
-  configs.forEach((x) {
-    c.list.add(x);
-  });
-  return c;
 }

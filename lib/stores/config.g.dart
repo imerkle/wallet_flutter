@@ -9,6 +9,29 @@ part of 'config.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ConfigStore on _ConfigStore, Store {
+  Computed<ParentConfig> _$coinComputed;
+
+  @override
+  ParentConfig get coin =>
+      (_$coinComputed ??= Computed<ParentConfig>(() => super.coin)).value;
+
+  final _$configsAtom = Atom(name: '_ConfigStore.configs');
+
+  @override
+  List<ParentConfig> get configs {
+    _$configsAtom.context.enforceReadPolicy(_$configsAtom);
+    _$configsAtom.reportObserved();
+    return super.configs;
+  }
+
+  @override
+  set configs(List<ParentConfig> value) {
+    _$configsAtom.context.conditionallyRunInAction(() {
+      super.configs = value;
+      _$configsAtom.reportChanged();
+    }, _$configsAtom, name: '${_$configsAtom.name}_set');
+  }
+
   final _$coinsAtom = Atom(name: '_ConfigStore.coins');
 
   @override
@@ -43,40 +66,30 @@ mixin _$ConfigStore on _ConfigStore, Store {
     }, _$baseAtom, name: '${_$baseAtom.name}_set');
   }
 
-  final _$relAtom = Atom(name: '_ConfigStore.rel');
+  final _$idAtom = Atom(name: '_ConfigStore.id');
 
   @override
-  String get rel {
-    _$relAtom.context.enforceReadPolicy(_$relAtom);
-    _$relAtom.reportObserved();
-    return super.rel;
+  String get id {
+    _$idAtom.context.enforceReadPolicy(_$idAtom);
+    _$idAtom.reportObserved();
+    return super.id;
   }
 
   @override
-  set rel(String value) {
-    _$relAtom.context.conditionallyRunInAction(() {
-      super.rel = value;
-      _$relAtom.reportChanged();
-    }, _$relAtom, name: '${_$relAtom.name}_set');
+  set id(String value) {
+    _$idAtom.context.conditionallyRunInAction(() {
+      super.id = value;
+      _$idAtom.reportChanged();
+    }, _$idAtom, name: '${_$idAtom.name}_set');
   }
 
   final _$_ConfigStoreActionController = ActionController(name: '_ConfigStore');
 
   @override
-  void init() {
+  void setId(String s) {
     final _$actionInfo = _$_ConfigStoreActionController.startAction();
     try {
-      return super.init();
-    } finally {
-      _$_ConfigStoreActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setRel(String s) {
-    final _$actionInfo = _$_ConfigStoreActionController.startAction();
-    try {
-      return super.setRel(s);
+      return super.setId(s);
     } finally {
       _$_ConfigStoreActionController.endAction(_$actionInfo);
     }

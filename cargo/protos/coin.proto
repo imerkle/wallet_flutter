@@ -6,20 +6,18 @@ option java_outer_classname = "Protos";
 option objc_class_prefix = "Protos";
 
 message Coin {
-  bytes public_key = 1;
-  bytes private_key = 2;
-  string wif = 3;
-  string address = 4;
-  string rel = 5;
-  string base = 6;
+  string id = 1;
+  bytes public_key = 2;
+  bytes private_key = 3;
+  string wif = 4;
+  string address = 5;
 }
-message Coins { repeated Coin list = 1; }
 
 message Wallet {
   string mnemonic = 1;
-  Coins coins = 2;
+  map<string, Coin> coins = 2;
 }
-message Wallets { repeated Wallet list = 1; }
+message Wallets { repeated Wallet wallet = 1; }
 message Output {
   string address = 1;
   double value = 2;
@@ -29,19 +27,32 @@ message Outputs { repeated Output list = 1; }
 
 message Tx { string tx_hex = 1; }
 
+enum Protocol {
+  BTC = 0;
+  BTC_BECH32 = 1;
+  ETH = 2;
+  EOS = 3;
+  XLM = 4;
+  XRP = 5;
+  NEO = 6;
+}
+enum CurveName {
+  SECP256K1 = 0;
+  SECP256R1 = 1;
+  ED25519 = 2;
+}
+
 message Config {
-  string rel = 1;
-  string protocol = 2;
+  string id = 1;
+  Protocol protocol = 2;
   uint32 code = 3;
-  uint32 precision = 4;
-  uint32 private = 5;
-  uint32 public = 6;
-  string prefix = 7;
+  uint32 private = 4;
+  uint32 public = 5;
+  string prefix = 6;
+  CurveName curve_name = 7;
   uint32 chain_id = 8;
-  string base = 9;
-  string curve_name = 10;
-  bool is_compressed = 11;
-  bool is_bech32 = 12;
+  //  bool is_compressed = 10;
+  //  bool is_bech32 = 11;
 }
 message Configs { repeated Config list = 1; }
 message Input {

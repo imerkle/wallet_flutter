@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wallet_flutter/models/balance.dart';
 import 'package:wallet_flutter/models/transaction.dart' as T;
 import 'package:wallet_flutter/stores/balance.dart';
+import 'package:wallet_flutter/stores/main.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/utils/fn.dart';
 
@@ -9,13 +11,14 @@ import 'tx_labels.dart';
 
 class TxIO extends StatelessWidget {
   final T.Tx t;
-  final String rel;
+  final String id;
   final Fiat fiat;
   final BalanceOut b;
-  TxIO({this.t, this.rel, this.fiat, this.b});
+  TxIO({this.t, this.id, this.fiat, this.b});
   @override
   Widget build(BuildContext context) {
-    var v = valueToPrecision(t.value, rel);
+    final configStore = Provider.of<MainStore>(context).configStore;
+    var v = valueToPrecision(t.value, configStore.precisions[id]);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

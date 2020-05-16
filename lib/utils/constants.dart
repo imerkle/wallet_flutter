@@ -25,6 +25,7 @@ double textToDouble(String text) {
 }
 
 final Map<String, ExplorerConfig> explorerConfigList = {
+  "btg": ExplorerConfig(api: "https://btg1.trezor.io/api/v2", kind: "trezor"),
   "btc": ExplorerConfig(api: "https://tbtc1.trezor.io/api/v2", kind: "trezor"),
   "eth": ExplorerConfig(
       api: "https://ac-dev0.net:29136/api/v2", kind: "trezorToken"),
@@ -40,28 +41,4 @@ final Map<String, ExplorerConfig> explorerConfigList = {
       ExplorerConfig(api: "https://api.shasta.tronscan.org/api", kind: "trx"),
   "bnb": ExplorerConfig(
       api: "https://testnet-dex.binance.org/api/v1", kind: "bnb"),
-};
-
-List<Config> configs = [
-  Config()
-    ..rel = "btc"
-    ..base = "btc"
-    ..protocol = "btc"
-    ..code = 1
-    ..precision = 8
-    ..private = 239
-    ..public = 111
-    ..prefix = "tb",
-  Config()
-    ..rel = "eth"
-    ..base = "eth"
-    ..protocol = "eth"
-    ..code = 60
-    ..precision = 18
-    ..chainId = 3,
-];
-
-Map<String, int> precisions = {
-  "btc": 8,
-  "eth": 18,
 };

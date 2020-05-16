@@ -7,26 +7,13 @@ import '../stores/main.dart';
 import '../widgets/fabs.dart';
 import '../widgets/sort_widget.dart';
 
-String getName(String ticker) {
-  return cryptoNames[ticker] ?? "Unknown";
-}
-
-final cryptoNames = {
-  'btc': "Bitcoin",
-  'eth': "Ethereum",
-  'eos': "EOS",
-  'xrp': "Ripple",
-  'xlm': "Stellar",
-  'neo': "NEO",
-  'ont': "Ontology",
-};
-
 class DrawerWidget extends StatelessWidget {
   @override
   Widget build(context) {
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final configStore = Provider.of<MainStore>(context).configStore;
     final sortStore = Provider.of<MainStore>(context).sortStore;
+    final mainStore = Provider.of<MainStore>(context);
 
     if (walletStore.ws.list.length == 0) {
       return Container();
@@ -51,7 +38,7 @@ class DrawerWidget extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         padding: EdgeInsets.all(20),
                         child: Observer(builder: (_) {
-                          return Text(getName(configStore.rel),
+                          return Text(mainStore.coin.name,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 20,

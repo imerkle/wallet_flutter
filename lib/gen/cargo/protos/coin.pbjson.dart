@@ -5,22 +5,31 @@
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
 
-const Coin$json = const {
-  '1': 'Coin',
+const Protocol$json = const {
+  '1': 'Protocol',
   '2': const [
-    const {'1': 'public_key', '3': 1, '4': 1, '5': 12, '10': 'publicKey'},
-    const {'1': 'private_key', '3': 2, '4': 1, '5': 12, '10': 'privateKey'},
-    const {'1': 'wif', '3': 3, '4': 1, '5': 9, '10': 'wif'},
-    const {'1': 'address', '3': 4, '4': 1, '5': 9, '10': 'address'},
-    const {'1': 'rel', '3': 5, '4': 1, '5': 9, '10': 'rel'},
-    const {'1': 'base', '3': 6, '4': 1, '5': 9, '10': 'base'},
+    const {'1': 'BTC', '2': 0},
+    const {'1': 'ETH', '2': 1},
   ],
 };
 
-const Coins$json = const {
-  '1': 'Coins',
+const CurveName$json = const {
+  '1': 'CurveName',
   '2': const [
-    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Coin', '10': 'list'},
+    const {'1': 'SECP256K1', '2': 0},
+    const {'1': 'SECP256R1', '2': 1},
+    const {'1': 'ED25519', '2': 2},
+  ],
+};
+
+const Coin$json = const {
+  '1': 'Coin',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'public_key', '3': 2, '4': 1, '5': 12, '10': 'publicKey'},
+    const {'1': 'private_key', '3': 3, '4': 1, '5': 12, '10': 'privateKey'},
+    const {'1': 'wif', '3': 4, '4': 1, '5': 9, '10': 'wif'},
+    const {'1': 'address', '3': 5, '4': 1, '5': 9, '10': 'address'},
   ],
 };
 
@@ -28,14 +37,24 @@ const Wallet$json = const {
   '1': 'Wallet',
   '2': const [
     const {'1': 'mnemonic', '3': 1, '4': 1, '5': 9, '10': 'mnemonic'},
-    const {'1': 'coins', '3': 2, '4': 1, '5': 11, '6': '.Coins', '10': 'coins'},
+    const {'1': 'coins', '3': 2, '4': 3, '5': 11, '6': '.Wallet.CoinsEntry', '10': 'coins'},
   ],
+  '3': const [Wallet_CoinsEntry$json],
+};
+
+const Wallet_CoinsEntry$json = const {
+  '1': 'CoinsEntry',
+  '2': const [
+    const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
+    const {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.Coin', '10': 'value'},
+  ],
+  '7': const {'7': true},
 };
 
 const Wallets$json = const {
   '1': 'Wallets',
   '2': const [
-    const {'1': 'list', '3': 1, '4': 3, '5': 11, '6': '.Wallet', '10': 'list'},
+    const {'1': 'wallet', '3': 1, '4': 3, '5': 11, '6': '.Wallet', '10': 'wallet'},
   ],
 };
 
@@ -65,18 +84,14 @@ const Tx$json = const {
 const Config$json = const {
   '1': 'Config',
   '2': const [
-    const {'1': 'rel', '3': 1, '4': 1, '5': 9, '10': 'rel'},
-    const {'1': 'protocol', '3': 2, '4': 1, '5': 9, '10': 'protocol'},
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'protocol', '3': 2, '4': 1, '5': 14, '6': '.Protocol', '10': 'protocol'},
     const {'1': 'code', '3': 3, '4': 1, '5': 13, '10': 'code'},
-    const {'1': 'precision', '3': 4, '4': 1, '5': 13, '10': 'precision'},
-    const {'1': 'private', '3': 5, '4': 1, '5': 13, '10': 'private'},
-    const {'1': 'public', '3': 6, '4': 1, '5': 13, '10': 'public'},
-    const {'1': 'prefix', '3': 7, '4': 1, '5': 9, '10': 'prefix'},
+    const {'1': 'private', '3': 4, '4': 1, '5': 13, '10': 'private'},
+    const {'1': 'public', '3': 5, '4': 1, '5': 13, '10': 'public'},
+    const {'1': 'prefix', '3': 6, '4': 1, '5': 9, '10': 'prefix'},
+    const {'1': 'curve_name', '3': 7, '4': 1, '5': 14, '6': '.CurveName', '10': 'curveName'},
     const {'1': 'chain_id', '3': 8, '4': 1, '5': 13, '10': 'chainId'},
-    const {'1': 'base', '3': 9, '4': 1, '5': 9, '10': 'base'},
-    const {'1': 'curve_name', '3': 10, '4': 1, '5': 9, '10': 'curveName'},
-    const {'1': 'is_compressed', '3': 11, '4': 1, '5': 8, '10': 'isCompressed'},
-    const {'1': 'is_bech32', '3': 12, '4': 1, '5': 8, '10': 'isBech32'},
   ],
 };
 

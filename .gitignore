@@ -81,3 +81,4 @@ android/app/.settings/
 
 target
 Cargo.lock
+.flutter-plugins-dependencies

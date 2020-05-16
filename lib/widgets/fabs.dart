@@ -29,7 +29,7 @@ class Fabs extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 configStore.setBase(keys[i]);
-                configStore.setRel(configStore.coins[keys[i]][0]);
+                configStore.setId(configStore.coins[keys[i]][0]);
                 balanceStore.fetchBalances(
                     configStore.base,
                     configStore.coins[configStore.base],

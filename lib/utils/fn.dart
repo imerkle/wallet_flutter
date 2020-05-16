@@ -26,12 +26,8 @@ Future scan(Function onScan) async {
   }
 }
 
-double valueToPrecision(double value, String rel) {
-  return value / pow(10, precisions[rel]);
-}
-
-Config getConfig(String rel, String base) {
-  return configs.singleWhere((c) => c.base == base && c.rel == rel);
+double valueToPrecision(double value, int precision) {
+  return value / pow(10, precision);
 }
 
 String valueToPretty(double n, int precision) {

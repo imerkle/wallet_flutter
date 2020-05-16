@@ -7,10 +7,14 @@ use wallet::{
         hex_decode, CurveName,
     },
 };
-
 use super::protos;
+use protos::coin::{
+    Wallet,
+    Coin,
+    Protocol
+};
 
-pub fn get_wallets(configs: &protos::coin::Configs, mnemonic: String) -> protos::coin::Coins {
+pub fn get_wallets(configs: &protos::coin::Configs, mnemonic: String) -> Wallet {
     let seed = bip32::generate_seed(Some(&mnemonic), None);
     let node1 = Node::new(
         &SeedOrVect::Seed(seed.clone()),
@@ -28,36 +32,40 @@ pub fn get_wallets(configs: &protos::coin::Configs, mnemonic: String) -> protos:
         b"ed25519 seed",
     );
 
-    let mut coins = protos::coin::Coins::new();
+    let mut coins = HashMap<String, Coin>::new();
+    let mut wallet = Wallet::new();
+    wallet.set_mnemonic(mnemonic);
+    //wallet.set_coins(mnemonic);
 
-    coins.set_list(protobuf::RepeatedField::from_vec(
-        configs
-            .list
-            .iter()
-            .map(|config| {
-                let (gcw, opts, _) = from_config(&config, None);
-                let n = match opts.curve_name {
-                    CurveName::Secp256k1 => node1.clone(),
-                    CurveName::Secp256r1 => node2.clone(),
-                    CurveName::Ed25519 => node3.clone(),
-                };
-                let (sk, pk) = coin::generate_keypair(&opts, Some(n));
-                let gc = gcw.unwrap();
+    for config in configs.list.iter() {
+        let (gcw, opts, _) = from_config(&config, None);
+        let n = match opts.curve_name {
+            CurveName::Secp256k1 => node1.clone(),
+            CurveName::Secp256r1 => node2.clone(),
+            CurveName::Ed25519 => node3.clone(),
+        };
+        let (sk, pk) = coin::generate_keypair(&opts, Some(n));
+        let gc = gcw.unwrap();
 
-                //let coin = Coin::new(ctype, opts, None, None,Some(n));
-                protos::coin::Coin {
-                    rel: config.rel.clone(),
-                    base: config.base.clone(),
-                    private_key: sk.to_vec(),
-                    address: gc.pub_to_address(&pk),
-                    wif: gc.priv_to_wif(&sk),
-                    public_key: pk,
-                    ..Default::default()
-                }
-            })
-            .collect::<Vec<_>>(),
-    ));
-    coins
+        //let coin = Coin::new(ctype, opts, None, None,Some(n));
+        let coin = protos::coin::Coin {
+            id: config.id.clone(),
+            private_key: sk.to_vec(),
+            address: gc.pub_to_address(&pk),
+            wif: gc.priv_to_wif(&sk),
+            public_key: pk,
+            ..Default::default()
+        }
+        coins.insert(config.id, coin)
+    }
+    configs
+        .list
+        .iter()
+        .map(|config| {
+
+        })
+        .collect::<Vec<_>>();
+    wallet
 }
 
 pub fn gen_send_transaction(
@@ -197,52 +205,61 @@ pub fn from_config(
     coin::CoinOpts,
     Option<coin::TxOpts>,
 ) {
-    let precision = config.precision as i32;
     let private = config.private as u8;
     let public = config.public as u8;
     let chain_id = config.chain_id as u8;
 
-    let p: &str = &config.protocol;
+    let p: &protos::coin::Protocol = &config.protocol;
     let (gc, re_txopts): (
         Option<Box<dyn coin::GenericCoin + 'static>>,
         Option<coin::TxOpts>,
     ) = match p {
-        "btc" => btc!(
+        protos::coin::Protocol::BTC => btc!(
             btc,
             tx_opts,
             private,
             public,
             config.prefix,
-            config.is_compressed,
-            config.is_bech32
+            //config.is_compressed,
+            true,
+            false
         ),
-        "eos" => eos!(
+        protos::coin::Protocol::BTC_BECH32 => btc!(
+            btc,
+            tx_opts,
+            private,
+            public,
+            config.prefix,
+            //config.is_compressed,
+            true,
+            true
+        ),
+        protos::coin::Protocol::EOS => eos!(
             eos,
             tx_opts,
             private,
             public,
             config.prefix,
-            config.is_compressed
+            //config.is_compressed
+            false
         ),
-        "eth" => eth!(eth, tx_opts, chain_id),
-        "xlm" => xlm!(xlm, tx_opts, config.prefix.clone()),
-        "xrp" => xrp!(xrp, tx_opts),
-        "neo" => neo!(neo, tx_opts, private, public),
+        protos::coin::Protocol::ETH => eth!(eth, tx_opts, chain_id),
+        protos::coin::Protocol::XLM => xlm!(xlm, tx_opts, config.prefix.clone()),
+        protos::coin::Protocol::XRP => xrp!(xrp, tx_opts),
+        protos::coin::Protocol::NEO => neo!(neo, tx_opts, private, public),
         _ => panic!("not expected"),
     };
-    let c: &str = &config.curve_name;
+    let c: &protos::coin::CurveName = &config.curve_name;
     let curve_name = match c {
-        "secp256k1" => CurveName::Secp256k1,
-        "secp256r1" => CurveName::Secp256r1,
-        "ed25519" => CurveName::Ed25519,
+        protos::coin::CurveName::SECP256K1 => CurveName::Secp256k1,
+        protos::coin::CurveName::SECP256R1 => CurveName::Secp256r1,
+        protos::coin::CurveName::ED25519 => CurveName::Ed25519,
         _ => CurveName::Secp256k1,
     };
     (
         gc,
         coin::CoinOpts {
             slips44_code: config.code,
-            precision,
-            rel: config.rel.to_string(),
             curve_name,
         },
         re_txopts,
@@ -255,20 +272,16 @@ mod tests {
     use wallet::util::hex_encode;
 
     macro_rules! config {
-        ( $rel:expr, $base:expr, $protocol:expr, $code:expr, $precision:expr, $private:expr, $public:expr, $prefix:expr , $chain_id:expr, $curve_name:expr, $is_compressed:expr, $is_bech32:expr ) => {
+        ( $id:expr,  $protocol:expr, $code:expr, $private:expr, $public:expr, $prefix:expr , $chain_id:expr, $curve_name:expr ) => {
             protos::coin::Config {
-                rel: $rel.to_string(),
-                base: $base.to_string(),
-                protocol: $protocol.to_string(),
+                id: $id.to_string(),
+                protocol: $protocol,
                 code: $code,
-                precision: $precision,
                 private: $private,
                 public: $public,
                 prefix: $prefix.to_string(),
                 chain_id: $chain_id,
-                curve_name: $curve_name.to_string(),
-                is_compressed: $is_compressed,
-                is_bech32: $is_bech32,
+                curve_name: $curve_name,
                 ..Default::default()
             }
         };
@@ -277,51 +290,40 @@ mod tests {
     fn m() -> protos::coin::Configs {
         protos::coin::Configs {
             list: protobuf::RepeatedField::from_vec(vec![
-                config!("btc", "btc", "btc", 0, 8, 128, 0, "bc", 0, "", true, true),
-                config!("eth", "eth", "eth", 60, 18, 0, 0, "", 1, "", true, false),
+                config!("btc", Protocol::BTC_BECH32, 0, 128, 0, "bc", 0,
+                protos::coin::CurveName::SECP256K1),
+                config!("eth", Protocol::ETH, 60, 0, 0, "", 1, protos::coin::CurveName::SECP256K1),
                 config!(
                     "xlm",
-                    "xlm",
-                    "xlm",
+                    Protocol::XLM,
                     148,
-                    6,
                     0,
                     0,
                     "Public Global Stellar Network ; September 2015",
                     0,
-                    "ed25519",
-                    true,
-                    false
+                    protos::coin::CurveName::ED25519
                 ),
-                config!("xrp", "xrp", "xrp", 144, 6, 0, 0, "", 0, "", true, false),
-                config!("eos", "eos", "eos", 194, 18, 128, 0, "EOS", 0, "", false, false),
+                config!("xrp", Protocol::XRP, 144, 0, 0, "", 0, protos::coin::CurveName::SECP256K1),
+                config!("eos", Protocol::EOS, 194, 128, 0, "EOS", 0, protos::coin::CurveName::SECP256K1),
                 config!(
                     "neo",
-                    "neo",
-                    "neo",
+                    Protocol::NEO,
                     888,
                     0,
                     0,
-                    0,
                     "",
                     0,
-                    "secp256r1",
-                    true,
-                    false
+                    protos::coin::CurveName::SECP256R1
                 ),
                 config!(
                     "ont",
-                    "ont",
-                    "neo",
+                    Protocol::NEO,
                     1024,
-                    0,
                     0,
                     0,
                     "",
                     0,
-                    "secp256r1",
-                    true,
-                    false
+                    protos::coin::CurveName::SECP256R1
                 ),
             ]),
             ..Default::default()
@@ -330,51 +332,40 @@ mod tests {
     fn t() -> protos::coin::Configs {
         protos::coin::Configs {
             list: protobuf::RepeatedField::from_vec(vec![
-                config!("btc", "btc", "btc", 1, 8, 239, 111, "tb", 0, "", true, true),
-                config!("eth", "eth", "eth", 60, 18, 0, 0, "", 1, "", true, false),
+                config!("btc", Protocol::BTC_BECH32, 1, 239, 111, "bc", 0,
+                protos::coin::CurveName::SECP256K1),
+                config!("eth", Protocol::ETH, 60, 0, 0, "", 1, protos::coin::CurveName::SECP256K1),                
                 config!(
                     "xlm",
-                    "xlm",
-                    "xlm",
+                    Protocol::XLM,
                     148,
-                    6,
                     0,
                     0,
                     "Public Global Stellar Network ; September 2015",
                     0,
-                    "",
-                    true,
-                    false
+                    protos::coin::CurveName::ED25519
                 ),
-                config!("xrp", "xrp", "xrp", 144, 6, 0, 0, "", 0, "", true, false),
-                config!("eos", "eos", "eos", 194, 18, 128, 0, "EOS", 0, "", false, false),
+                config!("xrp", Protocol::XRP, 144, 0, 0, "", 0, protos::coin::CurveName::SECP256K1),
+                config!("eos", Protocol::EOS, 194, 128, 0, "EOS", 0, protos::coin::CurveName::SECP256K1),                
                 config!(
                     "neo",
-                    "neo",
-                    "neo",
+                    Protocol::NEO,
                     888,
                     0,
                     0,
-                    0,
                     "",
                     0,
-                    "secp256r1",
-                    true,
-                    false
+                    protos::coin::CurveName::SECP256R1
                 ),
                 config!(
                     "ont",
-                    "ont",
-                    "neo",
+                    Protocol::NEO,
                     1024,
-                    0,
                     0,
                     0,
                     "",
                     0,
-                    "secp256r1",
-                    true,
-                    false
+                    protos::coin::CurveName::SECP256R1
                 ),
             ]),
             ..Default::default()
@@ -391,8 +382,8 @@ mod tests {
         );
         let tx = gen_send_transaction(
             &t.list[0],
-            get_by(&x, "btc", "btc").private_key.clone(),
-            get_by(&x, "btc", "btc").public_key.clone(),
+            get_by(&x, "btc").private_key.clone(),
+            get_by(&x, "btc").public_key.clone(),
             protos::coin::Outputs {
                 list: protobuf::RepeatedField::from_vec(vec![protos::coin::Output {
                     address: "2NFUzGLdgrU2qgMBQG9ADts5qR8uPTzZa2H".to_string(),
@@ -416,11 +407,11 @@ mod tests {
 
         let tx = gen_send_transaction(
             &t.list[1],
-            get_by(&x, "eth", "eth").private_key.clone(),
-            get_by(&x, "eth", "eth").public_key.clone(),
+            get_by(&x, "eth").private_key.clone(),
+            get_by(&x, "eth").public_key.clone(),
             protos::coin::Outputs {
                 list: protobuf::RepeatedField::from_vec(vec![protos::coin::Output {
-                    address: get_by(&x, "eth", "eth").address.clone(),
+                    address: get_by(&x, "eth").address.clone(),
                     value: 1.0,
                     ..Default::default()
                 }]),
@@ -443,56 +434,53 @@ mod tests {
                 .to_string(),
         );
         assert_eq!(
-            get_by(&x, "btc", "btc").wif,
+            get_by(&x, "btc").wif,
             "KwxFiVzM64x3SEgyYnzCDf8xh3s3Ber66GeD23HkdGrsdKvhGAnf"
         );
         assert_eq!(
-            hex_encode(&get_by(&x, "btc", "btc").public_key),
+            hex_encode(&get_by(&x, "btc").public_key),
             "03bc140f5f9970ea9b2888f808b117e25949fcf4825ca14929ba12b7a310c6b351"
         );
         assert_eq!(
-            get_by(&x, "btc", "btc").address,
+            get_by(&x, "btc").address,
             "bc1qhee7awenpfzmn7tuk95vrkuhctj8h5mh7yrxnu"
         );
         assert_eq!(
-            get_by(&x, "eth", "eth").address,
+            get_by(&x, "eth").address,
             "0xb023b80afad0363ab966cf10b5f76e5f625cf497"
         );
         assert_eq!(
-            get_by(&x, "xlm", "xlm").address,
+            get_by(&x, "xlm").address,
             "GDEHOJPTD6I336QBOTSIADKTKAVWKVWEF5S2QFNPBWQN7TCTL5TFSPCR"
         );
         assert_eq!(
-            get_by(&x, "xlm", "xlm").wif,
+            get_by(&x, "xlm").wif,
             "SAOR373KUDDGZ7QN4HNXFQKIFMZKFMRMWP6B7XAHMVEIQBVR5IDYVHXH"
         );
         assert_eq!(
-            get_by(&x, "xrp", "xrp").address,
+            get_by(&x, "xrp").address,
             "rPphbLGemSQv4De1LUHYq6tupBkrrZUxNe"
         );
         assert_eq!(
-            get_by(&x, "eos", "eos").address,
+            get_by(&x, "eos").address,
             "EOS5ZXHpkLdY9qqYLEL5D5VPwZop9BrF6pCMT4QauJJzkrA7xitfA"
         );
         assert_eq!(
-            get_by(&x, "eos", "eos").wif,
+            get_by(&x, "eos").wif,
             "5K7V5He9abzwEavLTEVeWj4U9xEtVdnrGD4jc5piNvmbAz45mcS"
         );
         assert_eq!(
-            get_by(&x, "neo", "neo").address,
+            get_by(&x, "neo").address,
             "AShDKgLSuCjGZr8Fs5SRLSYvmcSV7S4zwX"
         );
         assert_eq!(
-            get_by(&x, "ont", "ont").address,
+            get_by(&x, "ont").address,
             "AZMnsLjJ5ykADJEXcy7CMA5UnGzKEL8WKQ"
         );
     }
-    fn get_by(v: &protos::coin::Coins, base: &str, rel: &str) -> protos::coin::Coin {
-        v.list
-            .iter()
-            .find(|x| x.base == base && x.rel == rel)
-            .unwrap()
-            .clone()
-        //v.iter().find(|x| x.base == base).unwrap().list.to_vec()
+    fn get_by(w: &Wallet, id: &str) -> Coin {
+        match w.coins.get(id) {
+            Some(coin) => coin.clone(),
+        }
     }
 }

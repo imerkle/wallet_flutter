@@ -10,14 +10,17 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import 'coin.pbenum.dart';
+
+export 'coin.pbenum.dart';
+
 class Coin extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Coin', createEmptyInstance: create)
-    ..a<$core.List<$core.int>>(1, 'publicKey', $pb.PbFieldType.OY)
-    ..a<$core.List<$core.int>>(2, 'privateKey', $pb.PbFieldType.OY)
-    ..aOS(3, 'wif')
-    ..aOS(4, 'address')
-    ..aOS(5, 'rel')
-    ..aOS(6, 'base')
+    ..aOS(1, 'id')
+    ..a<$core.List<$core.int>>(2, 'publicKey', $pb.PbFieldType.OY)
+    ..a<$core.List<$core.int>>(3, 'privateKey', $pb.PbFieldType.OY)
+    ..aOS(4, 'wif')
+    ..aOS(5, 'address')
     ..hasRequiredFields = false
   ;
 
@@ -35,64 +38,36 @@ class Coin extends $pb.GeneratedMessage {
   static Coin getDefault() => _defaultInstance ??= create()..freeze();
   static Coin _defaultInstance;
 
-  $core.List<$core.int> get publicKey => $_getN(0);
-  set publicKey($core.List<$core.int> v) { $_setBytes(0, v); }
-  $core.bool hasPublicKey() => $_has(0);
-  void clearPublicKey() => clearField(1);
+  $core.String get id => $_getS(0, '');
+  set id($core.String v) { $_setString(0, v); }
+  $core.bool hasId() => $_has(0);
+  void clearId() => clearField(1);
 
-  $core.List<$core.int> get privateKey => $_getN(1);
-  set privateKey($core.List<$core.int> v) { $_setBytes(1, v); }
-  $core.bool hasPrivateKey() => $_has(1);
-  void clearPrivateKey() => clearField(2);
+  $core.List<$core.int> get publicKey => $_getN(1);
+  set publicKey($core.List<$core.int> v) { $_setBytes(1, v); }
+  $core.bool hasPublicKey() => $_has(1);
+  void clearPublicKey() => clearField(2);
 
-  $core.String get wif => $_getS(2, '');
-  set wif($core.String v) { $_setString(2, v); }
-  $core.bool hasWif() => $_has(2);
-  void clearWif() => clearField(3);
+  $core.List<$core.int> get privateKey => $_getN(2);
+  set privateKey($core.List<$core.int> v) { $_setBytes(2, v); }
+  $core.bool hasPrivateKey() => $_has(2);
+  void clearPrivateKey() => clearField(3);
 
-  $core.String get address => $_getS(3, '');
-  set address($core.String v) { $_setString(3, v); }
-  $core.bool hasAddress() => $_has(3);
-  void clearAddress() => clearField(4);
+  $core.String get wif => $_getS(3, '');
+  set wif($core.String v) { $_setString(3, v); }
+  $core.bool hasWif() => $_has(3);
+  void clearWif() => clearField(4);
 
-  $core.String get rel => $_getS(4, '');
-  set rel($core.String v) { $_setString(4, v); }
-  $core.bool hasRel() => $_has(4);
-  void clearRel() => clearField(5);
-
-  $core.String get base => $_getS(5, '');
-  set base($core.String v) { $_setString(5, v); }
-  $core.bool hasBase() => $_has(5);
-  void clearBase() => clearField(6);
-}
-
-class Coins extends $pb.GeneratedMessage {
-  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Coins', createEmptyInstance: create)
-    ..pc<Coin>(1, 'list', $pb.PbFieldType.PM, subBuilder: Coin.create)
-    ..hasRequiredFields = false
-  ;
-
-  Coins._() : super();
-  factory Coins() => create();
-  factory Coins.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
-  factory Coins.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
-  Coins clone() => Coins()..mergeFromMessage(this);
-  Coins copyWith(void Function(Coins) updates) => super.copyWith((message) => updates(message as Coins));
-  $pb.BuilderInfo get info_ => _i;
-  @$core.pragma('dart2js:noInline')
-  static Coins create() => Coins._();
-  Coins createEmptyInstance() => create();
-  static $pb.PbList<Coins> createRepeated() => $pb.PbList<Coins>();
-  static Coins getDefault() => _defaultInstance ??= create()..freeze();
-  static Coins _defaultInstance;
-
-  $core.List<Coin> get list => $_getList(0);
+  $core.String get address => $_getS(4, '');
+  set address($core.String v) { $_setString(4, v); }
+  $core.bool hasAddress() => $_has(4);
+  void clearAddress() => clearField(5);
 }
 
 class Wallet extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallet', createEmptyInstance: create)
     ..aOS(1, 'mnemonic')
-    ..a<Coins>(2, 'coins', $pb.PbFieldType.OM, defaultOrMaker: Coins.getDefault, subBuilder: Coins.create)
+    ..m<$core.String, Coin>(2, 'coins', entryClassName: 'Wallet.CoinsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: Coin.create)
     ..hasRequiredFields = false
   ;
 
@@ -115,15 +90,12 @@ class Wallet extends $pb.GeneratedMessage {
   $core.bool hasMnemonic() => $_has(0);
   void clearMnemonic() => clearField(1);
 
-  Coins get coins => $_getN(1);
-  set coins(Coins v) { setField(2, v); }
-  $core.bool hasCoins() => $_has(1);
-  void clearCoins() => clearField(2);
+  $core.Map<$core.String, Coin> get coins => $_getMap(1);
 }
 
 class Wallets extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallets', createEmptyInstance: create)
-    ..pc<Wallet>(1, 'list', $pb.PbFieldType.PM, subBuilder: Wallet.create)
+    ..pc<Wallet>(1, 'wallet', $pb.PbFieldType.PM, subBuilder: Wallet.create)
     ..hasRequiredFields = false
   ;
 
@@ -141,7 +113,7 @@ class Wallets extends $pb.GeneratedMessage {
   static Wallets getDefault() => _defaultInstance ??= create()..freeze();
   static Wallets _defaultInstance;
 
-  $core.List<Wallet> get list => $_getList(0);
+  $core.List<Wallet> get wallet => $_getList(0);
 }
 
 class Output extends $pb.GeneratedMessage {
@@ -233,18 +205,14 @@ class Tx extends $pb.GeneratedMessage {
 
 class Config extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Config', createEmptyInstance: create)
-    ..aOS(1, 'rel')
-    ..aOS(2, 'protocol')
+    ..aOS(1, 'id')
+    ..e<Protocol>(2, 'protocol', $pb.PbFieldType.OE, defaultOrMaker: Protocol.BTC, valueOf: Protocol.valueOf, enumValues: Protocol.values)
     ..a<$core.int>(3, 'code', $pb.PbFieldType.OU3)
-    ..a<$core.int>(4, 'precision', $pb.PbFieldType.OU3)
-    ..a<$core.int>(5, 'private', $pb.PbFieldType.OU3)
-    ..a<$core.int>(6, 'public', $pb.PbFieldType.OU3)
-    ..aOS(7, 'prefix')
+    ..a<$core.int>(4, 'private', $pb.PbFieldType.OU3)
+    ..a<$core.int>(5, 'public', $pb.PbFieldType.OU3)
+    ..aOS(6, 'prefix')
+    ..e<CurveName>(7, 'curveName', $pb.PbFieldType.OE, defaultOrMaker: CurveName.SECP256K1, valueOf: CurveName.valueOf, enumValues: CurveName.values)
     ..a<$core.int>(8, 'chainId', $pb.PbFieldType.OU3)
-    ..aOS(9, 'base')
-    ..aOS(10, 'curveName')
-    ..aOB(11, 'isCompressed')
-    ..aOB(12, 'isBech32')
     ..hasRequiredFields = false
   ;
 
@@ -262,13 +230,13 @@ class Config extends $pb.GeneratedMessage {
   static Config getDefault() => _defaultInstance ??= create()..freeze();
   static Config _defaultInstance;
 
-  $core.String get rel => $_getS(0, '');
-  set rel($core.String v) { $_setString(0, v); }
-  $core.bool hasRel() => $_has(0);
-  void clearRel() => clearField(1);
+  $core.String get id => $_getS(0, '');
+  set id($core.String v) { $_setString(0, v); }
+  $core.bool hasId() => $_has(0);
+  void clearId() => clearField(1);
 
-  $core.String get protocol => $_getS(1, '');
-  set protocol($core.String v) { $_setString(1, v); }
+  Protocol get protocol => $_getN(1);
+  set protocol(Protocol v) { setField(2, v); }
   $core.bool hasProtocol() => $_has(1);
   void clearProtocol() => clearField(2);
 
@@ -277,50 +245,30 @@ class Config extends $pb.GeneratedMessage {
   $core.bool hasCode() => $_has(2);
   void clearCode() => clearField(3);
 
-  $core.int get precision => $_get(3, 0);
-  set precision($core.int v) { $_setUnsignedInt32(3, v); }
-  $core.bool hasPrecision() => $_has(3);
-  void clearPrecision() => clearField(4);
+  $core.int get private => $_get(3, 0);
+  set private($core.int v) { $_setUnsignedInt32(3, v); }
+  $core.bool hasPrivate() => $_has(3);
+  void clearPrivate() => clearField(4);
 
-  $core.int get private => $_get(4, 0);
-  set private($core.int v) { $_setUnsignedInt32(4, v); }
-  $core.bool hasPrivate() => $_has(4);
-  void clearPrivate() => clearField(5);
+  $core.int get public => $_get(4, 0);
+  set public($core.int v) { $_setUnsignedInt32(4, v); }
+  $core.bool hasPublic() => $_has(4);
+  void clearPublic() => clearField(5);
 
-  $core.int get public => $_get(5, 0);
-  set public($core.int v) { $_setUnsignedInt32(5, v); }
-  $core.bool hasPublic() => $_has(5);
-  void clearPublic() => clearField(6);
+  $core.String get prefix => $_getS(5, '');
+  set prefix($core.String v) { $_setString(5, v); }
+  $core.bool hasPrefix() => $_has(5);
+  void clearPrefix() => clearField(6);
 
-  $core.String get prefix => $_getS(6, '');
-  set prefix($core.String v) { $_setString(6, v); }
-  $core.bool hasPrefix() => $_has(6);
-  void clearPrefix() => clearField(7);
+  CurveName get curveName => $_getN(6);
+  set curveName(CurveName v) { setField(7, v); }
+  $core.bool hasCurveName() => $_has(6);
+  void clearCurveName() => clearField(7);
 
   $core.int get chainId => $_get(7, 0);
   set chainId($core.int v) { $_setUnsignedInt32(7, v); }
   $core.bool hasChainId() => $_has(7);
   void clearChainId() => clearField(8);
-
-  $core.String get base => $_getS(8, '');
-  set base($core.String v) { $_setString(8, v); }
-  $core.bool hasBase() => $_has(8);
-  void clearBase() => clearField(9);
-
-  $core.String get curveName => $_getS(9, '');
-  set curveName($core.String v) { $_setString(9, v); }
-  $core.bool hasCurveName() => $_has(9);
-  void clearCurveName() => clearField(10);
-
-  $core.bool get isCompressed => $_get(10, false);
-  set isCompressed($core.bool v) { $_setBool(10, v); }
-  $core.bool hasIsCompressed() => $_has(10);
-  void clearIsCompressed() => clearField(11);
-
-  $core.bool get isBech32 => $_get(11, false);
-  set isBech32($core.bool v) { $_setBool(11, v); }
-  $core.bool hasIsBech32() => $_has(11);
-  void clearIsBech32() => clearField(12);
 }
 
 class Configs extends $pb.GeneratedMessage {

@@ -1,11 +1,16 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:mobx/mobx.dart';
+import 'package:grpc/grpc.dart';
+import 'package:mobx/mobx.dart' show Store, action, observable;
 import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
+import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pb.dart';
+import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pbgrpc.dart';
 import 'package:wallet_flutter/models/balance.dart';
+import 'package:wallet_flutter/models/config.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:http/http.dart' as http;
+import 'package:fixnum/fixnum.dart';
 
 // Include generated file
 part 'balance.g.dart';
@@ -28,12 +33,24 @@ const Map<String, String> HEADERS = {"Content-type": "application/json"};
 class BalanceStore = _BalanceStore with _$BalanceStore;
 
 abstract class _BalanceStore with Store {
+  final channel = ClientChannel('127.0.0.1', port: 50051);
+
   @observable
   Map<String, dynamic> bl = {};
   Map<String, dynamic> prices = {};
 
   @observable
   Fiat fiat = Fiat(symbol: "\$", ticker: "usd");
+
+  fetchBalance(ConfigAtom atom, Coin c) {
+    final client = ChainServiceClient(channel);
+    client.getBalance(GetBalanceRequest()
+      ..api = atom.brurl
+      ..address = c.address
+      ..kind = atom.brkind
+      ..hash = atom.brhash
+      ..precision = Int64(atom.precision));
+  }
 
   @action
   Future<void> fetchBalances(
@@ -72,54 +89,12 @@ abstract class _BalanceStore with Store {
     }
   }
 
-  BalanceOut getBalance({String rel, String base}) {
-    if (bl.containsKey(base) &&
-        bl[base].containsKey(rel) &&
-        prices.containsKey(rel)) {
-      var x = bl[base][rel];
-      double value = x["value"] / pow(10, precisions[rel]);
-      return BalanceOut(value: value, price: prices[rel] ?? 0);
+  BalanceOut getBalance({ConfigAtom atom}) {
+    if (bl.containsKey(atom.id) && prices.containsKey(atom.id)) {
+      var x = bl[atom.id];
+      double value = x["value"] / pow(10, atom.precision);
+      return BalanceOut(value: value, price: prices[atom.id] ?? 0);
     }
     return BalanceOut(value: 0, price: 0);
   }
-/*
-  @action
-  Future<void> refreshBalances(fiat) async {
-    try {
-      bl = await initFetchBalances(fiat);
-    } catch (e) {}
-  }
-
-  Future<List<Balances>> initFetchBalances(fiat) async {
-    List<Map<String, String>> bp = ws.list[walletIndex].coins.list.map((c) => {
-          "api": explorerConfigList[c.rel].api,
-          "kind": explorerConfigList[c.rel].kind,
-          "rel": c.rel,
-          "base": c.base,
-          "address": c.address,
-        });
-    var response = await http.post(url,
-        headers: headers,
-        body: jsonEncode({
-          "fiat": fiat.ticker,
-          "list": bp,
-        }));
-    return (jsonDecode(response.body) as List)
-        .map((e) => Balances.fromJson(e))
-        .toList();
-  }
-*/
-/*
-  BalanceOutput getBalance({String rel, String base}) {
-    if (bl.length == 0) {
-      return BalanceOutput(balance: 0.0, fiat: 0.0);
-    }
-    var x = bl
-        .singleWhere((b) => b.base == base)
-        .balances
-        .singleWhere((b) => b.rel == rel);
-    var value = x.value / pow(10, precisions[rel]);
-    return BalanceOutput(balance: value, fiat: x.fiat);
-  }
-  */
 }

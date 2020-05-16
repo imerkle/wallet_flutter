@@ -50,11 +50,12 @@ class _WalletState extends State<Wallet> {
       header: ClassicHeader(),
       footer: RefreshFooter(),
       child: Observer(builder: (_) {
-        var rel = configStore.rel;
+        var id = configStore.id;
         var base = configStore.base;
         var coin = mainStore.coin;
+        var atom = configStore.configs[configStore.id];
 
-        var b = balanceStore.getBalance(rel: rel, base: base);
+        var b = balanceStore.getBalance(atom: atom);
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -63,11 +64,11 @@ class _WalletState extends State<Wallet> {
               runSpacing: 30,
               children: <Widget>[
                 BalanceHeader(
-                    rel: rel,
+                    rel: atom.ticker,
                     bal: valueToPretty(b.value, CRYPTO_PRECISION),
                     fiatSymbol: balanceStore.fiat.symbol,
                     fiatBal: valueToPretty(b.value * b.price, FIAT_PRECISION)),
-                AddressHeader(rel: rel, address: coin.address),
+                AddressHeader(ticker: atom.ticker, address: coin.address),
                 Text(AppLocalizations.of(context).tr('send_tx').toUpperCase(),
                     style: TextStyle(
                       color: Color(0xffbec0c4),
@@ -84,7 +85,7 @@ class _WalletState extends State<Wallet> {
                     border: OutlineInputBorder(),
                     labelText: this._amountInFiat
                         ? '${balanceStore.fiat.ticker.toUpperCase()} Amount'
-                        : '${rel.toUpperCase()} Amount',
+                        : '${atom.ticker.toUpperCase()} Amount',
                     prefixIcon: FlatButton(
                       child: Text("MAX"),
                       onPressed: () {
@@ -98,7 +99,7 @@ class _WalletState extends State<Wallet> {
                     suffixIcon: FlatButton(
                       child: Text(this._amountInFiat
                           ? balanceStore.fiat.ticker.toUpperCase()
-                          : rel.toUpperCase()),
+                          : atom.ticker.toUpperCase()),
                       onPressed: () {
                         setState(() {
                           _amountInFiat = !this._amountInFiat;
@@ -122,9 +123,9 @@ class _WalletState extends State<Wallet> {
                       os.list.add(o);
 
                       var txOpts = await getTransactionOpts(
-                          rel: rel, base: base, address: coin.address);
+                          atom: atom, address: coin.address);
                       var input = GenSendTxInput()
-                        ..config = getConfig(rel, base)
+                        ..config = atom.config
                         ..privateKey = coin.privateKey
                         ..publicKey = coin.publicKey
                         ..outputs = os
@@ -152,9 +153,9 @@ class _WalletState extends State<Wallet> {
 }
 
 class AddressHeader extends StatelessWidget {
-  AddressHeader({this.rel, this.address});
+  AddressHeader({this.ticker, this.address});
 
-  final String rel;
+  final String ticker;
   final String address;
 
   @override
@@ -165,7 +166,7 @@ class AddressHeader extends StatelessWidget {
       style: TextStyle(color: Colors.grey),
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Your $rel Address',
+        labelText: 'Your $ticker Address',
         suffixIcon: IconButton(
             icon: Icon(Icons.content_copy),
             onPressed: () {

@@ -1,8 +1,9 @@
 regenerate:
 	mkdir -p lib/gen
 	(protoc  \
+	-I=./pb \
 	--dart_out=./lib/gen \
-	cargo/protos/coin.proto \
+	pb/*.proto \
 	--plugin "pub run protoc_plugin" )
 	
 	(protoc  \

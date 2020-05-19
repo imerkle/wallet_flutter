@@ -46,7 +46,7 @@ mixin _$WalletStore on _WalletStore, Store {
   final _$initWalletIfAbsentAsyncAction = AsyncAction('initWalletIfAbsent');
 
   @override
-  Future<void> initWalletIfAbsent(List<ParentConfig> configs, Rust rust) {
+  Future<void> initWalletIfAbsent(Map<String, ConfigAtom> configs, Rust rust) {
     return _$initWalletIfAbsentAsyncAction
         .run(() => super.initWalletIfAbsent(configs, rust));
   }

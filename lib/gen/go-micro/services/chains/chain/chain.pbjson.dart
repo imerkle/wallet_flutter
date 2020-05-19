@@ -78,6 +78,14 @@ const Balance$json = const {
   ],
 };
 
+const BalanceNormalized$json = const {
+  '1': 'BalanceNormalized',
+  '2': const [
+    const {'1': 'unlocked', '3': 1, '4': 1, '5': 1, '10': 'unlocked'},
+    const {'1': 'locked', '3': 2, '4': 1, '5': 1, '10': 'locked'},
+  ],
+};
+
 const GetBalanceRequest$json = const {
   '1': 'GetBalanceRequest',
   '2': const [
@@ -93,6 +101,21 @@ const GetBalanceResponse$json = const {
   '1': 'GetBalanceResponse',
   '2': const [
     const {'1': 'balance', '3': 1, '4': 1, '5': 11, '6': '.chain.Balance', '10': 'balance'},
+    const {'1': 'balance_normalized', '3': 2, '4': 1, '5': 11, '6': '.chain.BalanceNormalized', '10': 'balanceNormalized'},
+  ],
+};
+
+const GetPriceRequest$json = const {
+  '1': 'GetPriceRequest',
+  '2': const [
+    const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+  ],
+};
+
+const GetPriceResponse$json = const {
+  '1': 'GetPriceResponse',
+  '2': const [
+    const {'1': 'price', '3': 1, '4': 1, '5': 1, '10': 'price'},
   ],
 };
 

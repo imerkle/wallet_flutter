@@ -1,10 +1,8 @@
-mod connector;
-mod protos;
-use protobuf::Message;
-
 use jni::objects::JClass;
 use jni::sys::jbyteArray;
 use jni::JNIEnv;
+use protobuf::Message;
+use wallet::{connector, pb};
 
 #[allow(non_snake_case)]
 #[no_mangle]
@@ -16,7 +14,7 @@ pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_getWallet(
 
     input: jbyteArray,
 ) -> jbyteArray {
-    let inputs = protobuf::parse_from_bytes::<protos::coin::GetWalletInput>(
+    let inputs = protobuf::parse_from_bytes::<pb::wallet::GetWalletsRequest>(
         &env.convert_byte_array(input).unwrap(),
     )
     .unwrap();
@@ -42,7 +40,7 @@ pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_genSendTran
 
     input: jbyteArray,
 ) -> jbyteArray {
-    let inputs = protobuf::parse_from_bytes::<protos::coin::GenSendTxInput>(
+    let inputs = protobuf::parse_from_bytes::<pb::transaction::GenSendTransactionRequest>(
         &env.convert_byte_array(input).unwrap(),
     )
     .unwrap();
@@ -54,9 +52,9 @@ pub extern "system" fn Java_com_example_wallet_1flutter_MainActivity_genSendTran
     let tx_opts = inputs.tx_opts.unwrap();
 
     let tx_hex =
-        connector::gen_send_transaction(&config, private_key.clone(), public_key, outputs, tx_opts);
+        connector::gen_send_transaction(&config, private_key, public_key, outputs, tx_opts);
 
-    let v: Vec<u8> = protos::coin::Tx {
+    let v: Vec<u8> = pb::transaction::Tx {
         tx_hex,
         ..Default::default()
     }

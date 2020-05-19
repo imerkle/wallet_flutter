@@ -9,21 +9,21 @@ part of 'balance.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$BalanceStore on _BalanceStore, Store {
-  final _$blAtom = Atom(name: '_BalanceStore.bl');
+  final _$balancesAtom = Atom(name: '_BalanceStore.balances');
 
   @override
-  Map<String, dynamic> get bl {
-    _$blAtom.context.enforceReadPolicy(_$blAtom);
-    _$blAtom.reportObserved();
-    return super.bl;
+  SplayTreeMap<String, GetBalanceResponse> get balances {
+    _$balancesAtom.context.enforceReadPolicy(_$balancesAtom);
+    _$balancesAtom.reportObserved();
+    return super.balances;
   }
 
   @override
-  set bl(Map<String, dynamic> value) {
-    _$blAtom.context.conditionallyRunInAction(() {
-      super.bl = value;
-      _$blAtom.reportChanged();
-    }, _$blAtom, name: '${_$blAtom.name}_set');
+  set balances(SplayTreeMap<String, GetBalanceResponse> value) {
+    _$balancesAtom.context.conditionallyRunInAction(() {
+      super.balances = value;
+      _$balancesAtom.reportChanged();
+    }, _$balancesAtom, name: '${_$balancesAtom.name}_set');
   }
 
   final _$fiatAtom = Atom(name: '_BalanceStore.fiat');
@@ -43,19 +43,10 @@ mixin _$BalanceStore on _BalanceStore, Store {
     }, _$fiatAtom, name: '${_$fiatAtom.name}_set');
   }
 
-  final _$fetchBalancesAsyncAction = AsyncAction('fetchBalances');
+  final _$fetchBalanceAsyncAction = AsyncAction('fetchBalance');
 
   @override
-  Future<void> fetchBalances(
-      String base, List<String> rels, List<Coin> coinList) {
-    return _$fetchBalancesAsyncAction
-        .run(() => super.fetchBalances(base, rels, coinList));
-  }
-
-  final _$fetchPricesAsyncAction = AsyncAction('fetchPrices');
-
-  @override
-  Future<void> fetchPrices(List<String> rels) {
-    return _$fetchPricesAsyncAction.run(() => super.fetchPrices(rels));
+  Future fetchBalance(ConfigAtom atom, CoinKey c) {
+    return _$fetchBalanceAsyncAction.run(() => super.fetchBalance(atom, c));
   }
 }

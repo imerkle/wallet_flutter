@@ -20,6 +20,12 @@ class ChainServiceClient extends $grpc.Client {
           ($0.GetBalanceRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.GetBalanceResponse.fromBuffer(value));
+  static final _$getPrice =
+      $grpc.ClientMethod<$0.GetPriceRequest, $0.GetPriceResponse>(
+          '/chain.ChainService/GetPrice',
+          ($0.GetPriceRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.GetPriceResponse.fromBuffer(value));
 
   ChainServiceClient($grpc.ClientChannel channel, {$grpc.CallOptions options})
       : super(channel, options: options);
@@ -29,6 +35,13 @@ class ChainServiceClient extends $grpc.Client {
       {$grpc.CallOptions options}) {
     final call = $createCall(
         _$getBalance, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseFuture(call);
+  }
+
+  $grpc.ResponseFuture<$0.GetPriceResponse> getPrice($0.GetPriceRequest request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(_$getPrice, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -45,6 +58,13 @@ abstract class ChainServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.GetBalanceRequest.fromBuffer(value),
         ($0.GetBalanceResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetPriceRequest, $0.GetPriceResponse>(
+        'GetPrice',
+        getPrice_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) => $0.GetPriceRequest.fromBuffer(value),
+        ($0.GetPriceResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.GetBalanceResponse> getBalance_Pre($grpc.ServiceCall call,
@@ -52,6 +72,13 @@ abstract class ChainServiceBase extends $grpc.Service {
     return getBalance(call, await request);
   }
 
+  $async.Future<$0.GetPriceResponse> getPrice_Pre(
+      $grpc.ServiceCall call, $async.Future<$0.GetPriceRequest> request) async {
+    return getPrice(call, await request);
+  }
+
   $async.Future<$0.GetBalanceResponse> getBalance(
       $grpc.ServiceCall call, $0.GetBalanceRequest request);
+  $async.Future<$0.GetPriceResponse> getPrice(
+      $grpc.ServiceCall call, $0.GetPriceRequest request);
 }

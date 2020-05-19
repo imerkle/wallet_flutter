@@ -1,0 +1,27 @@
+syntax = "proto3";
+import "config.proto";
+message Input {
+  uint32 vout = 1;
+  string id = 2;
+  uint64 value = 3;
+}
+message Output {
+  string address = 1;
+  uint64 value = 2;
+  string memo = 3;
+}
+message Outputs { repeated Output list = 1; }
+
+message Tx { string tx_hex = 1; }
+message TxOpts {
+  repeated Input inputs = 1;
+  uint64 nonce = 2;
+}
+
+message GenSendTransactionRequest {
+  config.Config config = 1;
+  bytes private_key = 2;
+  bytes public_key = 3;
+  Outputs outputs = 4;
+  TxOpts tx_opts = 5;
+}

@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: cargo/protos/coin.proto
+//  source: config.proto
 //
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
@@ -11,11 +11,21 @@ import 'package:protobuf/protobuf.dart' as $pb;
 
 class Protocol extends $pb.ProtobufEnum {
   static const Protocol BTC = Protocol._(0, 'BTC');
-  static const Protocol ETH = Protocol._(1, 'ETH');
+  static const Protocol BTC_BECH32 = Protocol._(1, 'BTC_BECH32');
+  static const Protocol ETH = Protocol._(2, 'ETH');
+  static const Protocol EOS = Protocol._(3, 'EOS');
+  static const Protocol XLM = Protocol._(4, 'XLM');
+  static const Protocol XRP = Protocol._(5, 'XRP');
+  static const Protocol NEO = Protocol._(6, 'NEO');
 
   static const $core.List<Protocol> values = <Protocol> [
     BTC,
+    BTC_BECH32,
     ETH,
+    EOS,
+    XLM,
+    XRP,
+    NEO,
   ];
 
   static final $core.Map<$core.int, Protocol> _byValue = $pb.ProtobufEnum.initByValue(values);

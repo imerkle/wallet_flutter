@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "config.proto";
+
+message Wallet {
+  string mnemonic = 1;
+  map<string, CoinKey> coins = 2;
+}
+message CoinKey {
+  bytes public_key = 1;
+  bytes private_key = 2;
+  string wif = 3;
+  string address = 4;
+}
+message Wallets { repeated Wallet list = 1; }
+
+message GetWalletsRequest {
+  string mnemonic = 1;
+  config.Configs configs = 2;
+}

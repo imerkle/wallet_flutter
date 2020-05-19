@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
+import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pb.dart';
 import 'package:wallet_flutter/stores/balance.dart';
 import 'package:wallet_flutter/stores/config.dart';
-import '../gen/cargo/protos/coin.pb.dart';
 import '../models/rust.dart';
-import '../models/transaction.dart';
 
 import '../stores/sort.dart';
 import '../stores/wallet.dart';
@@ -29,17 +28,14 @@ abstract class _MainStore with Store {
     sortStore.sortables.add(Sortable("Coin", true, true));
     sortStore.sortables.add(Sortable("Amount", false, true));
     await walletStore.initPrep(configStore.configs, rust);
+    /*
     balanceStore.fetchBalances(
         configStore.base,
         configStore.coins[configStore.base],
         walletStore.ws.list[walletStore.walletIndex].coins.list);
     balanceStore.fetchPrices(configStore.coins[configStore.base]);
+    */
   }
-
-  @computed
-  Coin get coin => walletStore.ws.list[walletStore.walletIndex].coins.list
-      .firstWhere((x) => x.base == configStore.base && x.rel == configStore.id,
-          orElse: () => Coin());
 
   /*
   @computed
@@ -50,11 +46,6 @@ abstract class _MainStore with Store {
   Coin get coinFromRel => coinListFromBase.list[fabStore.relIndex];
 */
 
-/*
-  List<Transaction> get txs => transactionStore.txs
-              .containsKey(configStore.base) &&
-          transactionStore.txs[configStore.base].containsKey(configStore.id)
-      ? transactionStore.txs[configStore.base][configStore.id]
-      : [];
-      */
+  @computed
+  List<Transaction> get txs => transactionStore.getTransaction(configStore.id);
 }

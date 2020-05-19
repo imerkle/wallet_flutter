@@ -166,6 +166,38 @@ class Balance extends $pb.GeneratedMessage {
   void clearLocked() => clearField(2);
 }
 
+class BalanceNormalized extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('BalanceNormalized', package: const $pb.PackageName('chain'), createEmptyInstance: create)
+    ..a<$core.double>(1, 'unlocked', $pb.PbFieldType.OD)
+    ..a<$core.double>(2, 'locked', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  BalanceNormalized._() : super();
+  factory BalanceNormalized() => create();
+  factory BalanceNormalized.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory BalanceNormalized.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  BalanceNormalized clone() => BalanceNormalized()..mergeFromMessage(this);
+  BalanceNormalized copyWith(void Function(BalanceNormalized) updates) => super.copyWith((message) => updates(message as BalanceNormalized));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static BalanceNormalized create() => BalanceNormalized._();
+  BalanceNormalized createEmptyInstance() => create();
+  static $pb.PbList<BalanceNormalized> createRepeated() => $pb.PbList<BalanceNormalized>();
+  static BalanceNormalized getDefault() => _defaultInstance ??= create()..freeze();
+  static BalanceNormalized _defaultInstance;
+
+  $core.double get unlocked => $_getN(0);
+  set unlocked($core.double v) { $_setDouble(0, v); }
+  $core.bool hasUnlocked() => $_has(0);
+  void clearUnlocked() => clearField(1);
+
+  $core.double get locked => $_getN(1);
+  set locked($core.double v) { $_setDouble(1, v); }
+  $core.bool hasLocked() => $_has(1);
+  void clearLocked() => clearField(2);
+}
+
 class GetBalanceRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetBalanceRequest', package: const $pb.PackageName('chain'), createEmptyInstance: create)
     ..e<GetBalanceRequestKind>(1, 'kind', $pb.PbFieldType.OE, defaultOrMaker: GetBalanceRequestKind.BLOCKBOOK, valueOf: GetBalanceRequestKind.valueOf, enumValues: GetBalanceRequestKind.values)
@@ -219,6 +251,7 @@ class GetBalanceRequest extends $pb.GeneratedMessage {
 class GetBalanceResponse extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetBalanceResponse', package: const $pb.PackageName('chain'), createEmptyInstance: create)
     ..a<Balance>(1, 'balance', $pb.PbFieldType.OM, defaultOrMaker: Balance.getDefault, subBuilder: Balance.create)
+    ..a<BalanceNormalized>(2, 'balanceNormalized', $pb.PbFieldType.OM, defaultOrMaker: BalanceNormalized.getDefault, subBuilder: BalanceNormalized.create)
     ..hasRequiredFields = false
   ;
 
@@ -240,5 +273,62 @@ class GetBalanceResponse extends $pb.GeneratedMessage {
   set balance(Balance v) { setField(1, v); }
   $core.bool hasBalance() => $_has(0);
   void clearBalance() => clearField(1);
+
+  BalanceNormalized get balanceNormalized => $_getN(1);
+  set balanceNormalized(BalanceNormalized v) { setField(2, v); }
+  $core.bool hasBalanceNormalized() => $_has(1);
+  void clearBalanceNormalized() => clearField(2);
+}
+
+class GetPriceRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetPriceRequest', package: const $pb.PackageName('chain'), createEmptyInstance: create)
+    ..aOS(1, 'id')
+    ..hasRequiredFields = false
+  ;
+
+  GetPriceRequest._() : super();
+  factory GetPriceRequest() => create();
+  factory GetPriceRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetPriceRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetPriceRequest clone() => GetPriceRequest()..mergeFromMessage(this);
+  GetPriceRequest copyWith(void Function(GetPriceRequest) updates) => super.copyWith((message) => updates(message as GetPriceRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetPriceRequest create() => GetPriceRequest._();
+  GetPriceRequest createEmptyInstance() => create();
+  static $pb.PbList<GetPriceRequest> createRepeated() => $pb.PbList<GetPriceRequest>();
+  static GetPriceRequest getDefault() => _defaultInstance ??= create()..freeze();
+  static GetPriceRequest _defaultInstance;
+
+  $core.String get id => $_getS(0, '');
+  set id($core.String v) { $_setString(0, v); }
+  $core.bool hasId() => $_has(0);
+  void clearId() => clearField(1);
+}
+
+class GetPriceResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetPriceResponse', package: const $pb.PackageName('chain'), createEmptyInstance: create)
+    ..a<$core.double>(1, 'price', $pb.PbFieldType.OD)
+    ..hasRequiredFields = false
+  ;
+
+  GetPriceResponse._() : super();
+  factory GetPriceResponse() => create();
+  factory GetPriceResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetPriceResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetPriceResponse clone() => GetPriceResponse()..mergeFromMessage(this);
+  GetPriceResponse copyWith(void Function(GetPriceResponse) updates) => super.copyWith((message) => updates(message as GetPriceResponse));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetPriceResponse create() => GetPriceResponse._();
+  GetPriceResponse createEmptyInstance() => create();
+  static $pb.PbList<GetPriceResponse> createRepeated() => $pb.PbList<GetPriceResponse>();
+  static GetPriceResponse getDefault() => _defaultInstance ??= create()..freeze();
+  static GetPriceResponse _defaultInstance;
+
+  $core.double get price => $_getN(0);
+  set price($core.double v) { $_setDouble(0, v); }
+  $core.bool hasPrice() => $_has(0);
+  void clearPrice() => clearField(1);
 }
 

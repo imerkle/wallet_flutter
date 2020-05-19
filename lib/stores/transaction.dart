@@ -1,8 +1,7 @@
+import 'dart:collection';
+
 import 'package:mobx/mobx.dart';
-import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
-import 'package:wallet_flutter/models/transaction.dart';
-import 'package:wallet_flutter/stores/main.dart';
-import 'package:wallet_flutter/utils/api.dart';
+import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pb.dart';
 
 // Include generated file
 part 'transaction.g.dart';
@@ -11,12 +10,10 @@ part 'transaction.g.dart';
 class TransactionStore = _TransactionStore with _$TransactionStore;
 
 abstract class _TransactionStore with Store {
-  //id => tx
-  @observable
-  Map<String, List<Transaction>> txs = {};
+  HashMap<String, List<Transaction>> txs = HashMap();
 
   @action
-  Future<void> refreshTxs({String rel, String base, String address}) async {
+  Future<void> refreshTxs({String id, String address}) async {
     /*
     try {
       var t = await getTransactions(rel: rel, base: base, address: address);
@@ -33,5 +30,8 @@ abstract class _TransactionStore with Store {
       print(e);
     }
   */
+  }
+  List<Transaction> getTransaction(String id) {
+    return txs.containsKey(id) ? txs[id] : [];
   }
 }

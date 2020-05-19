@@ -4,17 +4,15 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:wallet_flutter/models/balance.dart';
-import 'package:wallet_flutter/models/transaction.dart' as T;
-import 'package:wallet_flutter/stores/balance.dart';
+import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pb.dart';
+import 'package:wallet_flutter/stores/wallet.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/utils/fn.dart';
 import 'package:wallet_flutter/widgets/data_table.dart';
 import 'package:wallet_flutter/widgets/transaction/tx_iol.dart';
 import 'package:wallet_flutter/widgets/transaction/tx_labels.dart';
-import '../gen/cargo/protos/coin.pb.dart';
-import '../stores/main.dart';
-import '../widgets/refresh_footer.dart';
+import 'package:wallet_flutter/stores/main.dart';
+import 'package:wallet_flutter/widgets/refresh_footer.dart';
 import 'package:after_init/after_init.dart';
 import 'package:intl/intl.dart';
 
@@ -31,11 +29,11 @@ class _TrasactionScreenState extends State<TrasactionScreen>
     final transactionStore = Provider.of<MainStore>(context).transactionStore;
     final mainStore = Provider.of<MainStore>(context);
     final configStore = Provider.of<MainStore>(context).configStore;
+    final walletStore = Provider.of<MainStore>(context).walletStore;
 
     transactionStore.refreshTxs(
-        base: configStore.base,
-        rel: configStore.id,
-        address: mainStore.coin.address);
+        id: configStore.id,
+        address: walletStore.getCoinKey(configStore.id).address);
     _refreshController.refreshCompleted();
   }
 
@@ -49,17 +47,19 @@ class _TrasactionScreenState extends State<TrasactionScreen>
   }
 
   void _showModalSheet(
-      T.Transaction tx, BalanceOut b, String base, String rel) {
+      Transaction tx, BalanceNormalized b, String base, String rel) {
     final mainStore = Provider.of<MainStore>(context);
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
-
+    final configStore = Provider.of<MainStore>(context).configStore;
+    final atom = configStore.coin;
+    final price = balanceStore.getPrice(atom);
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
         context: context,
         builder: (builder) {
-          var fees = valueToPrecision(tx.fees, rel);
+          var fees = valueToPrecision(tx.fees, atom.precision);
           return Container(
             height: 500,
             child: SingleChildScrollView(
@@ -84,15 +84,15 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                             child: Text("Transaction",
                                 style: TextStyle(fontSize: 28)))),
                     TxLabels(label: "Id", value: tx.id),
-                    TxLabels(
+                    /*TxLabels(
                         label: "Timestamp",
                         value: DateFormat("MMM-dd-yyyy hh:mm:ss a").format(
                             DateTime.fromMillisecondsSinceEpoch(
-                                tx.timestamp * 1000))),
+                                tx.timestamp * 1000))),*/
                     TxLabels(
                         label: "Fee",
                         value:
-                            "${valueToPretty(fees, CRYPTO_PRECISION)}${rel.toUpperCase()} (${balanceStore.fiat.symbol}${valueToPretty(b.price * fees, FIAT_PRECISION)})"),
+                            "${valueToPretty(fees, CRYPTO_PRECISION)}${rel.toUpperCase()} (${balanceStore.fiat.symbol}${valueToPretty(price * fees, FIAT_PRECISION)})"),
                     SizedBox(height: 10),
                     TxIOL(
                         header: "Inputs",
@@ -122,9 +122,9 @@ class _TrasactionScreenState extends State<TrasactionScreen>
     final mainStore = Provider.of<MainStore>(context);
 
     var base = configStore.base;
-    var rel = configStore.rel;
+    var rel = configStore.id;
 
-    var b = balanceStore.getBalance(rel: rel, base: rel);
+    var b = balanceStore.getBalanceNormalized(configStore.coin);
     return SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,

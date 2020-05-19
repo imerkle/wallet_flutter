@@ -55,7 +55,7 @@ class _WalletState extends State<Wallet> {
         var coin = mainStore.coin;
         var atom = configStore.configs[configStore.id];
 
-        var b = balanceStore.getBalance(atom: atom);
+        var balanceNormalized = balanceStore.getBalanceNormalized(atom);
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -65,9 +65,11 @@ class _WalletState extends State<Wallet> {
               children: <Widget>[
                 BalanceHeader(
                     rel: atom.ticker,
-                    bal: valueToPretty(b.value, CRYPTO_PRECISION),
+                    bal: valueToPretty(
+                        balanceNormalized.unlocked, CRYPTO_PRECISION),
                     fiatSymbol: balanceStore.fiat.symbol,
-                    fiatBal: valueToPretty(b.value * b.price, FIAT_PRECISION)),
+                    fiatBal: valueToPretty(
+                        balanceNormalized.unlocked * b.price, FIAT_PRECISION)),
                 AddressHeader(ticker: atom.ticker, address: coin.address),
                 Text(AppLocalizations.of(context).tr('send_tx').toUpperCase(),
                     style: TextStyle(

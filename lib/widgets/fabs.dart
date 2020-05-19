@@ -30,11 +30,13 @@ class Fabs extends StatelessWidget {
               onTap: () {
                 configStore.setBase(keys[i]);
                 configStore.setId(configStore.coins[keys[i]][0]);
+                /*
                 balanceStore.fetchBalances(
                     configStore.base,
                     configStore.coins[configStore.base],
                     walletStore.ws.list[walletStore.walletIndex].coins.list);
                 balanceStore.fetchPrices(configStore.coins[configStore.base]);
+                */
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 7, bottom: 7),

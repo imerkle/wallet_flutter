@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import '../gen/cargo/protos/coin.pbserver.dart';
 import '../models/config.dart';
 
 const bool isTestnet = true;
@@ -23,22 +22,3 @@ double textToDouble(String text) {
   }
   return double.parse(text);
 }
-
-final Map<String, ExplorerConfig> explorerConfigList = {
-  "btg": ExplorerConfig(api: "https://btg1.trezor.io/api/v2", kind: "trezor"),
-  "btc": ExplorerConfig(api: "https://tbtc1.trezor.io/api/v2", kind: "trezor"),
-  "eth": ExplorerConfig(
-      api: "https://ac-dev0.net:29136/api/v2", kind: "trezorToken"),
-  "vet": ExplorerConfig(api: "https://testnet.veforge.com/api", kind: "vet"),
-  "xlm":
-      ExplorerConfig(api: "https://horizon-testnet.stellar.org", kind: "xlm"),
-  "ont":
-      ExplorerConfig(api: "https://polarisexplorer.ont.io/api/v1", kind: "ont"),
-  "xrp":
-      ExplorerConfig(api: "https://s.altnet.rippletest.net:51234", kind: "xrp"),
-  "eos": ExplorerConfig(api: "https://api-kylin.eoslaomao.com/v1", kind: "eos"),
-  "trx":
-      ExplorerConfig(api: "https://api.shasta.tronscan.org/api", kind: "trx"),
-  "bnb": ExplorerConfig(
-      api: "https://testnet-dex.binance.org/api/v1", kind: "bnb"),
-};

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet_flutter/stores/config.dart';
 import 'package:wallet_flutter/utils/fn.dart';
 import '../utils/constants.dart';
 import '../stores/main.dart';
@@ -13,7 +14,6 @@ class DrawerWidget extends StatelessWidget {
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final configStore = Provider.of<MainStore>(context).configStore;
     final sortStore = Provider.of<MainStore>(context).sortStore;
-    final mainStore = Provider.of<MainStore>(context);
 
     if (walletStore.ws.list.length == 0) {
       return Container();
@@ -38,7 +38,7 @@ class DrawerWidget extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         padding: EdgeInsets.all(20),
                         child: Observer(builder: (_) {
-                          return Text(mainStore.coin.name,
+                          return Text(configStore.coin.name,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 20,
@@ -90,47 +90,61 @@ class DrawerList extends StatelessWidget {
 
     return Observer(
       builder: (_) {
-        var coins = configStore.coins[configStore.base];
         if (sortStore.sortables[0].direction == false) {
           // coins = coins.reversed.toList();
         }
         return ListView.builder(
-            itemCount: coins.length,
+            itemCount: configStore.ids.length,
             itemBuilder: (context, i) {
-              var b = balanceStore.getBalance(
-                  rel: coins[i], base: configStore.base);
+              var id = configStore.ids[i];
+              var atom = configStore.coinById(id);
+              var balance = balanceStore.getBalanceNormalized(atom);
+              var price = balanceStore.getPrice(atom);
               return Container(
-                color: coins[i] == configStore.rel
+                color: configStore.isCurrentId(i)
                     ? Color.fromRGBO(67, 67, 67, 1)
                     : Colors.transparent,
                 child: Row(
                   children: <Widget>[
-                    Expanded(
-                      child: ListTile(
-                        title: Text(coins[i].toUpperCase()),
-                        subtitle: Text(getName(coins[i])),
+                    DrawerListRow(
+                        title: atom.ticker.toUpperCase(),
+                        subtitle: atom.name,
                         onTap: () {
-                          configStore.setRel(coins[i]);
+                          configStore.setId(id);
                         },
-                        selected: coins[i] == configStore.rel,
-                      ),
-                    ),
-                    Expanded(
-                      child: ListTile(
-                        title: Text(valueToPretty(b.value, CRYPTO_PRECISION)),
-                        subtitle: Text(
-                            "${balanceStore.fiat.symbol}${valueToPretty(b.value * b.price, FIAT_PRECISION)}"),
+                        configStoreId: configStore.id),
+                    DrawerListRow(
+                        title:
+                            valueToPretty(balance.unlocked, CRYPTO_PRECISION),
+                        subtitle:
+                            "${balanceStore.fiat.symbol}${valueToPretty(balance.unlocked * price, FIAT_PRECISION)}",
                         onTap: () {
-                          configStore.setRel(coins[i]);
+                          configStore.setId(id);
                         },
-                        selected: coins[i] == configStore.rel,
-                      ),
-                    ),
+                        configStoreId: configStore.id),
                   ],
                 ),
               );
             });
       },
+    );
+  }
+}
+
+class DrawerListRow extends StatelessWidget {
+  DrawerListRow(
+      {this.title, this.subtitle, this.id, this.onTap, this.configStoreId});
+  final String title, subtitle, id, configStoreId;
+  final Function onTap;
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text(subtitle),
+        onTap: onTap,
+        selected: id == configStoreId,
+      ),
     );
   }
 }

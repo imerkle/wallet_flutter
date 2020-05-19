@@ -3,9 +3,9 @@ import 'package:universal_io/prefer_universal/io.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:wallet_flutter/gen/config.pb.dart';
+import 'package:wallet_flutter/utils/constants.dart';
 import 'package:web_socket_channel_shared/web_socket_channel.dart';
-import '../gen/cargo/protos/coin.pb.dart';
-import '../utils/constants.dart';
 
 class Rust {
   MethodChannel platform = const MethodChannel('flutter.dev/rust');

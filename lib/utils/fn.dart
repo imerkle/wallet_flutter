@@ -2,8 +2,7 @@ import 'dart:math';
 
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
-import '../gen/cargo/protos/coin.pb.dart';
-import '../utils/constants.dart';
+import 'package:fixnum/fixnum.dart';
 
 Future scan(Function onScan) async {
   try {
@@ -26,8 +25,8 @@ Future scan(Function onScan) async {
   }
 }
 
-double valueToPrecision(double value, int precision) {
-  return value / pow(10, precision);
+double valueToPrecision(Int64 value, int precision) {
+  return value.toDouble() / pow(10, precision);
 }
 
 String valueToPretty(double n, int precision) {

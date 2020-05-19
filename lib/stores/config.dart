@@ -1,5 +1,5 @@
 import 'package:mobx/mobx.dart';
-import 'package:wallet_flutter/gen/cargo/protos/coin.pb.dart';
+import 'package:wallet_flutter/gen/config.pb.dart';
 import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pbserver.dart';
 import 'package:wallet_flutter/models/config.dart';
 
@@ -55,7 +55,7 @@ abstract class _ConfigStore with Store {
   };
 
   @observable
-  Map<String, List<String>> coins = {
+  Map<String, List<String>> coinPairs = {
     "btc": ["btc"],
     "eth": ["eth"],
   };
@@ -64,9 +64,6 @@ abstract class _ConfigStore with Store {
   String base = "btc";
   @observable
   String id = "btc";
-
-  @computed
-  ConfigAtom get coin => configs[id];
 
   @action
   void setId(String s) {
@@ -77,4 +74,13 @@ abstract class _ConfigStore with Store {
   void setBase(String s) {
     base = s;
   }
+
+  @computed
+  ConfigAtom get coin => configs[id];
+
+  @computed
+  List<String> get ids => coinPairs[id];
+
+  ConfigAtom coinById(String i) => configs[i];
+  bool isCurrentId(int i) => ids[i] == id;
 }

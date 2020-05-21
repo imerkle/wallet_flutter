@@ -9,11 +9,12 @@ part of 'config.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ConfigStore on _ConfigStore, Store {
-  Computed<ConfigAtom> _$coinComputed;
+  Computed<ConfigAtom> _$configAtomComputed;
 
   @override
-  ConfigAtom get coin =>
-      (_$coinComputed ??= Computed<ConfigAtom>(() => super.coin)).value;
+  ConfigAtom get configAtom =>
+      (_$configAtomComputed ??= Computed<ConfigAtom>(() => super.configAtom))
+          .value;
   Computed<List<String>> _$idsComputed;
 
   @override

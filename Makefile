@@ -8,6 +8,15 @@ regenerate:
 	
 	(protoc  \
 	-I=../ \
+	-I=${GOPATH}/src \
+	--dart_out=grpc:./lib/gen \
+	go-micro/services/common/timestamp/timestamp.proto \
+	--plugin "pub run protoc_plugin" )
+
+	(protoc  \
+	-I=../ \
+	-I=../go-micro/services \
+	-I=${GOPATH}/src \
 	--dart_out=grpc:./lib/gen \
 	go-micro/services/chains/chain/chain.proto \
 	--plugin "pub run protoc_plugin" )

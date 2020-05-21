@@ -76,11 +76,11 @@ abstract class _ConfigStore with Store {
   }
 
   @computed
-  ConfigAtom get coin => configs[id];
+  ConfigAtom get configAtom => configs[id];
 
   @computed
   List<String> get ids => coinPairs[id];
 
-  ConfigAtom coinById(String i) => configs[i];
+  ConfigAtom configAtomById(String i) => configs[i];
   bool isCurrentId(int i) => ids[i] == id;
 }

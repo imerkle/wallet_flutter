@@ -9,13 +9,13 @@ const Wallet$json = const {
   '1': 'Wallet',
   '2': const [
     const {'1': 'mnemonic', '3': 1, '4': 1, '5': 9, '10': 'mnemonic'},
-    const {'1': 'coins', '3': 2, '4': 3, '5': 11, '6': '.Wallet.CoinsEntry', '10': 'coins'},
+    const {'1': 'coinkeys', '3': 2, '4': 3, '5': 11, '6': '.Wallet.CoinkeysEntry', '10': 'coinkeys'},
   ],
-  '3': const [Wallet_CoinsEntry$json],
+  '3': const [Wallet_CoinkeysEntry$json],
 };
 
-const Wallet_CoinsEntry$json = const {
-  '1': 'CoinsEntry',
+const Wallet_CoinkeysEntry$json = const {
+  '1': 'CoinkeysEntry',
   '2': const [
     const {'1': 'key', '3': 1, '4': 1, '5': 9, '10': 'key'},
     const {'1': 'value', '3': 2, '4': 1, '5': 11, '6': '.CoinKey', '10': 'value'},

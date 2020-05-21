@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:grpc/grpc.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pb.dart';
 import 'package:wallet_flutter/stores/balance.dart';
 import 'package:wallet_flutter/stores/config.dart';
 import '../models/rust.dart';
@@ -12,15 +12,32 @@ import '../stores/transaction.dart';
 
 part 'main.g.dart';
 
+class Fiat {
+  Fiat({this.symbol, this.ticker});
+  String symbol;
+  String ticker;
+}
+
 class MainStore = _MainStore with _$MainStore;
 
 abstract class _MainStore with Store {
+  _MainStore() {
+    final channel = ClientChannel('127.0.0.1', port: 50051);
+    this.transactionStore = TransactionStore(parent: this, channel: channel);
+    this.balanceStore = BalanceStore(parent: this, channel: channel);
+    this.walletStore = WalletStore(parent: this);
+  }
+
+  //TransactionStore transactionStore = TransactionStore();
+  TransactionStore transactionStore;
+  BalanceStore balanceStore;
+  WalletStore walletStore;
   SortStore sortStore = SortStore();
-  WalletStore walletStore = WalletStore();
-  TransactionStore transactionStore = TransactionStore();
   ConfigStore configStore = ConfigStore();
-  BalanceStore balanceStore = BalanceStore();
   Rust rust = Rust();
+
+  @observable
+  Fiat fiat = Fiat(symbol: "\$", ticker: "usd");
 
   @action
   Future<void> initPrep() async {
@@ -45,7 +62,4 @@ abstract class _MainStore with Store {
   @computed
   Coin get coinFromRel => coinListFromBase.list[fabStore.relIndex];
 */
-
-  @computed
-  List<Transaction> get txs => transactionStore.getTransaction(configStore.id);
 }

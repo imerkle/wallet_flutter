@@ -9,6 +9,20 @@ part of 'balance.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$BalanceStore on _BalanceStore, Store {
+  Computed<double> _$currentPriceComputed;
+
+  @override
+  double get currentPrice =>
+      (_$currentPriceComputed ??= Computed<double>(() => super.currentPrice))
+          .value;
+  Computed<BalanceNormalized> _$currentBalanceNormalizedComputed;
+
+  @override
+  BalanceNormalized get currentBalanceNormalized =>
+      (_$currentBalanceNormalizedComputed ??=
+              Computed<BalanceNormalized>(() => super.currentBalanceNormalized))
+          .value;
+
   final _$balancesAtom = Atom(name: '_BalanceStore.balances');
 
   @override
@@ -26,27 +40,11 @@ mixin _$BalanceStore on _BalanceStore, Store {
     }, _$balancesAtom, name: '${_$balancesAtom.name}_set');
   }
 
-  final _$fiatAtom = Atom(name: '_BalanceStore.fiat');
-
-  @override
-  Fiat get fiat {
-    _$fiatAtom.context.enforceReadPolicy(_$fiatAtom);
-    _$fiatAtom.reportObserved();
-    return super.fiat;
-  }
-
-  @override
-  set fiat(Fiat value) {
-    _$fiatAtom.context.conditionallyRunInAction(() {
-      super.fiat = value;
-      _$fiatAtom.reportChanged();
-    }, _$fiatAtom, name: '${_$fiatAtom.name}_set');
-  }
-
   final _$fetchBalanceAsyncAction = AsyncAction('fetchBalance');
 
   @override
-  Future fetchBalance(ConfigAtom atom, CoinKey c) {
-    return _$fetchBalanceAsyncAction.run(() => super.fetchBalance(atom, c));
+  Future fetchBalance({ConfigAtom atom, CoinKey c}) {
+    return _$fetchBalanceAsyncAction
+        .run(() => super.fetchBalance(atom: atom, c: c));
   }
 }

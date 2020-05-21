@@ -38,3 +38,21 @@ String valueToPretty(double n, int precision) {
   }
   return matches;
 }
+
+String replaceAll(String str, String r, String w) {
+  return str.replaceAll(new RegExp(r), w);
+}
+
+String smartTrim(String string, int maxLength) {
+  if (maxLength < 1) return string;
+  if (string.length <= maxLength) return string;
+  if (maxLength == 1) return string.substring(0, 1) + '...';
+
+  var midpoint = (string.length / 2).ceil();
+  var toremove = string.length - maxLength;
+  var lstrip = (toremove / 2).ceil();
+  var rstrip = toremove - lstrip;
+  return string.substring(0, midpoint - lstrip) +
+      '...' +
+      string.substring(midpoint + rstrip);
+}

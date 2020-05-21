@@ -38,7 +38,7 @@ class DrawerWidget extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         padding: EdgeInsets.all(20),
                         child: Observer(builder: (_) {
-                          return Text(configStore.coin.name,
+                          return Text(configStore.configAtom.name,
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 20,
@@ -87,6 +87,7 @@ class DrawerList extends StatelessWidget {
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
     final configStore = Provider.of<MainStore>(context).configStore;
     final sortStore = Provider.of<MainStore>(context).sortStore;
+    final mainStore = Provider.of<MainStore>(context);
 
     return Observer(
       builder: (_) {
@@ -97,9 +98,9 @@ class DrawerList extends StatelessWidget {
             itemCount: configStore.ids.length,
             itemBuilder: (context, i) {
               var id = configStore.ids[i];
-              var atom = configStore.coinById(id);
-              var balance = balanceStore.getBalanceNormalized(atom);
-              var price = balanceStore.getPrice(atom);
+              var configAtom = configStore.configAtomById(id);
+              var balance = balanceStore.getBalanceNormalized(configAtom);
+              var price = balanceStore.getPrice(configAtom);
               return Container(
                 color: configStore.isCurrentId(i)
                     ? Color.fromRGBO(67, 67, 67, 1)
@@ -107,8 +108,8 @@ class DrawerList extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     DrawerListRow(
-                        title: atom.ticker.toUpperCase(),
-                        subtitle: atom.name,
+                        title: configAtom.ticker.toUpperCase(),
+                        subtitle: configAtom.name,
                         onTap: () {
                           configStore.setId(id);
                         },
@@ -117,7 +118,7 @@ class DrawerList extends StatelessWidget {
                         title:
                             valueToPretty(balance.unlocked, CRYPTO_PRECISION),
                         subtitle:
-                            "${balanceStore.fiat.symbol}${valueToPretty(balance.unlocked * price, FIAT_PRECISION)}",
+                            "${mainStore.fiat.symbol}${valueToPretty(balance.unlocked * price, FIAT_PRECISION)}",
                         onTap: () {
                           configStore.setId(id);
                         },

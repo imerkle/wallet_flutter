@@ -14,7 +14,7 @@ import 'config.pb.dart' as $0;
 class Wallet extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallet', createEmptyInstance: create)
     ..aOS(1, 'mnemonic')
-    ..m<$core.String, CoinKey>(2, 'coins', entryClassName: 'Wallet.CoinsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: CoinKey.create)
+    ..m<$core.String, CoinKey>(2, 'coinkeys', entryClassName: 'Wallet.CoinkeysEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: CoinKey.create)
     ..hasRequiredFields = false
   ;
 
@@ -37,7 +37,7 @@ class Wallet extends $pb.GeneratedMessage {
   $core.bool hasMnemonic() => $_has(0);
   void clearMnemonic() => clearField(1);
 
-  $core.Map<$core.String, CoinKey> get coins => $_getMap(1);
+  $core.Map<$core.String, CoinKey> get coinkeys => $_getMap(1);
 }
 
 class CoinKey extends $pb.GeneratedMessage {

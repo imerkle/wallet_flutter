@@ -3,7 +3,7 @@ import "config.proto";
 
 message Wallet {
   string mnemonic = 1;
-  map<string, CoinKey> coins = 2;
+  map<string, CoinKey> coinkeys = 2;
 }
 message CoinKey {
   bytes public_key = 1;

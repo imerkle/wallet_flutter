@@ -9,6 +9,18 @@ part of 'wallet.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$WalletStore on _WalletStore, Store {
+  Computed<Wallet> _$walletComputed;
+
+  @override
+  Wallet get wallet =>
+      (_$walletComputed ??= Computed<Wallet>(() => super.wallet)).value;
+  Computed<CoinKey> _$currentCoinKeyComputed;
+
+  @override
+  CoinKey get currentCoinKey => (_$currentCoinKeyComputed ??=
+          Computed<CoinKey>(() => super.currentCoinKey))
+      .value;
+
   final _$wsAtom = Atom(name: '_WalletStore.ws');
 
   @override
@@ -26,21 +38,21 @@ mixin _$WalletStore on _WalletStore, Store {
     }, _$wsAtom, name: '${_$wsAtom.name}_set');
   }
 
-  final _$walletIndexAtom = Atom(name: '_WalletStore.walletIndex');
+  final _$indexAtom = Atom(name: '_WalletStore.index');
 
   @override
-  int get walletIndex {
-    _$walletIndexAtom.context.enforceReadPolicy(_$walletIndexAtom);
-    _$walletIndexAtom.reportObserved();
-    return super.walletIndex;
+  int get index {
+    _$indexAtom.context.enforceReadPolicy(_$indexAtom);
+    _$indexAtom.reportObserved();
+    return super.index;
   }
 
   @override
-  set walletIndex(int value) {
-    _$walletIndexAtom.context.conditionallyRunInAction(() {
-      super.walletIndex = value;
-      _$walletIndexAtom.reportChanged();
-    }, _$walletIndexAtom, name: '${_$walletIndexAtom.name}_set');
+  set index(int value) {
+    _$indexAtom.context.conditionallyRunInAction(() {
+      super.index = value;
+      _$indexAtom.reportChanged();
+    }, _$indexAtom, name: '${_$indexAtom.name}_set');
   }
 
   final _$initWalletIfAbsentAsyncAction = AsyncAction('initWalletIfAbsent');

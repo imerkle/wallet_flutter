@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:mobx/mobx.dart' show Store, action, observable;
+import 'package:mobx/mobx.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:plugfox_localstorage/localstorage.dart';
 import 'package:wallet_flutter/gen/config.pb.dart';
 import 'package:wallet_flutter/gen/wallet.pb.dart';
 import 'package:wallet_flutter/models/config.dart';
+import 'package:wallet_flutter/stores/main.dart';
 
 import '../models/rust.dart';
 import '../utils/constants.dart';
@@ -18,20 +19,19 @@ final LocalStorage storage = new LocalStorage();
 class WalletStore = _WalletStore with _$WalletStore;
 
 abstract class _WalletStore with Store {
+  _WalletStore({this.parent});
+  final MainStore parent;
+
   @observable
   Wallets ws = Wallets();
 
+  /// Index of the Current Wallet  in Wallet Array
   @observable
-  int walletIndex = 0;
+  int index = 0;
 
   Future<void> initPrep(Map<String, ConfigAtom> configs, Rust rust) async {
     await storage.init();
     await initWalletIfAbsent(configs, rust);
-  }
-
-  CoinKey getCoinKey(String id) {
-    var c = ws.list[walletIndex].coins;
-    return c.containsKey(id) ? c[id] : CoinKey();
   }
 
   @action
@@ -71,8 +71,13 @@ abstract class _WalletStore with Store {
       ws = Wallets.fromJson(walletsJson);
     }
   }
-}
 
-String replaceAll(String str, String r, String w) {
-  return str.replaceAll(new RegExp(r), w);
+  @computed
+  Wallet get wallet => ws.list[index];
+
+  @computed
+  CoinKey get currentCoinKey =>
+      wallet.coinkeys.containsKey(parent.configStore.id)
+          ? wallet.coinkeys[parent.configStore.id]
+          : CoinKey();
 }

@@ -10,6 +10,8 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 
+import '../../../../common/timestamp/timestamp.pb.dart' as $1;
+
 import 'chain.pbenum.dart';
 
 export 'chain.pbenum.dart';
@@ -87,6 +89,7 @@ class Transaction extends $pb.GeneratedMessage {
     ..e<Direction>(5, 'direction', $pb.PbFieldType.OE, defaultOrMaker: Direction.OUTGOING, valueOf: Direction.valueOf, enumValues: Direction.values)
     ..aInt64(6, 'fees')
     ..a<$core.int>(7, 'confimations', $pb.PbFieldType.O3)
+    ..a<$1.Timestamp>(8, 'timestamp', $pb.PbFieldType.OM, defaultOrMaker: $1.Timestamp.getDefault, subBuilder: $1.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -132,6 +135,11 @@ class Transaction extends $pb.GeneratedMessage {
   set confimations($core.int v) { $_setSignedInt32(6, v); }
   $core.bool hasConfimations() => $_has(6);
   void clearConfimations() => clearField(7);
+
+  $1.Timestamp get timestamp => $_getN(7);
+  set timestamp($1.Timestamp v) { setField(8, v); }
+  $core.bool hasTimestamp() => $_has(7);
+  void clearTimestamp() => clearField(8);
 }
 
 class Balance extends $pb.GeneratedMessage {

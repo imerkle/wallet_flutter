@@ -3,10 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import '../utils/api.dart';
 import '../utils/app_localization.dart';
 import '../utils/constants.dart';
-import '../gen/cargo/protos/coin.pb.dart';
 import '../utils/fn.dart';
 import '../stores/main.dart';
 import '../widgets/refresh_footer.dart';
@@ -37,6 +35,7 @@ class _WalletState extends State<Wallet> {
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
     final configStore = Provider.of<MainStore>(context).configStore;
+    final transactionStore = Provider.of<MainStore>(context).transactionStore;
     final mainStore = Provider.of<MainStore>(context);
 
     return SmartRefresher(
@@ -50,12 +49,8 @@ class _WalletState extends State<Wallet> {
       header: ClassicHeader(),
       footer: RefreshFooter(),
       child: Observer(builder: (_) {
-        var id = configStore.id;
         var base = configStore.base;
-        var coin = mainStore.coin;
-        var atom = configStore.configs[configStore.id];
-
-        var balanceNormalized = balanceStore.getBalanceNormalized(atom);
+        var configAtom = configStore.configAtom;
 
         return Padding(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -64,13 +59,18 @@ class _WalletState extends State<Wallet> {
               runSpacing: 30,
               children: <Widget>[
                 BalanceHeader(
-                    rel: atom.ticker,
+                    rel: configAtom.ticker,
                     bal: valueToPretty(
-                        balanceNormalized.unlocked, CRYPTO_PRECISION),
-                    fiatSymbol: balanceStore.fiat.symbol,
+                        balanceStore.currentBalanceNormalized.unlocked,
+                        CRYPTO_PRECISION),
+                    fiatSymbol: mainStore.fiat.symbol,
                     fiatBal: valueToPretty(
-                        balanceNormalized.unlocked * b.price, FIAT_PRECISION)),
-                AddressHeader(ticker: atom.ticker, address: coin.address),
+                        balanceStore.currentBalanceNormalized.unlocked *
+                            balanceStore.currentPrice,
+                        FIAT_PRECISION)),
+                AddressHeader(
+                    ticker: configAtom.ticker,
+                    address: walletStore.currentCoinKey.address),
                 Text(AppLocalizations.of(context).tr('send_tx').toUpperCase(),
                     style: TextStyle(
                       color: Color(0xffbec0c4),
@@ -86,22 +86,27 @@ class _WalletState extends State<Wallet> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: this._amountInFiat
-                        ? '${balanceStore.fiat.ticker.toUpperCase()} Amount'
-                        : '${atom.ticker.toUpperCase()} Amount',
+                        ? '${mainStore.fiat.ticker.toUpperCase()} Amount'
+                        : '${configAtom.ticker.toUpperCase()} Amount',
                     prefixIcon: FlatButton(
                       child: Text("MAX"),
                       onPressed: () {
                         if (_amountInFiat) {
-                          amount.text = (b.price * b.value).toString();
+                          amount.text =
+                              (balanceStore.currentBalanceNormalized.unlocked *
+                                      balanceStore.currentPrice)
+                                  .toString();
                         } else {
-                          amount.text = b.value.toString();
+                          amount.text = balanceStore
+                              .currentBalanceNormalized.unlocked
+                              .toString();
                         }
                       },
                     ),
                     suffixIcon: FlatButton(
                       child: Text(this._amountInFiat
-                          ? balanceStore.fiat.ticker.toUpperCase()
-                          : atom.ticker.toUpperCase()),
+                          ? mainStore.fiat.ticker.toUpperCase()
+                          : configAtom.ticker.toUpperCase()),
                       onPressed: () {
                         setState(() {
                           _amountInFiat = !this._amountInFiat;
@@ -114,30 +119,10 @@ class _WalletState extends State<Wallet> {
                   width: double.infinity,
                   child: RaisedButton(
                     onPressed: () async {
-                      Outputs os = Outputs();
-                      Output o = Output()
-                        ..address = receivingAddress.text
-                        ..value = _amountInFiat
-                            ? textToDouble(amount.text) / b.price
-                            : textToDouble(amount.text)
-                        ..memo = "";
-                      o.address = receivingAddress.text;
-                      os.list.add(o);
-
-                      var txOpts = await getTransactionOpts(
-                          atom: atom, address: coin.address);
-                      var input = GenSendTxInput()
-                        ..config = atom.config
-                        ..privateKey = coin.privateKey
-                        ..publicKey = coin.publicKey
-                        ..outputs = os
-                        ..txOpts = txOpts;
-
-                      var res = await mainStore.rust.invokeRustMethod(
-                          'gen_send_transaction', input.writeToBuffer());
-                      var t = Tx.fromBuffer(res);
-                      print(t);
-                      sendTransaction(rel: rel, base: base, rawTx: t.txHex);
+                      transactionStore.sendTx(
+                          amount: textToDouble(amount.text),
+                          amountInFiat: _amountInFiat,
+                          receivingAddress: receivingAddress.text);
                     },
 
                     //padding: EdgeInsets.all(15),

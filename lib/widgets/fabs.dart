@@ -21,7 +21,7 @@ class Fabs extends StatelessWidget {
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
     final walletStore = Provider.of<MainStore>(context).walletStore;
 
-    var keys = configStore.coins.keys.toList();
+    var keys = configStore.coinPairs.keys.toList();
     return ListView.builder(
         itemCount: keys.length,
         itemBuilder: (context, i) {
@@ -29,7 +29,7 @@ class Fabs extends StatelessWidget {
             return GestureDetector(
               onTap: () {
                 configStore.setBase(keys[i]);
-                configStore.setId(configStore.coins[keys[i]][0]);
+                configStore.setId(configStore.coinPairs[keys[i]][0]);
                 /*
                 balanceStore.fetchBalances(
                     configStore.base,

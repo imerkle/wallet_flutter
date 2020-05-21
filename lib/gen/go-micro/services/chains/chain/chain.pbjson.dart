@@ -67,6 +67,7 @@ const Transaction$json = const {
     const {'1': 'direction', '3': 5, '4': 1, '5': 14, '6': '.chain.Direction', '10': 'direction'},
     const {'1': 'fees', '3': 6, '4': 1, '5': 3, '10': 'fees'},
     const {'1': 'confimations', '3': 7, '4': 1, '5': 5, '10': 'confimations'},
+    const {'1': 'timestamp', '3': 8, '4': 1, '5': 11, '6': '.timestamp.Timestamp', '10': 'timestamp'},
   ],
 };
 

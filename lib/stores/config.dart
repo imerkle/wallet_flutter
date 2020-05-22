@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
+import 'package:wallet_flutter/gen/chains/chain/chain.pbenum.dart';
 import 'package:wallet_flutter/gen/config.pb.dart';
-import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pbserver.dart';
 import 'package:wallet_flutter/models/config.dart';
 
 // Include generated file

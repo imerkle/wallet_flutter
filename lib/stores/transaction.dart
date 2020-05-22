@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:grpc/grpc.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pb.dart';
+import 'package:wallet_flutter/gen/chains/chain/chain.pb.dart';
 import 'package:wallet_flutter/gen/transaction.pb.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:fixnum/fixnum.dart';

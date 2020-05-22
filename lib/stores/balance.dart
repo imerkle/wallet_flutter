@@ -1,8 +1,8 @@
 import 'dart:collection';
 import 'package:grpc/grpc.dart';
 import 'package:mobx/mobx.dart';
-import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pb.dart';
-import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pbgrpc.dart';
+import 'package:wallet_flutter/gen/chains/chain/chain.pb.dart';
+import 'package:wallet_flutter/gen/chains/chain/chain.pbgrpc.dart';
 import 'package:wallet_flutter/gen/wallet.pb.dart';
 import 'package:wallet_flutter/models/config.dart';
 import 'package:fixnum/fixnum.dart';
@@ -24,7 +24,7 @@ abstract class _BalanceStore with Store {
   SplayTreeMap<String, GetPriceResponse> prices = SplayTreeMap();
 
   @action
-  void fetchBalance({ConfigAtom atom, CoinKey c}) async {
+  Future<void> fetchBalance({ConfigAtom atom, CoinKey c}) async {
     final client = ChainServiceClient(channel);
     var res = await client.getBalance(GetBalanceRequest()
       ..api = atom.brurl

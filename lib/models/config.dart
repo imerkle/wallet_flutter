@@ -1,5 +1,5 @@
+import 'package:wallet_flutter/gen/chains/chain/chain.pbenum.dart';
 import 'package:wallet_flutter/gen/config.pb.dart';
-import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pbserver.dart';
 
 class ExplorerConfig {
   ExplorerConfig({this.api, this.kind});

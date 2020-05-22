@@ -4,8 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:wallet_flutter/gen/go-micro/services/chains/chain/chain.pb.dart';
-import 'package:wallet_flutter/stores/wallet.dart';
+import 'package:wallet_flutter/gen/chains/chain/chain.pb.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/utils/fn.dart';
 import 'package:wallet_flutter/widgets/data_table.dart';
@@ -156,7 +155,7 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                         MyDataCell(Text(smartTrim(tx.id, 10))),
                         MyDataCell(Text(timeago.format(
                             DateTime.fromMillisecondsSinceEpoch(
-                                tx.timestamp * 1000),
+                                tx.timestamp.timestamp.seconds.toInt() * 1000),
                             maxSuffix: 3))),
                         MyDataCell(ClipRRect(
                           borderRadius: BorderRadius.circular(4),

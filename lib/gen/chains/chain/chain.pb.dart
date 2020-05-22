@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: go-micro/services/chains/chain/chain.proto
+//  source: chains/chain/chain.proto
 //
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
@@ -10,7 +10,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../../../common/timestamp/timestamp.pb.dart' as $1;
+import '../../common/timestamp/timestamp.pb.dart' as $3;
 
 import 'chain.pbenum.dart';
 
@@ -89,7 +89,7 @@ class Transaction extends $pb.GeneratedMessage {
     ..e<Direction>(5, 'direction', $pb.PbFieldType.OE, defaultOrMaker: Direction.OUTGOING, valueOf: Direction.valueOf, enumValues: Direction.values)
     ..aInt64(6, 'fees')
     ..a<$core.int>(7, 'confimations', $pb.PbFieldType.O3)
-    ..a<$1.Timestamp>(8, 'timestamp', $pb.PbFieldType.OM, defaultOrMaker: $1.Timestamp.getDefault, subBuilder: $1.Timestamp.create)
+    ..a<$3.Timestamp>(8, 'timestamp', $pb.PbFieldType.OM, defaultOrMaker: $3.Timestamp.getDefault, subBuilder: $3.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -136,8 +136,8 @@ class Transaction extends $pb.GeneratedMessage {
   $core.bool hasConfimations() => $_has(6);
   void clearConfimations() => clearField(7);
 
-  $1.Timestamp get timestamp => $_getN(7);
-  set timestamp($1.Timestamp v) { setField(8, v); }
+  $3.Timestamp get timestamp => $_getN(7);
+  set timestamp($3.Timestamp v) { setField(8, v); }
   $core.bool hasTimestamp() => $_has(7);
   void clearTimestamp() => clearField(8);
 }

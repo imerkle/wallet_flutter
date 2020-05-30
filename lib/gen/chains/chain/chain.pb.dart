@@ -10,7 +10,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../common/timestamp/timestamp.pb.dart' as $3;
+import '../../common/timestamp/timestamp.pb.dart' as $2;
 
 import 'chain.pbenum.dart';
 
@@ -50,8 +50,8 @@ class Input extends $pb.GeneratedMessage {
 
 class Gas extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Gas', package: const $pb.PackageName('chain'), createEmptyInstance: create)
-    ..a<$core.int>(1, 'used', $pb.PbFieldType.O3)
-    ..a<$core.int>(2, 'price', $pb.PbFieldType.O3)
+    ..aInt64(1, 'used')
+    ..aInt64(2, 'price')
     ..hasRequiredFields = false
   ;
 
@@ -69,13 +69,13 @@ class Gas extends $pb.GeneratedMessage {
   static Gas getDefault() => _defaultInstance ??= create()..freeze();
   static Gas _defaultInstance;
 
-  $core.int get used => $_get(0, 0);
-  set used($core.int v) { $_setSignedInt32(0, v); }
+  Int64 get used => $_getI64(0);
+  set used(Int64 v) { $_setInt64(0, v); }
   $core.bool hasUsed() => $_has(0);
   void clearUsed() => clearField(1);
 
-  $core.int get price => $_get(1, 0);
-  set price($core.int v) { $_setSignedInt32(1, v); }
+  Int64 get price => $_getI64(1);
+  set price(Int64 v) { $_setInt64(1, v); }
   $core.bool hasPrice() => $_has(1);
   void clearPrice() => clearField(2);
 }
@@ -87,9 +87,9 @@ class Transaction extends $pb.GeneratedMessage {
     ..pc<Input>(3, 'outputs', $pb.PbFieldType.PM, subBuilder: Input.create)
     ..e<TransactionKind>(4, 'kind', $pb.PbFieldType.OE, defaultOrMaker: TransactionKind.TRANSFER, valueOf: TransactionKind.valueOf, enumValues: TransactionKind.values)
     ..e<Direction>(5, 'direction', $pb.PbFieldType.OE, defaultOrMaker: Direction.OUTGOING, valueOf: Direction.valueOf, enumValues: Direction.values)
-    ..aInt64(6, 'fees')
-    ..a<$core.int>(7, 'confimations', $pb.PbFieldType.O3)
-    ..a<$3.Timestamp>(8, 'timestamp', $pb.PbFieldType.OM, defaultOrMaker: $3.Timestamp.getDefault, subBuilder: $3.Timestamp.create)
+    ..a<Gas>(6, 'fees', $pb.PbFieldType.OM, defaultOrMaker: Gas.getDefault, subBuilder: Gas.create)
+    ..aInt64(7, 'confimations')
+    ..a<$2.Timestamp>(8, 'timestamp', $pb.PbFieldType.OM, defaultOrMaker: $2.Timestamp.getDefault, subBuilder: $2.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -126,18 +126,18 @@ class Transaction extends $pb.GeneratedMessage {
   $core.bool hasDirection() => $_has(4);
   void clearDirection() => clearField(5);
 
-  Int64 get fees => $_getI64(5);
-  set fees(Int64 v) { $_setInt64(5, v); }
+  Gas get fees => $_getN(5);
+  set fees(Gas v) { setField(6, v); }
   $core.bool hasFees() => $_has(5);
   void clearFees() => clearField(6);
 
-  $core.int get confimations => $_get(6, 0);
-  set confimations($core.int v) { $_setSignedInt32(6, v); }
+  Int64 get confimations => $_getI64(6);
+  set confimations(Int64 v) { $_setInt64(6, v); }
   $core.bool hasConfimations() => $_has(6);
   void clearConfimations() => clearField(7);
 
-  $3.Timestamp get timestamp => $_getN(7);
-  set timestamp($3.Timestamp v) { setField(8, v); }
+  $2.Timestamp get timestamp => $_getN(7);
+  set timestamp($2.Timestamp v) { setField(8, v); }
   $core.bool hasTimestamp() => $_has(7);
   void clearTimestamp() => clearField(8);
 }
@@ -291,6 +291,7 @@ class GetBalanceResponse extends $pb.GeneratedMessage {
 class GetPriceRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetPriceRequest', package: const $pb.PackageName('chain'), createEmptyInstance: create)
     ..aOS(1, 'id')
+    ..aOS(2, 'fiatTicker')
     ..hasRequiredFields = false
   ;
 
@@ -312,6 +313,78 @@ class GetPriceRequest extends $pb.GeneratedMessage {
   set id($core.String v) { $_setString(0, v); }
   $core.bool hasId() => $_has(0);
   void clearId() => clearField(1);
+
+  $core.String get fiatTicker => $_getS(1, '');
+  set fiatTicker($core.String v) { $_setString(1, v); }
+  $core.bool hasFiatTicker() => $_has(1);
+  void clearFiatTicker() => clearField(2);
+}
+
+class GetTransactionsRequest extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetTransactionsRequest', package: const $pb.PackageName('chain'), createEmptyInstance: create)
+    ..aOS(1, 'address')
+    ..e<GetBalanceRequestKind>(2, 'kind', $pb.PbFieldType.OE, defaultOrMaker: GetBalanceRequestKind.BLOCKBOOK, valueOf: GetBalanceRequestKind.valueOf, enumValues: GetBalanceRequestKind.values)
+    ..aOS(3, 'api')
+    ..aInt64(4, 'precision')
+    ..hasRequiredFields = false
+  ;
+
+  GetTransactionsRequest._() : super();
+  factory GetTransactionsRequest() => create();
+  factory GetTransactionsRequest.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetTransactionsRequest.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetTransactionsRequest clone() => GetTransactionsRequest()..mergeFromMessage(this);
+  GetTransactionsRequest copyWith(void Function(GetTransactionsRequest) updates) => super.copyWith((message) => updates(message as GetTransactionsRequest));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetTransactionsRequest create() => GetTransactionsRequest._();
+  GetTransactionsRequest createEmptyInstance() => create();
+  static $pb.PbList<GetTransactionsRequest> createRepeated() => $pb.PbList<GetTransactionsRequest>();
+  static GetTransactionsRequest getDefault() => _defaultInstance ??= create()..freeze();
+  static GetTransactionsRequest _defaultInstance;
+
+  $core.String get address => $_getS(0, '');
+  set address($core.String v) { $_setString(0, v); }
+  $core.bool hasAddress() => $_has(0);
+  void clearAddress() => clearField(1);
+
+  GetBalanceRequestKind get kind => $_getN(1);
+  set kind(GetBalanceRequestKind v) { setField(2, v); }
+  $core.bool hasKind() => $_has(1);
+  void clearKind() => clearField(2);
+
+  $core.String get api => $_getS(2, '');
+  set api($core.String v) { $_setString(2, v); }
+  $core.bool hasApi() => $_has(2);
+  void clearApi() => clearField(3);
+
+  Int64 get precision => $_getI64(3);
+  set precision(Int64 v) { $_setInt64(3, v); }
+  $core.bool hasPrecision() => $_has(3);
+  void clearPrecision() => clearField(4);
+}
+
+class GetTransactionsResponse extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetTransactionsResponse', package: const $pb.PackageName('chain'), createEmptyInstance: create)
+    ..pc<Transaction>(1, 'transactions', $pb.PbFieldType.PM, subBuilder: Transaction.create)
+    ..hasRequiredFields = false
+  ;
+
+  GetTransactionsResponse._() : super();
+  factory GetTransactionsResponse() => create();
+  factory GetTransactionsResponse.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory GetTransactionsResponse.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  GetTransactionsResponse clone() => GetTransactionsResponse()..mergeFromMessage(this);
+  GetTransactionsResponse copyWith(void Function(GetTransactionsResponse) updates) => super.copyWith((message) => updates(message as GetTransactionsResponse));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static GetTransactionsResponse create() => GetTransactionsResponse._();
+  GetTransactionsResponse createEmptyInstance() => create();
+  static $pb.PbList<GetTransactionsResponse> createRepeated() => $pb.PbList<GetTransactionsResponse>();
+  static GetTransactionsResponse getDefault() => _defaultInstance ??= create()..freeze();
+  static GetTransactionsResponse _defaultInstance;
+
+  $core.List<Transaction> get transactions => $_getList(0);
 }
 
 class GetPriceResponse extends $pb.GeneratedMessage {

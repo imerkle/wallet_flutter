@@ -1,5 +1,5 @@
 syntax = "proto3";
-import "config.proto";
+import "pb/config.proto";
 message Input {
   uint32 vout = 1;
   string id = 2;

@@ -1,6 +1,6 @@
 import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/gen/chains/chain/chain.pbenum.dart';
-import 'package:wallet_flutter/gen/config.pb.dart';
+import 'package:wallet_flutter/gen/pb/config.pb.dart';
 import 'package:wallet_flutter/models/config.dart';
 
 // Include generated file
@@ -16,8 +16,9 @@ abstract class _ConfigStore with Store {
         id: "btc",
         name: "Bitcoin",
         ticker: "btc",
-        brurl: "https://tbtc1.trezor.io/api/v2",
+        brurl: "tbtc1.trezor.io/api/v2",
         brkind: GetBalanceRequestKind.BLOCKBOOK,
+        brhash: "",
         precision: 8,
         config: Config()
           ..id = "btc"
@@ -32,6 +33,7 @@ abstract class _ConfigStore with Store {
         ticker: "eth",
         brurl: "https://ac-dev0.net:29136/api/v2",
         brkind: GetBalanceRequestKind.ETH_ERC20,
+        brhash: "",
         precision: 18,
         config: Config()
           ..id = "eth"
@@ -44,6 +46,7 @@ abstract class _ConfigStore with Store {
       ticker: "btc",
       brurl: "https://btg1.trezor.io/api/v2",
       brkind: GetBalanceRequestKind.BLOCKBOOK,
+      brhash: "",
       precision: 8,
       config: Config()
         ..id = "btg"

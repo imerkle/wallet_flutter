@@ -3,7 +3,10 @@ import 'dart:collection';
 import 'package:grpc/grpc.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/gen/chains/chain/chain.pb.dart';
-import 'package:wallet_flutter/gen/transaction.pb.dart';
+import 'package:wallet_flutter/gen/chains/chain/chain.pbgrpc.dart';
+import 'package:wallet_flutter/gen/pb/transaction.pb.dart';
+import 'package:wallet_flutter/gen/pb/wallet.pb.dart';
+import 'package:wallet_flutter/models/config.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:fixnum/fixnum.dart';
 
@@ -14,33 +17,28 @@ part 'transaction.g.dart';
 class TransactionStore = _TransactionStore with _$TransactionStore;
 
 abstract class _TransactionStore with Store {
-  _TransactionStore({this.parent, this.channel});
+  _TransactionStore({this.parent, this.chainServiceClient});
   final MainStore parent;
-  final ClientChannel channel;
+  final ChainServiceClient chainServiceClient;
 
-  HashMap<String, List<Transaction>> txs = HashMap();
+  ObservableMap<String, List<Transaction>> txs = ObservableMap();
 
   @action
   Future<void> refreshTxs() async {
-    String id = parent.configStore.id;
+    ConfigAtom atom = parent.configStore.configAtom;
     String address = parent.walletStore.currentCoinKey.address;
-
-    /*
+    GetTransactionsResponse res;
     try {
-      var t = await getTransactions(rel: rel, base: base, address: address);
-      if (!txs.containsKey(base)) {
-        txs = {
-          base: {rel: t}
-        };
-      } else if (!txs[base].containsKey(rel)) {
-        txs[base] = {rel: t};
-      } else {
-        txs[base][rel] = t;
-      }
-    } catch (e) {
-      print(e);
+      res = await chainServiceClient.getTransactions(GetTransactionsRequest()
+        ..api = atom.brurl
+        ..address = address
+        ..kind = atom.brkind
+        ..precision = Int64(atom.precision));
+      txs.update(atom.id, (value) => res.transactions,
+          ifAbsent: () => res.transactions);
+    } on GrpcError catch (e) {
+      parent.logStore.addGrpc(e);
     }
-  */
   }
 
   Future<String> sendTx(

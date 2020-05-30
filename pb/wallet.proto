@@ -1,5 +1,5 @@
 syntax = "proto3";
-import "config.proto";
+import "pb/config.proto";
 
 message Wallet {
   string mnemonic = 1;

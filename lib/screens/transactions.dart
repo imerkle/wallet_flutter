@@ -25,10 +25,10 @@ class TrasactionScreen extends StatefulWidget {
 
 class _TrasactionScreenState extends State<TrasactionScreen>
     with AfterInitMixin<TrasactionScreen> {
-  refresh(BuildContext context) {
+  refresh(BuildContext context) async {
     final transactionStore = Provider.of<MainStore>(context).transactionStore;
 
-    transactionStore.refreshTxs();
+    await transactionStore.refreshTxs();
     _refreshController.refreshCompleted();
   }
 
@@ -52,8 +52,8 @@ class _TrasactionScreenState extends State<TrasactionScreen>
         ),
         context: context,
         builder: (builder) {
-          var fees =
-              valueToPrecision(tx.fees, configStore.configAtom.precision);
+          var fees = valueToPrecision(
+              tx.fees.used * tx.fees.price, configStore.configAtom.precision);
           return Container(
             height: 500,
             child: SingleChildScrollView(
@@ -114,8 +114,7 @@ class _TrasactionScreenState extends State<TrasactionScreen>
         enablePullUp: true,
         controller: _refreshController,
         onRefresh: () async {
-          await transactionStore.refreshTxs();
-          _refreshController.refreshCompleted();
+          refresh(context);
         },
         header: ClassicHeader(),
         footer: RefreshFooter(),
@@ -146,6 +145,13 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                             : a;
                       }));
                       break;
+                    case Direction.SELF:
+                      valueRaw = (tx.outputs.fold(Int64.ZERO, (a, y) {
+                        return walletStore.currentCoinKey.address == y.address
+                            ? a + y.value
+                            : a;
+                      }));
+                      break;
                   }
                   double value = valueToPrecision(
                       valueRaw, configStore.configAtom.precision);
@@ -160,13 +166,11 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                         MyDataCell(ClipRRect(
                           borderRadius: BorderRadius.circular(4),
                           child: Container(
-                            width: 35,
+                            width: 40,
                             padding: EdgeInsets.all(4),
-                            color: tx.direction == Direction.INCOMING
-                                ? Colors.green
-                                : Colors.red,
+                            color: colorFromDirection(tx.direction),
                             child: Text(
-                              tx.direction == Direction.INCOMING ? "IN" : "OUT",
+                              textFromDirection(tx.direction),
                               textAlign: TextAlign.center,
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -195,5 +199,37 @@ class _TrasactionScreenState extends State<TrasactionScreen>
             return Container(child: Text("woo"));
           }
         }));
+  }
+}
+
+Color colorFromDirection(Direction dir) {
+  switch (dir) {
+    case Direction.INCOMING:
+      return Colors.green;
+      break;
+    case Direction.OUTGOING:
+      return Colors.red;
+      break;
+    case Direction.SELF:
+      return Colors.grey;
+      break;
+    default:
+      return Colors.grey;
+  }
+}
+
+String textFromDirection(Direction dir) {
+  switch (dir) {
+    case Direction.INCOMING:
+      return "IN";
+      break;
+    case Direction.OUTGOING:
+      return "OUT";
+      break;
+    case Direction.SELF:
+      return "SELF";
+      break;
+    default:
+      return "SELF";
   }
 }

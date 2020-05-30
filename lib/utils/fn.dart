@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 import 'package:fixnum/fixnum.dart';
+import 'package:flutter/widgets.dart';
 
 Future scan(Function onScan) async {
   try {
@@ -55,4 +56,16 @@ String smartTrim(String string, int maxLength) {
   return string.substring(0, midpoint - lstrip) +
       '...' +
       string.substring(midpoint + rstrip);
+}
+
+Future writePaste(TextEditingController c) async {
+  ClipboardData data = await Clipboard.getData("text/plain");
+  c.text = data.text;
+}
+
+double textToDouble(String text) {
+  if (text.length == 0) {
+    return 0.0;
+  }
+  return double.parse(text);
 }

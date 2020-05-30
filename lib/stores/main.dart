@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:grpc/grpc.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wallet_flutter/gen/chains/chain/chain.pbgrpc.dart';
 import 'package:wallet_flutter/stores/balance.dart';
 import 'package:wallet_flutter/stores/config.dart';
+import 'package:wallet_flutter/stores/log.dart';
+import 'package:wallet_flutter/utils/constants.dart';
 import '../models/rust.dart';
 
 import '../stores/sort.dart';
@@ -22,9 +25,13 @@ class MainStore = _MainStore with _$MainStore;
 
 abstract class _MainStore with Store {
   _MainStore() {
-    final channel = ClientChannel('127.0.0.1', port: 50051);
-    this.transactionStore = TransactionStore(parent: this, channel: channel);
-    this.balanceStore = BalanceStore(parent: this, channel: channel);
+    final chainServiceClient = ChainServiceClient(ClientChannel(CHAINS_API.host,
+        port: CHAINS_API.port,
+        options: ChannelOptions(credentials: ChannelCredentials.insecure())));
+    this.transactionStore =
+        TransactionStore(parent: this, chainServiceClient: chainServiceClient);
+    this.balanceStore =
+        BalanceStore(parent: this, chainServiceClient: chainServiceClient);
     this.walletStore = WalletStore(parent: this);
   }
 
@@ -32,6 +39,7 @@ abstract class _MainStore with Store {
   TransactionStore transactionStore;
   BalanceStore balanceStore;
   WalletStore walletStore;
+  LogStore logStore = LogStore();
   SortStore sortStore = SortStore();
   ConfigStore configStore = ConfigStore();
   Rust rust = Rust();
@@ -53,13 +61,4 @@ abstract class _MainStore with Store {
     balanceStore.fetchPrices(configStore.coins[configStore.base]);
     */
   }
-
-  /*
-  @computed
-  Coins get coinListFromBase => walletStore
-      .ws.list[walletStore.walletIndex].coinsList.list[fabStore.baseIndex];
-
-  @computed
-  Coin get coinFromRel => coinListFromBase.list[fabStore.relIndex];
-*/
 }

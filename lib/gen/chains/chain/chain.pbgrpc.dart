@@ -26,6 +26,12 @@ class ChainServiceClient extends $grpc.Client {
           ($0.GetPriceRequest value) => value.writeToBuffer(),
           ($core.List<$core.int> value) =>
               $0.GetPriceResponse.fromBuffer(value));
+  static final _$getTransactions =
+      $grpc.ClientMethod<$0.GetTransactionsRequest, $0.GetTransactionsResponse>(
+          '/chain.ChainService/GetTransactions',
+          ($0.GetTransactionsRequest value) => value.writeToBuffer(),
+          ($core.List<$core.int> value) =>
+              $0.GetTransactionsResponse.fromBuffer(value));
 
   ChainServiceClient($grpc.ClientChannel channel, {$grpc.CallOptions options})
       : super(channel, options: options);
@@ -42,6 +48,15 @@ class ChainServiceClient extends $grpc.Client {
   $grpc.ResponseFuture<$0.GetPriceResponse> getPrice($0.GetPriceRequest request,
       {$grpc.CallOptions options}) {
     final call = $createCall(_$getPrice, $async.Stream.fromIterable([request]),
+        options: options);
+    return $grpc.ResponseFuture(call);
+  }
+
+  $grpc.ResponseFuture<$0.GetTransactionsResponse> getTransactions(
+      $0.GetTransactionsRequest request,
+      {$grpc.CallOptions options}) {
+    final call = $createCall(
+        _$getTransactions, $async.Stream.fromIterable([request]),
         options: options);
     return $grpc.ResponseFuture(call);
   }
@@ -65,6 +80,15 @@ abstract class ChainServiceBase extends $grpc.Service {
         false,
         ($core.List<$core.int> value) => $0.GetPriceRequest.fromBuffer(value),
         ($0.GetPriceResponse value) => value.writeToBuffer()));
+    $addMethod($grpc.ServiceMethod<$0.GetTransactionsRequest,
+            $0.GetTransactionsResponse>(
+        'GetTransactions',
+        getTransactions_Pre,
+        false,
+        false,
+        ($core.List<$core.int> value) =>
+            $0.GetTransactionsRequest.fromBuffer(value),
+        ($0.GetTransactionsResponse value) => value.writeToBuffer()));
   }
 
   $async.Future<$0.GetBalanceResponse> getBalance_Pre($grpc.ServiceCall call,
@@ -77,8 +101,16 @@ abstract class ChainServiceBase extends $grpc.Service {
     return getPrice(call, await request);
   }
 
+  $async.Future<$0.GetTransactionsResponse> getTransactions_Pre(
+      $grpc.ServiceCall call,
+      $async.Future<$0.GetTransactionsRequest> request) async {
+    return getTransactions(call, await request);
+  }
+
   $async.Future<$0.GetBalanceResponse> getBalance(
       $grpc.ServiceCall call, $0.GetBalanceRequest request);
   $async.Future<$0.GetPriceResponse> getPrice(
       $grpc.ServiceCall call, $0.GetPriceRequest request);
+  $async.Future<$0.GetTransactionsResponse> getTransactions(
+      $grpc.ServiceCall call, $0.GetTransactionsRequest request);
 }

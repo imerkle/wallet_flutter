@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: transaction.proto
+//  source: pb/transaction.proto
 //
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
@@ -10,7 +10,7 @@ import 'dart:core' as $core;
 import 'package:fixnum/fixnum.dart';
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'config.pb.dart' as $1;
+import 'config.pb.dart' as $3;
 
 class Input extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Input', createEmptyInstance: create)
@@ -168,7 +168,7 @@ class TxOpts extends $pb.GeneratedMessage {
 
 class GenSendTransactionRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GenSendTransactionRequest', createEmptyInstance: create)
-    ..a<$1.Config>(1, 'config', $pb.PbFieldType.OM, defaultOrMaker: $1.Config.getDefault, subBuilder: $1.Config.create)
+    ..a<$3.Config>(1, 'config', $pb.PbFieldType.OM, defaultOrMaker: $3.Config.getDefault, subBuilder: $3.Config.create)
     ..a<$core.List<$core.int>>(2, 'privateKey', $pb.PbFieldType.OY)
     ..a<$core.List<$core.int>>(3, 'publicKey', $pb.PbFieldType.OY)
     ..a<Outputs>(4, 'outputs', $pb.PbFieldType.OM, defaultOrMaker: Outputs.getDefault, subBuilder: Outputs.create)
@@ -190,8 +190,8 @@ class GenSendTransactionRequest extends $pb.GeneratedMessage {
   static GenSendTransactionRequest getDefault() => _defaultInstance ??= create()..freeze();
   static GenSendTransactionRequest _defaultInstance;
 
-  $1.Config get config => $_getN(0);
-  set config($1.Config v) { setField(1, v); }
+  $3.Config get config => $_getN(0);
+  set config($3.Config v) { setField(1, v); }
   $core.bool hasConfig() => $_has(0);
   void clearConfig() => clearField(1);
 

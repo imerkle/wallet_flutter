@@ -1,6 +1,6 @@
 ///
 //  Generated code. Do not modify.
-//  source: wallet.proto
+//  source: pb/wallet.proto
 //
 // @dart = 2.3
 // ignore_for_file: camel_case_types,non_constant_identifier_names,library_prefixes,unused_import,unused_shown_name,return_of_invalid_type
@@ -9,7 +9,7 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import 'config.pb.dart' as $1;
+import 'config.pb.dart' as $3;
 
 class Wallet extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallet', createEmptyInstance: create)
@@ -110,7 +110,7 @@ class Wallets extends $pb.GeneratedMessage {
 class GetWalletsRequest extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('GetWalletsRequest', createEmptyInstance: create)
     ..aOS(1, 'mnemonic')
-    ..a<$1.Configs>(2, 'configs', $pb.PbFieldType.OM, defaultOrMaker: $1.Configs.getDefault, subBuilder: $1.Configs.create)
+    ..a<$3.Configs>(2, 'configs', $pb.PbFieldType.OM, defaultOrMaker: $3.Configs.getDefault, subBuilder: $3.Configs.create)
     ..hasRequiredFields = false
   ;
 
@@ -133,8 +133,8 @@ class GetWalletsRequest extends $pb.GeneratedMessage {
   $core.bool hasMnemonic() => $_has(0);
   void clearMnemonic() => clearField(1);
 
-  $1.Configs get configs => $_getN(1);
-  set configs($1.Configs v) { setField(2, v); }
+  $3.Configs get configs => $_getN(1);
+  set configs($3.Configs v) { setField(2, v); }
   $core.bool hasConfigs() => $_has(1);
   void clearConfigs() => clearField(2);
 }

@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:plugfox_localstorage/localstorage.dart';
-import 'package:wallet_flutter/gen/config.pb.dart';
-import 'package:wallet_flutter/gen/wallet.pb.dart';
+import 'package:wallet_flutter/gen/pb/config.pb.dart';
+import 'package:wallet_flutter/gen/pb/wallet.pb.dart';
 import 'package:wallet_flutter/models/config.dart';
 import 'package:wallet_flutter/stores/main.dart';
 

@@ -3,7 +3,7 @@ import 'package:grpc/grpc.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/gen/chains/chain/chain.pb.dart';
 import 'package:wallet_flutter/gen/chains/chain/chain.pbgrpc.dart';
-import 'package:wallet_flutter/gen/wallet.pb.dart';
+import 'package:wallet_flutter/gen/pb/wallet.pb.dart';
 import 'package:wallet_flutter/models/config.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:wallet_flutter/stores/main.dart';
@@ -15,28 +15,45 @@ part 'balance.g.dart';
 class BalanceStore = _BalanceStore with _$BalanceStore;
 
 abstract class _BalanceStore with Store {
-  _BalanceStore({this.parent, this.channel});
+  _BalanceStore({this.parent, this.chainServiceClient});
   final MainStore parent;
-  final ClientChannel channel;
+  final ChainServiceClient chainServiceClient;
 
-  @observable
-  SplayTreeMap<String, GetBalanceResponse> balances = SplayTreeMap();
-  SplayTreeMap<String, GetPriceResponse> prices = SplayTreeMap();
+  ObservableMap<String, GetBalanceResponse> balances = ObservableMap();
+  ObservableMap<String, GetPriceResponse> prices = ObservableMap();
 
   @action
-  Future<void> fetchBalance({ConfigAtom atom, CoinKey c}) async {
-    final client = ChainServiceClient(channel);
-    var res = await client.getBalance(GetBalanceRequest()
-      ..api = atom.brurl
-      ..address = c.address
-      ..kind = atom.brkind
-      ..hash = atom.brhash
-      ..precision = Int64(atom.precision));
-    balances.update(atom.id, (value) => res, ifAbsent: () => res);
+  Future<void> fetchBalance({ConfigAtom atom, CoinKey coinKey}) async {
+    GetBalanceResponse res;
+    try {
+      res = await chainServiceClient.getBalance(GetBalanceRequest()
+        ..api = atom.brurl
+        ..address = coinKey.address
+        ..kind = atom.brkind
+        ..hash = atom.brhash
+        ..precision = Int64(atom.precision));
+      balances.update(atom.id, (value) => res, ifAbsent: () => res);
+    } on GrpcError catch (e) {
+      parent.logStore.addGrpc(e);
+    }
+  }
+
+  @action
+  Future<void> fetchPrice({ConfigAtom atom}) async {
+    GetPriceResponse res;
+    try {
+      res = await chainServiceClient.getPrice(GetPriceRequest()
+        ..id = atom.id
+        ..fiatTicker = parent.fiat.ticker);
+      prices.update(atom.id, (value) => res, ifAbsent: () => res);
+    } catch (e) {
+      parent.logStore.addGrpc(e);
+    }
   }
 
   @computed
   double get currentPrice => getPrice(parent.configStore.configAtom);
+
   @computed
   BalanceNormalized get currentBalanceNormalized =>
       getBalanceNormalized(parent.configStore.configAtom);

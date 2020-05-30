@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [Provider<MainStore>(builder: (_) => mainStore)],
+        providers: [Provider<MainStore>(create: (_) => mainStore)],
         child: MaterialApp(
           title: 'Wallet',
           theme: ThemeData(

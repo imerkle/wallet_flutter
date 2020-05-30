@@ -52,8 +52,8 @@ const Input$json = const {
 const Gas$json = const {
   '1': 'Gas',
   '2': const [
-    const {'1': 'used', '3': 1, '4': 1, '5': 5, '10': 'used'},
-    const {'1': 'price', '3': 2, '4': 1, '5': 5, '10': 'price'},
+    const {'1': 'used', '3': 1, '4': 1, '5': 3, '10': 'used'},
+    const {'1': 'price', '3': 2, '4': 1, '5': 3, '10': 'price'},
   ],
 };
 
@@ -65,8 +65,8 @@ const Transaction$json = const {
     const {'1': 'outputs', '3': 3, '4': 3, '5': 11, '6': '.chain.Input', '10': 'outputs'},
     const {'1': 'kind', '3': 4, '4': 1, '5': 14, '6': '.chain.TransactionKind', '10': 'kind'},
     const {'1': 'direction', '3': 5, '4': 1, '5': 14, '6': '.chain.Direction', '10': 'direction'},
-    const {'1': 'fees', '3': 6, '4': 1, '5': 3, '10': 'fees'},
-    const {'1': 'confimations', '3': 7, '4': 1, '5': 5, '10': 'confimations'},
+    const {'1': 'fees', '3': 6, '4': 1, '5': 11, '6': '.chain.Gas', '10': 'fees'},
+    const {'1': 'confimations', '3': 7, '4': 1, '5': 3, '10': 'confimations'},
     const {'1': 'timestamp', '3': 8, '4': 1, '5': 11, '6': '.timestamp.Timestamp', '10': 'timestamp'},
   ],
 };
@@ -110,6 +110,24 @@ const GetPriceRequest$json = const {
   '1': 'GetPriceRequest',
   '2': const [
     const {'1': 'id', '3': 1, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'fiat_ticker', '3': 2, '4': 1, '5': 9, '10': 'fiatTicker'},
+  ],
+};
+
+const GetTransactionsRequest$json = const {
+  '1': 'GetTransactionsRequest',
+  '2': const [
+    const {'1': 'address', '3': 1, '4': 1, '5': 9, '10': 'address'},
+    const {'1': 'kind', '3': 2, '4': 1, '5': 14, '6': '.chain.GetBalanceRequestKind', '10': 'kind'},
+    const {'1': 'api', '3': 3, '4': 1, '5': 9, '10': 'api'},
+    const {'1': 'precision', '3': 4, '4': 1, '5': 3, '10': 'precision'},
+  ],
+};
+
+const GetTransactionsResponse$json = const {
+  '1': 'GetTransactionsResponse',
+  '2': const [
+    const {'1': 'transactions', '3': 1, '4': 3, '5': 11, '6': '.chain.Transaction', '10': 'transactions'},
   ],
 };
 

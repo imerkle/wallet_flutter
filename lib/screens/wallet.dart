@@ -1,3 +1,4 @@
+import 'package:after_init/after_init.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -24,11 +25,29 @@ class Wallet extends StatefulWidget {
 
 RefreshController _refreshController = RefreshController(initialRefresh: false);
 
-class _WalletState extends State<Wallet> {
+class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
   bool _amountInFiat = false;
 
   final receivingAddress = TextEditingController();
   final amount = TextEditingController();
+
+  refresh(BuildContext context) async {
+    final walletStore = Provider.of<MainStore>(context).walletStore;
+    final balanceStore = Provider.of<MainStore>(context).balanceStore;
+    final configStore = Provider.of<MainStore>(context).configStore;
+
+    await Future.wait([
+      balanceStore.fetchBalance(
+          atom: configStore.configAtom, coinKey: walletStore.currentCoinKey),
+      balanceStore.fetchPrice(atom: configStore.configAtom),
+    ]);
+    _refreshController.refreshCompleted();
+  }
+
+  @override
+  void didInitState() {
+    refresh(context);
+  }
 
   @override
   Widget build(context) {
@@ -43,8 +62,7 @@ class _WalletState extends State<Wallet> {
       enablePullUp: true,
       controller: _refreshController,
       onRefresh: () async {
-        //await balanceStore.refreshBalances(mainStore.fiat);
-        _refreshController.refreshCompleted();
+        refresh(context);
       },
       header: ClassicHeader(),
       footer: RefreshFooter(),

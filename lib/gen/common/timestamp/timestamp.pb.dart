@@ -9,11 +9,11 @@ import 'dart:core' as $core;
 
 import 'package:protobuf/protobuf.dart' as $pb;
 
-import '../../google/protobuf/timestamp.pb.dart' as $2;
+import '../../google/protobuf/timestamp.pb.dart' as $1;
 
 class Timestamp extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Timestamp', package: const $pb.PackageName('timestamp'), createEmptyInstance: create)
-    ..a<$2.Timestamp>(1, 'timestamp', $pb.PbFieldType.OM, defaultOrMaker: $2.Timestamp.getDefault, subBuilder: $2.Timestamp.create)
+    ..a<$1.Timestamp>(1, 'timestamp', $pb.PbFieldType.OM, defaultOrMaker: $1.Timestamp.getDefault, subBuilder: $1.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -31,8 +31,8 @@ class Timestamp extends $pb.GeneratedMessage {
   static Timestamp getDefault() => _defaultInstance ??= create()..freeze();
   static Timestamp _defaultInstance;
 
-  $2.Timestamp get timestamp => $_getN(0);
-  set timestamp($2.Timestamp v) { setField(1, v); }
+  $1.Timestamp get timestamp => $_getN(0);
+  set timestamp($1.Timestamp v) { setField(1, v); }
   $core.bool hasTimestamp() => $_has(0);
   void clearTimestamp() => clearField(1);
 }

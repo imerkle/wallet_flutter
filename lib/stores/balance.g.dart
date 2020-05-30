@@ -23,28 +23,18 @@ mixin _$BalanceStore on _BalanceStore, Store {
               Computed<BalanceNormalized>(() => super.currentBalanceNormalized))
           .value;
 
-  final _$balancesAtom = Atom(name: '_BalanceStore.balances');
-
-  @override
-  SplayTreeMap<String, GetBalanceResponse> get balances {
-    _$balancesAtom.context.enforceReadPolicy(_$balancesAtom);
-    _$balancesAtom.reportObserved();
-    return super.balances;
-  }
-
-  @override
-  set balances(SplayTreeMap<String, GetBalanceResponse> value) {
-    _$balancesAtom.context.conditionallyRunInAction(() {
-      super.balances = value;
-      _$balancesAtom.reportChanged();
-    }, _$balancesAtom, name: '${_$balancesAtom.name}_set');
-  }
-
   final _$fetchBalanceAsyncAction = AsyncAction('fetchBalance');
 
   @override
-  Future fetchBalance({ConfigAtom atom, CoinKey c}) {
+  Future<void> fetchBalance({ConfigAtom atom, CoinKey coinKey}) {
     return _$fetchBalanceAsyncAction
-        .run(() => super.fetchBalance(atom: atom, c: c));
+        .run(() => super.fetchBalance(atom: atom, coinKey: coinKey));
+  }
+
+  final _$fetchPriceAsyncAction = AsyncAction('fetchPrice');
+
+  @override
+  Future<void> fetchPrice({ConfigAtom atom}) {
+    return _$fetchPriceAsyncAction.run(() => super.fetchPrice(atom: atom));
   }
 }

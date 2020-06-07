@@ -10,7 +10,7 @@ name = "walletjni"
 crate-type = ["cdylib"]
 
 [dependencies]
-wallet = { path = "../../wallet" }
+wallet = { path = "../../../wallet" }
 protobuf = "2.8.0"
 jni = "0.13.1"
 openssl = { version = "0.10", features = ["vendored"] }

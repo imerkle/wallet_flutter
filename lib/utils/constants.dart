@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
+
 const bool isTestnet = true;
-const String SYNC_WALLETS = "sync_wallets";
+const String GET_WALLET = "get_wallet";
 const int CRYPTO_PRECISION = 8;
 const int FIAT_PRECISION = 2;
 const String APPNAME = "Wallet";
@@ -10,4 +12,6 @@ class GrpcAddress {
   final int port;
 }
 
-const GrpcAddress CHAINS_API = GrpcAddress(host: "10.0.2.2", port: 50051);
+const GrpcAddress CHAINS_API = kIsWeb
+    ? GrpcAddress(host: "127.0.0.1", port: 50051)
+    : GrpcAddress(host: "10.0.2.2", port: 50051);

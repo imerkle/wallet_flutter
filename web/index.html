@@ -5,6 +5,32 @@
   <title>wallet_flutter</title>
 </head>
 <body>
+  <!--<script src="index.js"></script>-->
+  <script src="./wallet_wasm.js"></script>
   <script src="main.dart.js" type="application/javascript"></script>
+
+  <script>
+    // Like with the `--target web` output the exports are immediately
+    // available but they won't work until we initialize the module. Unlike
+    // `--target web`, however, the globals are all stored on a
+    // `wasm_bindgen` global. The global itself is the initialization
+    // function and then the properties of the global are all the exported
+    // functions.
+    //
+    // Note that the name `wasm_bindgen` can be configured with the
+    // `--no-modules-global` CLI flag
+    const { get_wallet } = wasm_bindgen;
+
+    async function run() {
+      await wasm_bindgen('./wallet_wasm_bg.wasm');
+
+      const result = get_wallet(new Uint8Array([10, 74, 99, 111, 110, 110, 101, 99, 116, 32, 114, 105, 116, 117, 97, 108, 32, 110, 101, 119, 115, 32, 115, 97, 110, 100, 32, 114, 97, 112, 105, 100, 32, 115, 99, 97, 108, 101, 32, 98, 101, 104, 105, 110, 100, 32, 115, 119, 97, 109, 112, 32, 100, 97, 109, 112, 32, 98, 114, 105, 101, 102, 32, 101, 120, 112, 108, 97, 105, 110, 32, 97, 110, 107, 108, 101, 18, 49, 10, 18, 10, 3, 98, 116, 99, 16, 0, 24, 1, 32, 239, 1, 40, 111, 50, 2, 116, 98, 10, 11, 10, 3, 101, 116, 104, 16, 2, 24, 60, 64, 3, 10, 14, 10, 3, 98, 116, 103, 16, 0, 24, 0, 32, 128, 1, 40, 38]));
+      
+      //console.log("Hello",result);
+    }
+
+    run();
+  </script>
+
 </body>
 </html>

@@ -35,7 +35,7 @@ class MainActivity: FlutterActivity() {
       var x: ByteArray = ByteArray(0);
       when(call.method) {
         "gen_send_transaction" -> x = genSendTransaction(input)
-        "get_wallets" -> x = getWallet(input)
+        "get_wallet" -> x = getWallet(input)
       }
       result.success(x)
     }

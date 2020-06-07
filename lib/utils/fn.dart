@@ -1,9 +1,14 @@
 import 'dart:math';
 
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/widgets.dart';
+import 'package:grpc/grpc.dart';
+import 'package:grpc/grpc_web.dart';
+
+import 'constants.dart';
 
 Future scan(Function onScan) async {
   try {
@@ -68,4 +73,18 @@ double textToDouble(String text) {
     return 0.0;
   }
   return double.parse(text);
+}
+
+dynamic getGrpcClientChannel(GrpcAddress address) {
+  dynamic channel;
+  if (kIsWeb) {
+    // https://github.com/grpc/grpc-dart/issues/264
+    channel = GrpcWebClientChannel.xhr(
+        Uri.parse('http://${address.host}:${address.port}'));
+  } else {
+    channel = ClientChannel(address.host,
+        port: address.port,
+        options: ChannelOptions(credentials: ChannelCredentials.insecure()));
+  }
+  return channel;
 }

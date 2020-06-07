@@ -78,11 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Observer(
       builder: (_) {
         if (walletStore.ws.list.length == 0) {
-          if (kIsWeb) {
-            return WebQrConnect();
-          } else {
-            return Container();
-          }
+          return Container();
         }
 
         return SafeArea(

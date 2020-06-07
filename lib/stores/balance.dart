@@ -32,8 +32,12 @@ abstract class _BalanceStore with Store {
         ..kind = atom.brkind
         ..hash = atom.brhash
         ..precision = Int64(atom.precision));
+      print("res");
+      print(res);
       balances.update(atom.id, (value) => res, ifAbsent: () => res);
     } on GrpcError catch (e) {
+      print("noo");
+      print(e);
       parent.logStore.addGrpc(e);
     }
   }

@@ -82,3 +82,6 @@ android/app/.settings/
 target
 Cargo.lock
 .flutter-plugins-dependencies
+
+web/*.wasm
+web/*_wasm.js

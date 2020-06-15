@@ -7,7 +7,7 @@ import '../stores/main.dart';
 import '../widgets/fabs.dart';
 import '../widgets/sort_widget.dart';
 
-class DrawerWidget extends StatelessWidget {
+class DrawerScreen extends StatelessWidget {
   @override
   Widget build(context) {
     final walletStore = Provider.of<MainStore>(context).walletStore;

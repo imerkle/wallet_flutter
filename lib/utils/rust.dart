@@ -3,9 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 
-import 'package:wallet_flutter/utils/wasm_interop.dart'
-    if (kIsWeb) "package:wallet_flutter/utils/wasm_interop.dart"
-    as wasm_interop;
+import 'package:wallet_flutter/utils/web_stub.dart'
+    if (dart.library.html) "package:wallet_flutter/utils/wasm_interop.dart";
 
 class Rust {
   MethodChannel platform = const MethodChannel('flutter.dev/rust');
@@ -55,7 +54,7 @@ class Rust {
     } else {
       switch (methodName) {
         case GET_WALLET:
-          return Future<Uint8List>.value(wasm_interop.get_wallet(input));
+          return Future<Uint8List>.value(get_wallet(input));
         default:
           return Future<Uint8List>.value(Uint8List(0));
       }

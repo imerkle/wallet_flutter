@@ -18,13 +18,13 @@ import 'package:fixnum/fixnum.dart';
 
 RefreshController _refreshController = RefreshController(initialRefresh: false);
 
-class TrasactionScreen extends StatefulWidget {
+class TransanctionScreen extends StatefulWidget {
   @override
-  _TrasactionScreenState createState() => _TrasactionScreenState();
+  _TransanctionScreenState createState() => _TransanctionScreenState();
 }
 
-class _TrasactionScreenState extends State<TrasactionScreen>
-    with AfterInitMixin<TrasactionScreen> {
+class _TransanctionScreenState extends State<TransanctionScreen>
+    with AfterInitMixin<TransanctionScreen> {
   refresh(BuildContext context) async {
     final transactionStore = Provider.of<MainStore>(context).transactionStore;
 
@@ -166,7 +166,7 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                         MyDataCell(ClipRRect(
                           borderRadius: BorderRadius.circular(4),
                           child: Container(
-                            width: 40,
+                            //width: 40,
                             padding: EdgeInsets.all(4),
                             color: colorFromDirection(tx.direction),
                             child: Text(
@@ -190,13 +190,12 @@ class _TrasactionScreenState extends State<TrasactionScreen>
                         )),
                       ],
                       onSelectChanged: (bool _abc) {
-                        print(tx.inputs[0].value);
                         _showModalSheet(tx,
                             balanceStore.currentBalanceNormalized, base, rel);
                       });
                 }).toList());
           } else {
-            return Container(child: Text("woo"));
+            return Container(child: Text("Transactions will show up here"));
           }
         }));
   }

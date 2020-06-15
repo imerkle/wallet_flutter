@@ -20,6 +20,12 @@ mixin _$ConfigStore on _ConfigStore, Store {
   @override
   List<String> get ids =>
       (_$idsComputed ??= Computed<List<String>>(() => super.ids)).value;
+  Computed<Iterable<Config>> _$configsForWalletComputed;
+
+  @override
+  Iterable<Config> get configsForWallet => (_$configsForWalletComputed ??=
+          Computed<Iterable<Config>>(() => super.configsForWallet))
+      .value;
 
   final _$configsAtom = Atom(name: '_ConfigStore.configs');
 

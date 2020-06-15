@@ -202,6 +202,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_inner_drawer:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: dccfb6c688f9842c9563afb6d474cb2361dbf53a
+      url: "git://github.com/imerkle/flutter_inner_drawer.git"
+    source: git
+    version: "0.5.6+1"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -622,7 +631,7 @@ packages:
       name: universal_html
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.2"
+    version: "1.2.3"
   universal_io:
     dependency: "direct main"
     description:

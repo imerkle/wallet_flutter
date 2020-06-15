@@ -12,8 +12,6 @@ import '../utils/constants.dart';
 // Include generated file
 part 'wallet.g.dart';
 
-final LocalStorage storage = new LocalStorage();
-
 // This is the class used by rest of your codebase
 class WalletStore = _WalletStore with _$WalletStore;
 
@@ -28,41 +26,32 @@ abstract class _WalletStore with Store {
   @observable
   int index = 0;
 
-  Future<void> initPrep(Map<String, ConfigAtom> configs, Rust rust) async {
-    await storage.init();
-    await initWalletIfAbsent(configs, rust);
-  }
-
   @action
-  Future<void> initWalletIfAbsent(
-      Map<String, ConfigAtom> configs, Rust rust) async {
-    storage[GET_WALLET] = null;
-    String walletsJson = storage[GET_WALLET];
-
-    String mnemonic = "";
-
-    // For some reason mobx in web doesnt loads when modifying to existing object so replace it completely
+  Future<void> init() async {
+    parent.storage[GET_WALLET] = null;
+    String walletsJson = parent.storage[GET_WALLET];
     if (walletsJson == null || walletsJson.length == 0) {
-      Wallets wallets = Wallets();
-      Configs cnf = Configs();
-      configs.forEach((id, x) => {
-            if (x.config.hasProtocol()) {cnf.list.add(x.config)}
-          });
-      //mnemonic = bip39.generateMnemonic();
-      mnemonic =
-          "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
-      var input = GetWalletsRequest()
-        ..mnemonic = mnemonic
-        ..configs = cnf;
-      dynamic x =
-          await rust.invokeRustMethod(GET_WALLET, input.writeToBuffer());
-      Wallet w = Wallet.fromBuffer(x);
-      wallets.list.add(w);
-      ws = wallets;
-      storage[GET_WALLET] = ws.writeToJson();
+      addWallet();
     } else {
       ws = Wallets.fromJson(walletsJson);
     }
+  }
+
+  @action
+  Future<void> addWallet() async {
+    Configs cnf = Configs()..list.addAll(parent.configStore.configsForWallet);
+    //String mnemonic = bip39.generateMnemonic();
+    String mnemonic =
+        "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
+    var input = GetWalletsRequest()
+      ..mnemonic = mnemonic
+      ..configs = cnf;
+    dynamic x =
+        await parent.rust.invokeRustMethod(GET_WALLET, input.writeToBuffer());
+    Wallet w = Wallet.fromBuffer(x);
+    ws.list.add(w);
+    ws = ws;
+    parent.storage[GET_WALLET] = ws.writeToJson();
   }
 
   @computed

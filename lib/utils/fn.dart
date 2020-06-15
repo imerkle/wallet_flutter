@@ -6,7 +6,8 @@ import 'package:flutter/services.dart';
 import 'package:fixnum/fixnum.dart';
 import 'package:flutter/widgets.dart';
 import 'package:grpc/grpc.dart';
-import 'package:grpc/grpc_web.dart';
+import 'package:wallet_flutter/utils/web_stub.dart'
+    if (dart.library.html) "package:grpc/grpc_web.dart";
 
 import 'constants.dart';
 

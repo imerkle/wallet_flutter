@@ -49,6 +49,9 @@ dependencies:
   grpc: ^2.1.3
   js: ^0.6.0
   universal_html: ^1.2.1
+  flutter_inner_drawer:
+    git:
+      url: git://github.com/imerkle/flutter_inner_drawer.git
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,10 +1,13 @@
 import 'dart:async';
 
 import 'package:mobx/mobx.dart';
+import 'package:plugfox_localstorage/localstorage.dart';
 import 'package:wallet_flutter/gen/chains/chain/chain.pbgrpc.dart';
 import 'package:wallet_flutter/stores/balance.dart';
 import 'package:wallet_flutter/stores/config.dart';
+import 'package:wallet_flutter/stores/homepage.dart';
 import 'package:wallet_flutter/stores/log.dart';
+import 'package:wallet_flutter/stores/settings.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/utils/fn.dart';
 import 'package:wallet_flutter/utils/rust.dart';
@@ -41,6 +44,9 @@ abstract class _MainStore with Store {
   LogStore logStore = LogStore();
   SortStore sortStore = SortStore();
   ConfigStore configStore = ConfigStore();
+  HomepageStore homepageStore = HomepageStore();
+  SettingsStore settingsStore = SettingsStore();
+  LocalStorage storage = LocalStorage();
   Rust rust = Rust();
 
   @observable
@@ -51,7 +57,8 @@ abstract class _MainStore with Store {
     //rust.initChannel();
     sortStore.sortables.add(Sortable("Coin", true, true));
     sortStore.sortables.add(Sortable("Amount", false, true));
-    await walletStore.initPrep(configStore.configs, rust);
+    await storage.init();
+    await walletStore.init();
     /*
     balanceStore.fetchBalances(
         configStore.base,

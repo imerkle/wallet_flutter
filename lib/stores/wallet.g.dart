@@ -55,11 +55,17 @@ mixin _$WalletStore on _WalletStore, Store {
     }, _$indexAtom, name: '${_$indexAtom.name}_set');
   }
 
-  final _$initWalletIfAbsentAsyncAction = AsyncAction('initWalletIfAbsent');
+  final _$initAsyncAction = AsyncAction('init');
 
   @override
-  Future<void> initWalletIfAbsent(Map<String, ConfigAtom> configs, Rust rust) {
-    return _$initWalletIfAbsentAsyncAction
-        .run(() => super.initWalletIfAbsent(configs, rust));
+  Future<void> init() {
+    return _$initAsyncAction.run(() => super.init());
+  }
+
+  final _$addWalletAsyncAction = AsyncAction('addWallet');
+
+  @override
+  Future<void> addWallet() {
+    return _$addWalletAsyncAction.run(() => super.addWallet());
   }
 }

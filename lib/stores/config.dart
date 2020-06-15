@@ -86,4 +86,11 @@ abstract class _ConfigStore with Store {
 
   ConfigAtom configAtomById(String i) => configs[i];
   bool isCurrentId(int i) => ids[i] == id;
+
+  @computed
+  Iterable<Config> get configsForWallet =>
+      (Map<String, ConfigAtom>.from(configs)
+            ..removeWhere((k, v) => !v.config.hasProtocol()))
+          .entries
+          .map((entry) => entry.value.config);
 }

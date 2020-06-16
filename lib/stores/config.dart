@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:wallet_flutter/gen/chains/chain/chain.pbenum.dart';
 import 'package:wallet_flutter/gen/pb/config.pb.dart';
@@ -20,6 +21,7 @@ abstract class _ConfigStore with Store {
         brkind: GetBalanceRequestKind.BLOCKBOOK,
         brhash: "",
         precision: 8,
+        color: Colors.orange,
         config: Config()
           ..id = "btc"
           ..protocol = Protocol.BTC
@@ -35,6 +37,7 @@ abstract class _ConfigStore with Store {
         brkind: GetBalanceRequestKind.ETH_ERC20,
         brhash: "",
         precision: 18,
+        color: Colors.blueAccent,
         config: Config()
           ..id = "eth"
           ..protocol = Protocol.ETH
@@ -43,11 +46,12 @@ abstract class _ConfigStore with Store {
     "btg": ConfigAtom(
       id: "btg",
       name: "Bitcoin Gold",
-      ticker: "btc",
+      ticker: "btg",
       brurl: "https://btg1.trezor.io/api/v2",
       brkind: GetBalanceRequestKind.BLOCKBOOK,
       brhash: "",
       precision: 8,
+      color: Colors.orange,
       config: Config()
         ..id = "btg"
         ..protocol = Protocol.BTC
@@ -59,7 +63,7 @@ abstract class _ConfigStore with Store {
 
   @observable
   Map<String, List<String>> coinPairs = {
-    "btc": ["btc"],
+    "btc": ["btc", "btg"],
     "eth": ["eth"],
   };
 

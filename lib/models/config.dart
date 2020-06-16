@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:wallet_flutter/gen/chains/chain/chain.pbenum.dart';
 import 'package:wallet_flutter/gen/pb/config.pb.dart';
 
@@ -17,7 +19,9 @@ class ConfigAtom {
     this.brkind,
     this.brurl,
     this.brhash,
+    this.color,
   });
+  Color color;
   String brhash, brurl, ticker, name, id;
   GetBalanceRequestKind brkind;
   Config config;

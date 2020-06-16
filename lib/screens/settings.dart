@@ -5,6 +5,7 @@ import 'package:wallet_flutter/stores/main.dart';
 import 'package:wallet_flutter/stores/settings.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/widgets/checkbox_card.dart';
+import 'package:wallet_flutter/widgets/rounded_container.dart';
 
 Map<SettingsEnum, String> settings = {
   SettingsEnum.wallet: "Wallets",
@@ -20,10 +21,8 @@ class SettingsList extends StatelessWidget {
       return ListView(
         children: settings.entries
             .map(
-              (entry) => Container(
-                color: settingsStore.settingsEnum == entry.key
-                    ? secondaryColor
-                    : null,
+              (entry) => RoundedContainer(
+                selected: settingsStore.settingsEnum == entry.key,
                 child: ListTile(
                   title: Text(entry.value),
                   onTap: () {

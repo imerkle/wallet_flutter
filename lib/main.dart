@@ -6,6 +6,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/utils/constants.dart';
+import 'package:wallet_flutter/widgets/bottom_nav_bar.dart';
+import 'package:wallet_flutter/widgets/fabs.dart';
 import 'screens/drawer.dart';
 import 'screens/settings.dart';
 import 'screens/transactions.dart';
@@ -40,10 +42,10 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp(
           title: 'Wallet',
           theme: ThemeData(
-              primarySwatch: Colors.blue,
-              //primaryColor: primaryColor,
-              accentColor: Colors.white,
-              brightness: Brightness.dark),
+            primarySwatch: Colors.blue,
+            accentColor: Colors.white,
+            brightness: Brightness.dark,
+          ),
           home: MyHomePage(),
           localizationsDelegates: [
             AppLocalizations.delegate,
@@ -71,11 +73,11 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<InnerDrawerState> _innerDrawerKey =
       GlobalKey<InnerDrawerState>();
 
-  static List<Widget> leftChilds = <Widget>[
-    DrawerScreen(),
-    SettingsList(),
+  List<Widget> leftChilds = <Widget>[
+    DrawerScreen(child: FabsScreen()),
+    DrawerScreen(child: SettingsList()),
   ];
-  static List<Widget> middleScreens = <Widget>[
+  List<Widget> middleScreens = <Widget>[
     Wallet(),
     Settings(),
   ];
@@ -90,7 +92,46 @@ class _MyHomePageState extends State<MyHomePage> {
         if (walletStore.ws.list.length == 0) {
           return Container();
         }
-
+        Widget middleScreen = Container(
+          color: Theme.of(context).primaryColor,
+          child: middleScreens.elementAt(homepageStore.pageIndex),
+        );
+        Widget leftChild = Container(
+          color: Theme.of(context).primaryColor,
+          child: leftChilds.elementAt(homepageStore.pageIndex),
+        );
+        Widget rightChild = Container(
+          color: Theme.of(context).primaryColor,
+          child: TransanctionScreen(),
+        );
+        if (kIsWeb) {
+          return SafeArea(
+            child: Scaffold(
+              body: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 156,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: leftChild,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 559,
+                    child: middleScreen,
+                  ),
+                  Expanded(
+                    flex: 210,
+                    child: rightChild,
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
         return SafeArea(
           child: Scaffold(
             body: InnerDrawer(
@@ -121,37 +162,12 @@ class _MyHomePageState extends State<MyHomePage> {
               //borderRadius: 50, // default 0
               leftAnimationType: InnerDrawerAnimation.static, // default static
               rightAnimationType: InnerDrawerAnimation.quadratic,
-              leftChild: Container(
-                child: leftChilds.elementAt(homepageStore.pageIndex),
-                color: primaryColor,
-              ),
-              rightChild: Container(
-                child: TransanctionScreen(),
-                color: primaryColor,
-              ),
-              scaffold: Container(
-                color: primaryColor,
-                child: middleScreens.elementAt(homepageStore.pageIndex),
-              ),
+              leftChild: leftChild,
+              rightChild: rightChild,
+              scaffold: middleScreen,
             ),
-            bottomNavigationBar: homepageStore.bottomNavBar
-                ? BottomNavigationBar(
-                    currentIndex: homepageStore.pageIndex,
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: new Icon(Icons.home),
-                        title: new Text('Home'),
-                      ),
-                      BottomNavigationBarItem(
-                        icon: new Icon(Icons.settings),
-                        title: new Text('Settings'),
-                      ),
-                    ],
-                    onTap: (int index) {
-                      homepageStore.setPageIndex(index);
-                    },
-                  )
-                : null,
+            bottomNavigationBar:
+                homepageStore.bottomNavBar ? BottomNavBar() : null,
           ),
         );
       },

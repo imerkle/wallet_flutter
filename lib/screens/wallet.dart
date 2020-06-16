@@ -91,7 +91,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
                     address: walletStore.currentCoinKey.address),
                 Text(AppLocalizations.of(context).tr('send_tx').toUpperCase(),
                     style: TextStyle(
-                      color: Color(0xffbec0c4),
+                      color: Theme.of(context).primaryColorLight,
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
                     )),
@@ -168,7 +168,7 @@ class AddressHeader extends StatelessWidget {
     return TextField(
       readOnly: true,
       controller: TextEditingController(text: address),
-      style: TextStyle(color: Colors.grey),
+      style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         labelText: 'Your $ticker Address',

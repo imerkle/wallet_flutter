@@ -9,15 +9,24 @@ class BottomNavBar extends StatelessWidget {
     final homepageStore = Provider.of<MainStore>(context).homepageStore;
     return Observer(
       builder: (_) => BottomNavigationBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         currentIndex: homepageStore.pageIndex,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         items: [
           BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            title: new Text('Home'),
+            icon: Tooltip(
+              message: "Home",
+              child: Icon(Icons.home),
+            ),
+            title: Text('Home'),
           ),
           BottomNavigationBarItem(
-            icon: new Icon(Icons.settings),
-            title: new Text('Settings'),
+            icon: Tooltip(
+              message: "Settings",
+              child: Icon(Icons.settings),
+            ),
+            title: Text('Settings'),
           ),
         ],
         onTap: (int index) {

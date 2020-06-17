@@ -6,6 +6,7 @@ import 'package:wallet_flutter/stores/settings.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/widgets/checkbox_card.dart';
 import 'package:wallet_flutter/widgets/rounded_container.dart';
+import 'package:wallet_flutter/widgets/screen_header.dart';
 
 Map<SettingsEnum, String> settings = {
   SettingsEnum.wallet: "Wallets",
@@ -17,23 +18,29 @@ class SettingsList extends StatelessWidget {
   Widget build(context) {
     final settingsStore = Provider.of<MainStore>(context).settingsStore;
 
-    return Observer(builder: (_) {
-      return ListView(
-        children: settings.entries
-            .map(
-              (entry) => RoundedContainer(
-                selected: settingsStore.settingsEnum == entry.key,
-                child: ListTile(
-                  title: Text(entry.value),
-                  onTap: () {
-                    settingsStore.setSettingsEnum(entry.key);
-                  },
-                ),
-              ),
-            )
-            .toList(),
-      );
-    });
+    return Screen(
+      header: "Settings",
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Observer(
+          builder: (_) => ListView(
+            children: settings.entries
+                .map(
+                  (entry) => RoundedContainer(
+                    selected: settingsStore.settingsEnum == entry.key,
+                    child: ListTile(
+                      title: Text(entry.value),
+                      onTap: () {
+                        settingsStore.setSettingsEnum(entry.key);
+                      },
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -42,14 +49,19 @@ class Settings extends StatelessWidget {
   Widget build(context) {
     final settingsStore = Provider.of<MainStore>(context).settingsStore;
     Widget widget;
+    String header;
     switch (settingsStore.settingsEnum) {
       case SettingsEnum.wallet:
         widget = WalletSetting();
+        header = "Wallets";
         break;
     }
-    return Container(
-      margin: EdgeInsets.all(10),
-      child: widget,
+    return Screen(
+      header: header,
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: widget,
+      ),
     );
   }
 }

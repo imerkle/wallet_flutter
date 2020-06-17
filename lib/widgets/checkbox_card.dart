@@ -9,7 +9,9 @@ class CheckboxCard extends StatelessWidget {
   @override
   Widget build(context) {
     return Card(
-      color: selected ? masterColor : sunkColor,
+      color: selected
+          ? Theme.of(context).masterColor
+          : Theme.of(context).primaryColorDarker,
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
         child: Row(

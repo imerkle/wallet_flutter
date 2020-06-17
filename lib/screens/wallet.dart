@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:wallet_flutter/widgets/screen_header.dart';
 import '../utils/app_localization.dart';
 import '../utils/constants.dart';
 import '../utils/fn.dart';
@@ -57,102 +58,114 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
     final transactionStore = Provider.of<MainStore>(context).transactionStore;
     final mainStore = Provider.of<MainStore>(context);
 
-    return SmartRefresher(
-      enablePullDown: true,
-      enablePullUp: true,
-      controller: _refreshController,
-      onRefresh: () async {
-        refresh(context);
-      },
-      header: ClassicHeader(),
-      footer: RefreshFooter(),
-      child: Observer(builder: (_) {
-        var base = configStore.base;
-        var configAtom = configStore.configAtom;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ScreenHeader(
+          child: Text(
+            configStore.configAtom.name,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+        ),
+        Expanded(
+          child: SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: true,
+            controller: _refreshController,
+            onRefresh: () async {
+              refresh(context);
+            },
+            header: ClassicHeader(),
+            footer: RefreshFooter(),
+            child: Observer(
+              builder: (_) => Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: SingleChildScrollView(
+                  child: Wrap(
+                    runSpacing: 15,
+                    children: <Widget>[
+                      BalanceHeader(
+                        rel: configStore.configAtom.ticker,
+                        bal: valueToPretty(
+                            balanceStore.currentBalanceNormalized.unlocked,
+                            CRYPTO_PRECISION),
+                        fiatSymbol: mainStore.fiat.symbol,
+                        fiatBal: valueToPretty(
+                            balanceStore.currentBalanceNormalized.unlocked *
+                                balanceStore.currentPrice,
+                            FIAT_PRECISION),
+                      ),
+                      AddressHeader(
+                        ticker: configStore.configAtom.ticker,
+                        address: walletStore.currentCoinKey.address,
+                      ),
+                      Text(
+                        AppLocalizations.of(context)
+                            .tr('send_tx')
+                            .toUpperCase(),
+                        style: Theme.of(context).textTheme.headerGrey1,
+                      ),
+                      ScanTextField(
+                          controller: receivingAddress,
+                          onScan: (text) => this.receivingAddress.text = text),
+                      TextField(
+                        keyboardType: TextInputType.number,
+                        controller: amount,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: this._amountInFiat
+                              ? '${mainStore.fiat.ticker.toUpperCase()} Amount'
+                              : '${configStore.configAtom.ticker.toUpperCase()} Amount',
+                          prefixIcon: FlatButton(
+                            child: Text("MAX"),
+                            onPressed: () {
+                              if (_amountInFiat) {
+                                amount.text = (balanceStore
+                                            .currentBalanceNormalized.unlocked *
+                                        balanceStore.currentPrice)
+                                    .toString();
+                              } else {
+                                amount.text = balanceStore
+                                    .currentBalanceNormalized.unlocked
+                                    .toString();
+                              }
+                            },
+                          ),
+                          suffixIcon: FlatButton(
+                            child: Text(this._amountInFiat
+                                ? mainStore.fiat.ticker.toUpperCase()
+                                : configStore.configAtom.ticker.toUpperCase()),
+                            onPressed: () {
+                              setState(() {
+                                _amountInFiat = !this._amountInFiat;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: RaisedButton(
+                          onPressed: () async {
+                            transactionStore.sendTx(
+                                amount: textToDouble(amount.text),
+                                amountInFiat: _amountInFiat,
+                                receivingAddress: receivingAddress.text);
+                          },
 
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          child: SingleChildScrollView(
-            child: Wrap(
-              runSpacing: 30,
-              children: <Widget>[
-                BalanceHeader(
-                    rel: configAtom.ticker,
-                    bal: valueToPretty(
-                        balanceStore.currentBalanceNormalized.unlocked,
-                        CRYPTO_PRECISION),
-                    fiatSymbol: mainStore.fiat.symbol,
-                    fiatBal: valueToPretty(
-                        balanceStore.currentBalanceNormalized.unlocked *
-                            balanceStore.currentPrice,
-                        FIAT_PRECISION)),
-                AddressHeader(
-                    ticker: configAtom.ticker,
-                    address: walletStore.currentCoinKey.address),
-                Text(AppLocalizations.of(context).tr('send_tx').toUpperCase(),
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorLight,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    )),
-                ScanTextField(
-                    controller: receivingAddress,
-                    onScan: (text) => this.receivingAddress.text = text),
-                TextField(
-                  keyboardType: TextInputType.number,
-                  controller: amount,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: this._amountInFiat
-                        ? '${mainStore.fiat.ticker.toUpperCase()} Amount'
-                        : '${configAtom.ticker.toUpperCase()} Amount',
-                    prefixIcon: FlatButton(
-                      child: Text("MAX"),
-                      onPressed: () {
-                        if (_amountInFiat) {
-                          amount.text =
-                              (balanceStore.currentBalanceNormalized.unlocked *
-                                      balanceStore.currentPrice)
-                                  .toString();
-                        } else {
-                          amount.text = balanceStore
-                              .currentBalanceNormalized.unlocked
-                              .toString();
-                        }
-                      },
-                    ),
-                    suffixIcon: FlatButton(
-                      child: Text(this._amountInFiat
-                          ? mainStore.fiat.ticker.toUpperCase()
-                          : configAtom.ticker.toUpperCase()),
-                      onPressed: () {
-                        setState(() {
-                          _amountInFiat = !this._amountInFiat;
-                        });
-                      },
-                    ),
+                          //padding: EdgeInsets.all(15),
+                          //shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
+                          child: Text('Send', style: TextStyle(fontSize: 20)),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  width: double.infinity,
-                  child: RaisedButton(
-                    onPressed: () async {
-                      transactionStore.sendTx(
-                          amount: textToDouble(amount.text),
-                          amountInFiat: _amountInFiat,
-                          receivingAddress: receivingAddress.text);
-                    },
-
-                    //padding: EdgeInsets.all(15),
-                    //shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                    child: Text('Send', style: TextStyle(fontSize: 20)),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        );
-      }),
+        ),
+      ],
     );
   }
 }
@@ -171,7 +184,7 @@ class AddressHeader extends StatelessWidget {
       style: Theme.of(context).textTheme.bodyText2,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Your $ticker Address',
+        labelText: 'Your ${ticker.toUpperCase()} Address',
         suffixIcon: IconButton(
             icon: Icon(Icons.content_copy),
             onPressed: () {

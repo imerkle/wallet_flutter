@@ -8,6 +8,7 @@ import 'package:wallet_flutter/gen/chains/chain/chain.pb.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/utils/fn.dart';
 import 'package:wallet_flutter/widgets/data_table.dart';
+import 'package:wallet_flutter/widgets/screen_header.dart';
 import 'package:wallet_flutter/widgets/transaction/tx_iol.dart';
 import 'package:wallet_flutter/widgets/transaction/tx_labels.dart';
 import 'package:wallet_flutter/stores/main.dart';
@@ -109,7 +110,9 @@ class _TransanctionScreenState extends State<TransanctionScreen>
     var base = configStore.base;
     var rel = configStore.id;
 
-    return SmartRefresher(
+    return Screen(
+      header: "Transactions",
+      child: SmartRefresher(
         enablePullDown: true,
         enablePullUp: true,
         controller: _refreshController,
@@ -118,86 +121,92 @@ class _TransanctionScreenState extends State<TransanctionScreen>
         },
         header: ClassicHeader(),
         footer: RefreshFooter(),
-        child: Observer(builder: (_) {
-          if (transactionStore.currentTxs.length > 0) {
-            return MyDataTable(
-                columnSpacing: 0,
-                columns: [
-                  MyDataColumn(label: Text("Txn Hash")),
-                  MyDataColumn(label: Text("Age")),
-                  MyDataColumn(label: Text("")),
-                  MyDataColumn(label: Text("Value")),
-                ],
-                rows: transactionStore.currentTxs.map((tx) {
-                  Int64 valueRaw = Int64.ZERO;
-                  switch (tx.direction) {
-                    case Direction.INCOMING:
-                      valueRaw = (tx.outputs.fold(Int64.ZERO, (a, y) {
-                        return walletStore.currentCoinKey.address == y.address
-                            ? a + y.value
-                            : a;
-                      }));
-                      break;
-                    case Direction.OUTGOING:
-                      valueRaw = (tx.outputs.fold(Int64.ZERO, (a, y) {
-                        return walletStore.currentCoinKey.address != y.address
-                            ? a + y.value
-                            : a;
-                      }));
-                      break;
-                    case Direction.SELF:
-                      valueRaw = (tx.outputs.fold(Int64.ZERO, (a, y) {
-                        return walletStore.currentCoinKey.address == y.address
-                            ? a + y.value
-                            : a;
-                      }));
-                      break;
-                  }
-                  double value = valueToPrecision(
-                      valueRaw, configStore.configAtom.precision);
+        child: Observer(
+          builder: (_) {
+            if (transactionStore.currentTxs.length > 0) {
+              return MyDataTable(
+                  columnSpacing: 0,
+                  columns: [
+                    MyDataColumn(label: Text("Txn Hash")),
+                    MyDataColumn(label: Text("Age")),
+                    MyDataColumn(label: Text("")),
+                    MyDataColumn(label: Text("Value")),
+                  ],
+                  rows: transactionStore.currentTxs.map((tx) {
+                    Int64 valueRaw = Int64.ZERO;
+                    switch (tx.direction) {
+                      case Direction.INCOMING:
+                        valueRaw = (tx.outputs.fold(Int64.ZERO, (a, y) {
+                          return walletStore.currentCoinKey.address == y.address
+                              ? a + y.value
+                              : a;
+                        }));
+                        break;
+                      case Direction.OUTGOING:
+                        valueRaw = (tx.outputs.fold(Int64.ZERO, (a, y) {
+                          return walletStore.currentCoinKey.address != y.address
+                              ? a + y.value
+                              : a;
+                        }));
+                        break;
+                      case Direction.SELF:
+                        valueRaw = (tx.outputs.fold(Int64.ZERO, (a, y) {
+                          return walletStore.currentCoinKey.address == y.address
+                              ? a + y.value
+                              : a;
+                        }));
+                        break;
+                    }
+                    double value = valueToPrecision(
+                        valueRaw, configStore.configAtom.precision);
 
-                  return MyDataRow(
-                      cells: [
-                        MyDataCell(Text(smartTrim(tx.id, 10))),
-                        MyDataCell(Text(timeago.format(
-                            DateTime.fromMillisecondsSinceEpoch(
-                                tx.timestamp.timestamp.seconds.toInt() * 1000),
-                            maxSuffix: 3))),
-                        MyDataCell(ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: Container(
-                            //width: 40,
-                            padding: EdgeInsets.all(4),
-                            color: colorFromDirection(tx.direction),
-                            child: Text(
-                              textFromDirection(tx.direction),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                    return MyDataRow(
+                        cells: [
+                          MyDataCell(Text(smartTrim(tx.id, 10))),
+                          MyDataCell(Text(timeago.format(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                  tx.timestamp.timestamp.seconds.toInt() *
+                                      1000),
+                              maxSuffix: 3))),
+                          MyDataCell(ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: Container(
+                              //width: 40,
+                              padding: EdgeInsets.all(4),
+                              color: colorFromDirection(tx.direction),
+                              child: Text(
+                                textFromDirection(tx.direction),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                        )),
-                        MyDataCell(Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                                "${valueToPretty(value, CRYPTO_PRECISION)} ${rel.toUpperCase()}"),
-                            Text(
-                                "${mainStore.fiat.symbol}${valueToPretty(balanceStore.currentPrice * value, FIAT_PRECISION)}",
-                                style: TextStyle(
-                                    fontSize: 12, fontWeight: FontWeight.bold)),
-                          ],
-                        )),
-                      ],
-                      onSelectChanged: (bool _abc) {
-                        _showModalSheet(tx,
-                            balanceStore.currentBalanceNormalized, base, rel);
-                      });
-                }).toList());
-          } else {
-            return Container(child: Text("Transactions will show up here"));
-          }
-        }));
+                          )),
+                          MyDataCell(Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                  "${valueToPretty(value, CRYPTO_PRECISION)} ${rel.toUpperCase()}"),
+                              Text(
+                                  "${mainStore.fiat.symbol}${valueToPretty(balanceStore.currentPrice * value, FIAT_PRECISION)}",
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          )),
+                        ],
+                        onSelectChanged: (bool _abc) {
+                          _showModalSheet(tx,
+                              balanceStore.currentBalanceNormalized, base, rel);
+                        });
+                  }).toList());
+            } else {
+              return Container(child: Text("Transactions will show up here"));
+            }
+          },
+        ),
+      ),
+    );
   }
 }
 

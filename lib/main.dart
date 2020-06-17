@@ -5,9 +5,9 @@ import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet_flutter/screens/fabs.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/widgets/bottom_nav_bar.dart';
-import 'package:wallet_flutter/widgets/fabs.dart';
 import 'screens/drawer.dart';
 import 'screens/settings.dart';
 import 'screens/transactions.dart';
@@ -45,6 +45,9 @@ class _MyAppState extends State<MyApp> {
             primarySwatch: Colors.blue,
             accentColor: Colors.white,
             brightness: Brightness.dark,
+            primaryColor: Color(0xff2f3136),
+            primaryColorLight: Color(0xff36393f),
+            primaryColorDark: Color(0xff292B2F),
           ),
           home: MyHomePage(),
           localizationsDelegates: [
@@ -81,6 +84,10 @@ class _MyHomePageState extends State<MyHomePage> {
     Wallet(),
     Settings(),
   ];
+  List<Widget> rightChilds = <Widget>[
+    TransanctionScreen(),
+    Container(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
           return Container();
         }
         Widget middleScreen = Container(
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColorLight,
           child: middleScreens.elementAt(homepageStore.pageIndex),
         );
         Widget leftChild = Container(
@@ -102,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         );
         Widget rightChild = Container(
           color: Theme.of(context).primaryColor,
-          child: TransanctionScreen(),
+          child: rightChilds.elementAt(homepageStore.pageIndex),
         );
         if (kIsWeb) {
           return SafeArea(

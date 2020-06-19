@@ -53,11 +53,11 @@ abstract class _BalanceStore with Store {
   }
 
   @computed
-  double get currentPrice => getPrice(parent.configStore.configAtom);
+  double get currentPrice => getPrice(parent.fabStore.configAtom);
 
   @computed
   BalanceNormalized get currentBalanceNormalized =>
-      getBalanceNormalized(parent.configStore.configAtom);
+      getBalanceNormalized(parent.fabStore.configAtom);
 
   BalanceNormalized getBalanceNormalized(ConfigAtom atom) {
     return balances.containsKey(atom.id)

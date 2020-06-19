@@ -13,23 +13,28 @@ mixin _$MainStore on _MainStore, Store {
 
   @override
   Fiat get fiat {
-    _$fiatAtom.context.enforceReadPolicy(_$fiatAtom);
-    _$fiatAtom.reportObserved();
+    _$fiatAtom.reportRead();
     return super.fiat;
   }
 
   @override
   set fiat(Fiat value) {
-    _$fiatAtom.context.conditionallyRunInAction(() {
+    _$fiatAtom.reportWrite(value, super.fiat, () {
       super.fiat = value;
-      _$fiatAtom.reportChanged();
-    }, _$fiatAtom, name: '${_$fiatAtom.name}_set');
+    });
   }
 
-  final _$initPrepAsyncAction = AsyncAction('initPrep');
+  final _$initPrepAsyncAction = AsyncAction('_MainStore.initPrep');
 
   @override
   Future<void> initPrep() {
     return _$initPrepAsyncAction.run(() => super.initPrep());
+  }
+
+  @override
+  String toString() {
+    return '''
+fiat: ${fiat}
+    ''';
   }
 }

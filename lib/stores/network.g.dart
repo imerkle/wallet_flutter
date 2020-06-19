@@ -13,16 +13,21 @@ mixin _$NetworkStore on _NetworkStore, Store {
 
   @override
   bool get hasInternet {
-    _$hasInternetAtom.context.enforceReadPolicy(_$hasInternetAtom);
-    _$hasInternetAtom.reportObserved();
+    _$hasInternetAtom.reportRead();
     return super.hasInternet;
   }
 
   @override
   set hasInternet(bool value) {
-    _$hasInternetAtom.context.conditionallyRunInAction(() {
+    _$hasInternetAtom.reportWrite(value, super.hasInternet, () {
       super.hasInternet = value;
-      _$hasInternetAtom.reportChanged();
-    }, _$hasInternetAtom, name: '${_$hasInternetAtom.name}_set');
+    });
+  }
+
+  @override
+  String toString() {
+    return '''
+hasInternet: ${hasInternet}
+    ''';
   }
 }

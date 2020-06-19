@@ -61,38 +61,7 @@ abstract class _ConfigStore with Store {
     ),
   };
 
-  @observable
-  Map<String, List<String>> coinPairs = {
-    "btc": ["btc", "btg"],
-    "eth": ["eth"],
-  };
-
-  @observable
-  String base = "btc";
-  @observable
-  String id = "btc";
-
-  @action
-  void setId(String s) {
-    id = s;
-  }
-
-  @action
-  void setBase(String s) {
-    base = s;
-  }
-
-  @computed
-  ConfigAtom get configAtom => configs[id];
-
-  @computed
-  List<String> get ids => coinPairs[base];
-
-  @computed
-  String get baseName => configs[base].name;
-
   ConfigAtom configAtomById(String i) => configs[i];
-  bool isCurrentId(String idx) => idx == id;
 
   @computed
   Iterable<Config> get configsForWallet =>

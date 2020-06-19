@@ -36,11 +36,12 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
     final configStore = Provider.of<MainStore>(context).configStore;
+    final fabStore = Provider.of<MainStore>(context).fabStore;
 
     await Future.wait([
       balanceStore.fetchBalance(
-          atom: configStore.configAtom, coinKey: walletStore.currentCoinKey),
-      balanceStore.fetchPrice(atom: configStore.configAtom),
+          atom: fabStore.configAtom, coinKey: walletStore.currentCoinKey),
+      balanceStore.fetchPrice(atom: fabStore.configAtom),
     ]);
     _refreshController.refreshCompleted();
   }
@@ -55,6 +56,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
     final configStore = Provider.of<MainStore>(context).configStore;
+    final fabStore = Provider.of<MainStore>(context).fabStore;
     final transactionStore = Provider.of<MainStore>(context).transactionStore;
     final mainStore = Provider.of<MainStore>(context);
 
@@ -63,7 +65,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
       children: [
         ScreenHeader(
           child: Text(
-            configStore.configAtom.name,
+            fabStore.configAtom.name,
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
@@ -85,7 +87,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
                     runSpacing: 15,
                     children: <Widget>[
                       BalanceHeader(
-                        rel: configStore.configAtom.ticker,
+                        rel: fabStore.configAtom.ticker,
                         bal: valueToPretty(
                             balanceStore.currentBalanceNormalized.unlocked,
                             CRYPTO_PRECISION),
@@ -96,7 +98,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
                             FIAT_PRECISION),
                       ),
                       AddressHeader(
-                        ticker: configStore.configAtom.ticker,
+                        ticker: fabStore.configAtom.ticker,
                         address: walletStore.currentCoinKey.address,
                       ),
                       Text(
@@ -115,7 +117,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
                           border: OutlineInputBorder(),
                           labelText: this._amountInFiat
                               ? '${mainStore.fiat.ticker.toUpperCase()} Amount'
-                              : '${configStore.configAtom.ticker.toUpperCase()} Amount',
+                              : '${fabStore.configAtom.ticker.toUpperCase()} Amount',
                           prefixIcon: FlatButton(
                             child: Text("MAX"),
                             onPressed: () {
@@ -134,7 +136,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
                           suffixIcon: FlatButton(
                             child: Text(this._amountInFiat
                                 ? mainStore.fiat.ticker.toUpperCase()
-                                : configStore.configAtom.ticker.toUpperCase()),
+                                : fabStore.configAtom.ticker.toUpperCase()),
                             onPressed: () {
                               setState(() {
                                 _amountInFiat = !this._amountInFiat;

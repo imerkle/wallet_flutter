@@ -13,11 +13,19 @@ mixin _$LogStore on _LogStore, Store {
 
   @override
   void addGrpc(GrpcError err) {
-    final _$actionInfo = _$_LogStoreActionController.startAction();
+    final _$actionInfo =
+        _$_LogStoreActionController.startAction(name: '_LogStore.addGrpc');
     try {
       return super.addGrpc(err);
     } finally {
       _$_LogStoreActionController.endAction(_$actionInfo);
     }
+  }
+
+  @override
+  String toString() {
+    return '''
+
+    ''';
   }
 }

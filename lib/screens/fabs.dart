@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
+import 'package:wallet_flutter/screens/coins.dart';
 import 'package:wallet_flutter/stores/homepage.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:wallet_flutter/utils/constants.dart';
@@ -20,8 +21,7 @@ String cryptoIconUrl(String ticker, {int size = 128, String color = "color"}) {
 class FabsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final configStore = Provider.of<MainStore>(context).configStore;
-    final sortStore = Provider.of<MainStore>(context).sortStore;
+    final fabStore = Provider.of<MainStore>(context).fabStore;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -29,43 +29,15 @@ class FabsScreen extends StatelessWidget {
         Observer(
           builder: (_) => ScreenHeader(
             child: Text(
-              configStore.baseName,
+              fabStore.baseName,
               style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: hPad),
-          child: Observer(
-            builder: (_) => Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: sortStore.sortables
-                  .asMap()
-                  .map(
-                    (i, item) => MapEntry(
-                      i,
-                      Expanded(
-                        flex: 1,
-                        child: SortWidget(
-                          title: item.title,
-                          direction: item.direction,
-                          active: item.active,
-                          onTap: () {
-                            sortStore.activate(i);
-                          },
-                        ),
-                      ),
-                    ),
-                  )
-                  .values
-                  .toList(),
             ),
           ),
         ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(hPad),
-            child: FabsList(),
+            child: CoinListView(),
           ),
         ),
       ],
@@ -76,22 +48,22 @@ class FabsScreen extends StatelessWidget {
 class Fabs extends StatelessWidget {
   @override
   Widget build(context) {
+    final fabStore = Provider.of<MainStore>(context).fabStore;
     final configStore = Provider.of<MainStore>(context).configStore;
     final homepageStore = Provider.of<MainStore>(context).homepageStore;
 
-    var keys = configStore.coinPairs.keys.toList();
+    var keys = fabStore.coinPairs.keys.toList();
     return Container(
       color: Theme.of(context).primaryColorDarker,
       width: iconSize + 20,
       child: ListView.builder(
           itemCount: keys.length,
           itemBuilder: (context, i) {
-            return Observer(builder: (_) {
-              return GestureDetector(
+            return Observer(
+              builder: (_) => GestureDetector(
                 onTap: () {
                   homepageStore.setPageIndex(0);
-                  configStore.setBase(keys[i]);
-                  configStore.setId(configStore.coinPairs[keys[i]][0]);
+                  fabStore.base = keys[i];
                 },
                 child: Tooltip(
                   message: configStore.configAtomById(keys[i]).name,
@@ -99,108 +71,59 @@ class Fabs extends StatelessWidget {
                     margin: EdgeInsets.symmetric(vertical: 7),
                     child: Row(
                       children: <Widget>[
-                        Container(
-                          height: iconSize - 0.2 * iconSize,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: configStore.base == keys[i]
-                                  ? Theme.of(context).accentColor
-                                  : Colors.transparent,
-                              width: 2.0,
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 5),
-                          child: Container(
-                            height: iconSize,
-                            width: iconSize,
-                            decoration: BoxDecoration(
-                              color: configStore.configAtom.color,
-                              image: DecorationImage(
-                                  image: NetworkImage(cryptoIconUrl(keys[i])),
-                                  fit: BoxFit.cover),
-                              //shape: BoxShape.circle,
-                              borderRadius: BorderRadius.all(Radius.circular(
-                                  configStore.base == keys[i] ? 10 : 100)),
-                            ),
-                          ),
+                        FabTip(selected: fabStore.base == keys[i]),
+                        FabCircle(
+                          selected: fabStore.base == keys[i],
+                          color: fabStore.configAtom.color,
+                          url: cryptoIconUrl(keys[i]),
                         ),
                       ],
                     ),
                   ),
                 ),
-              );
-            });
+              ),
+            );
           }),
     );
   }
 }
 
-class FabsList extends StatelessWidget {
+class FabTip extends StatelessWidget {
+  FabTip({this.selected});
+  final bool selected;
   @override
-  Widget build(context) {
-    final balanceStore = Provider.of<MainStore>(context).balanceStore;
-    final configStore = Provider.of<MainStore>(context).configStore;
-    final sortStore = Provider.of<MainStore>(context).sortStore;
-    final mainStore = Provider.of<MainStore>(context);
-
-    return Observer(
-      builder: (_) {
-        if (sortStore.sortables[0].direction == false) {
-          // coins = coins.reversed.toList();
-        }
-        return ListView.builder(
-            itemCount: configStore.ids.length,
-            itemBuilder: (context, i) {
-              var id = configStore.ids[i];
-              var configAtom = configStore.configAtomById(id);
-              var balance = balanceStore.getBalanceNormalized(configAtom);
-              var price = balanceStore.getPrice(configAtom);
-              return RoundedContainer(
-                selected: configStore.id == id,
-                child: Row(
-                  children: <Widget>[
-                    FabsListRow(
-                      title: configAtom.ticker.toUpperCase(),
-                      subtitle: configAtom.name,
-                      onTap: () {
-                        configStore.setId(id);
-                      },
-                      configStoreId: configStore.id,
-                    ),
-                    FabsListRow(
-                      title: valueToPretty(balance.unlocked, CRYPTO_PRECISION),
-                      subtitle:
-                          "${mainStore.fiat.symbol}${valueToPretty(balance.unlocked * price, FIAT_PRECISION)}",
-                      onTap: () {
-                        configStore.setId(id);
-                      },
-                      configStoreId: configStore.id,
-                    ),
-                  ],
-                ),
-              );
-            });
-      },
+  Widget build(BuildContext context) {
+    return Container(
+      height: iconSize - 0.2 * iconSize,
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: selected ? Theme.of(context).accentColor : Colors.transparent,
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
     );
   }
 }
 
-class FabsListRow extends StatelessWidget {
-  FabsListRow(
-      {this.title, this.subtitle, this.id, this.onTap, this.configStoreId});
-  final String title, subtitle, id, configStoreId;
-  final Function onTap;
+class FabCircle extends StatelessWidget {
+  FabCircle({this.selected, this.color, this.url});
+  final bool selected;
+  final Color color;
+  final String url;
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: ListTile(
-        title: Text(title),
-        subtitle: Text(subtitle),
-        onTap: onTap,
-        selected: id == configStoreId,
+    return Container(
+      margin: EdgeInsets.only(left: 5),
+      child: Container(
+        height: iconSize,
+        width: iconSize,
+        decoration: BoxDecoration(
+          color: color,
+          image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
+          //shape: BoxShape.circle,
+          borderRadius: BorderRadius.all(Radius.circular(selected ? 10 : 100)),
+        ),
       ),
     );
   }

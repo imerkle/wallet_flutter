@@ -5,6 +5,7 @@ import 'package:plugfox_localstorage/localstorage.dart';
 import 'package:wallet_flutter/gen/chains/chain/chain.pbgrpc.dart';
 import 'package:wallet_flutter/stores/balance.dart';
 import 'package:wallet_flutter/stores/config.dart';
+import 'package:wallet_flutter/stores/fabs.dart';
 import 'package:wallet_flutter/stores/homepage.dart';
 import 'package:wallet_flutter/stores/log.dart';
 import 'package:wallet_flutter/stores/settings.dart';
@@ -35,14 +36,15 @@ abstract class _MainStore with Store {
     this.balanceStore =
         BalanceStore(parent: this, chainServiceClient: chainServiceClient);
     this.walletStore = WalletStore(parent: this);
+    this.fabStore = FabsStore(parent: this);
   }
 
   //TransactionStore transactionStore = TransactionStore();
   TransactionStore transactionStore;
   BalanceStore balanceStore;
   WalletStore walletStore;
+  FabsStore fabStore;
   LogStore logStore = LogStore();
-  SortStore sortStore = SortStore();
   ConfigStore configStore = ConfigStore();
   HomepageStore homepageStore = HomepageStore();
   SettingsStore settingsStore = SettingsStore();
@@ -55,8 +57,6 @@ abstract class _MainStore with Store {
   @action
   Future<void> initPrep() async {
     //rust.initChannel();
-    sortStore.sortables.add(Sortable("Coin", true, true));
-    sortStore.sortables.add(Sortable("Amount", false, true));
     await storage.init();
     await walletStore.init();
     /*

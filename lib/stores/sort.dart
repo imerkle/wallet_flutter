@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
+import 'package:wallet_flutter/stores/sort/sortable.dart';
 
 // Include generated file
 part 'sort.g.dart';
@@ -6,40 +8,43 @@ part 'sort.g.dart';
 // This is the class used by rest of your codebase
 class SortStore = _SortStore with _$SortStore;
 
-class Sortable {
-  Sortable(this.title, this.active, this.direction);
-  String title;
-  bool active;
-  bool direction;
+class SortedViewDataMeta {
+  SortedViewDataMeta({this.title, this.subtitle});
+  String title, subtitle;
 }
-abstract class _SortStore with Store {
-  //_SortStore(this.sortables);
-  
-  ObservableList<Sortable> sortables = ObservableList<Sortable>();
 
-  @action 
-  void activate(int index){
-    if(sortables[index].active == true){
+class SortedViewData {
+  SortedViewData({@required this.meta, @required this.id});
+  String id;
+  List<SortedViewDataMeta> meta;
+}
+
+abstract class _SortStore with Store {
+  _SortStore({@required this.sortables});
+
+  @observable
+  ObservableList<Sortable> sortables;
+
+  ObservableList<SortedViewData> data = ObservableList<SortedViewData>();
+
+  @action
+  void activate(int index) {
+    if (sortables[index].active == true) {
       this.changeDirection(index);
-    }else{
-      for (int i=0; i<sortables.length; i++) {
+    } else {
+      for (int i = 0; i < sortables.length; i++) {
         var x = sortables[i];
-        if(i != index){
+        if (i != index) {
           x.active = false;
-        }else{
+        } else {
           x.active = true;
         }
-        sortables.removeAt(i);
-        sortables.insert(i, x);        
       }
     }
   }
 
   @action
-  void changeDirection(int index){
-    var x = sortables[index];
-    x.direction = !x.direction;
-    sortables.removeAt(index);
-    sortables.insert(index, x);
+  void changeDirection(int index) {
+    sortables[index].toggleDirection();
   }
 }

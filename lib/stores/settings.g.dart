@@ -13,17 +13,15 @@ mixin _$SettingsStore on _SettingsStore, Store {
 
   @override
   SettingsEnum get settingsEnum {
-    _$settingsEnumAtom.context.enforceReadPolicy(_$settingsEnumAtom);
-    _$settingsEnumAtom.reportObserved();
+    _$settingsEnumAtom.reportRead();
     return super.settingsEnum;
   }
 
   @override
   set settingsEnum(SettingsEnum value) {
-    _$settingsEnumAtom.context.conditionallyRunInAction(() {
+    _$settingsEnumAtom.reportWrite(value, super.settingsEnum, () {
       super.settingsEnum = value;
-      _$settingsEnumAtom.reportChanged();
-    }, _$settingsEnumAtom, name: '${_$settingsEnumAtom.name}_set');
+    });
   }
 
   final _$_SettingsStoreActionController =
@@ -31,11 +29,19 @@ mixin _$SettingsStore on _SettingsStore, Store {
 
   @override
   void setSettingsEnum(SettingsEnum i) {
-    final _$actionInfo = _$_SettingsStoreActionController.startAction();
+    final _$actionInfo = _$_SettingsStoreActionController.startAction(
+        name: '_SettingsStore.setSettingsEnum');
     try {
       return super.setSettingsEnum(i);
     } finally {
       _$_SettingsStoreActionController.endAction(_$actionInfo);
     }
+  }
+
+  @override
+  String toString() {
+    return '''
+settingsEnum: ${settingsEnum}
+    ''';
   }
 }

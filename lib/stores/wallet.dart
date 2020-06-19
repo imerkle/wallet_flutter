@@ -58,8 +58,7 @@ abstract class _WalletStore with Store {
   Wallet get wallet => ws.list[index];
 
   @computed
-  CoinKey get currentCoinKey =>
-      wallet.coinkeys.containsKey(parent.configStore.id)
-          ? wallet.coinkeys[parent.configStore.id]
-          : CoinKey();
+  CoinKey get currentCoinKey => wallet.coinkeys.containsKey(parent.fabStore.id)
+      ? wallet.coinkeys[parent.fabStore.id]
+      : CoinKey();
 }

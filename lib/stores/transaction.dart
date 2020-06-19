@@ -25,7 +25,7 @@ abstract class _TransactionStore with Store {
 
   @action
   Future<void> refreshTxs() async {
-    ConfigAtom atom = parent.configStore.configAtom;
+    ConfigAtom atom = parent.fabStore.configAtom;
     String address = parent.walletStore.currentCoinKey.address;
     GetTransactionsResponse res;
     try {
@@ -50,7 +50,7 @@ abstract class _TransactionStore with Store {
     Outputs os = Outputs();
     Output o = Output()
       ..address = receivingAddress
-      ..value = Int64((amt * parent.configStore.configAtom.precision).toInt())
+      ..value = Int64((amt * parent.fabStore.configAtom.precision).toInt())
       ..memo = memo;
     o.address = receivingAddress;
     os.list.add(o);
@@ -58,7 +58,7 @@ abstract class _TransactionStore with Store {
     var txOpts = await getTransactionOpts(
         address: parent.walletStore.currentCoinKey.address);
     var input = GenSendTransactionRequest()
-      ..config = parent.configStore.configAtom.config
+      ..config = parent.fabStore.configAtom.config
       ..privateKey = parent.walletStore.currentCoinKey.privateKey
       ..publicKey = parent.walletStore.currentCoinKey.publicKey
       ..outputs = os
@@ -81,5 +81,5 @@ abstract class _TransactionStore with Store {
 
   @computed
   List<Transaction> get currentTxs =>
-      txs.containsKey(parent.configStore.id) ? txs[parent.configStore.id] : [];
+      txs.containsKey(parent.fabStore.id) ? txs[parent.fabStore.id] : [];
 }

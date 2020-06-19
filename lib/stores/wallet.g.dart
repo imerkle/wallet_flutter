@@ -12,60 +12,68 @@ mixin _$WalletStore on _WalletStore, Store {
   Computed<Wallet> _$walletComputed;
 
   @override
-  Wallet get wallet =>
-      (_$walletComputed ??= Computed<Wallet>(() => super.wallet)).value;
+  Wallet get wallet => (_$walletComputed ??=
+          Computed<Wallet>(() => super.wallet, name: '_WalletStore.wallet'))
+      .value;
   Computed<CoinKey> _$currentCoinKeyComputed;
 
   @override
-  CoinKey get currentCoinKey => (_$currentCoinKeyComputed ??=
-          Computed<CoinKey>(() => super.currentCoinKey))
+  CoinKey get currentCoinKey => (_$currentCoinKeyComputed ??= Computed<CoinKey>(
+          () => super.currentCoinKey,
+          name: '_WalletStore.currentCoinKey'))
       .value;
 
   final _$wsAtom = Atom(name: '_WalletStore.ws');
 
   @override
   Wallets get ws {
-    _$wsAtom.context.enforceReadPolicy(_$wsAtom);
-    _$wsAtom.reportObserved();
+    _$wsAtom.reportRead();
     return super.ws;
   }
 
   @override
   set ws(Wallets value) {
-    _$wsAtom.context.conditionallyRunInAction(() {
+    _$wsAtom.reportWrite(value, super.ws, () {
       super.ws = value;
-      _$wsAtom.reportChanged();
-    }, _$wsAtom, name: '${_$wsAtom.name}_set');
+    });
   }
 
   final _$indexAtom = Atom(name: '_WalletStore.index');
 
   @override
   int get index {
-    _$indexAtom.context.enforceReadPolicy(_$indexAtom);
-    _$indexAtom.reportObserved();
+    _$indexAtom.reportRead();
     return super.index;
   }
 
   @override
   set index(int value) {
-    _$indexAtom.context.conditionallyRunInAction(() {
+    _$indexAtom.reportWrite(value, super.index, () {
       super.index = value;
-      _$indexAtom.reportChanged();
-    }, _$indexAtom, name: '${_$indexAtom.name}_set');
+    });
   }
 
-  final _$initAsyncAction = AsyncAction('init');
+  final _$initAsyncAction = AsyncAction('_WalletStore.init');
 
   @override
   Future<void> init() {
     return _$initAsyncAction.run(() => super.init());
   }
 
-  final _$addWalletAsyncAction = AsyncAction('addWallet');
+  final _$addWalletAsyncAction = AsyncAction('_WalletStore.addWallet');
 
   @override
   Future<void> addWallet() {
     return _$addWalletAsyncAction.run(() => super.addWallet());
+  }
+
+  @override
+  String toString() {
+    return '''
+ws: ${ws},
+index: ${index},
+wallet: ${wallet},
+currentCoinKey: ${currentCoinKey}
+    ''';
   }
 }

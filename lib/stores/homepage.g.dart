@@ -13,34 +13,30 @@ mixin _$HomepageStore on _HomepageStore, Store {
 
   @override
   int get pageIndex {
-    _$pageIndexAtom.context.enforceReadPolicy(_$pageIndexAtom);
-    _$pageIndexAtom.reportObserved();
+    _$pageIndexAtom.reportRead();
     return super.pageIndex;
   }
 
   @override
   set pageIndex(int value) {
-    _$pageIndexAtom.context.conditionallyRunInAction(() {
+    _$pageIndexAtom.reportWrite(value, super.pageIndex, () {
       super.pageIndex = value;
-      _$pageIndexAtom.reportChanged();
-    }, _$pageIndexAtom, name: '${_$pageIndexAtom.name}_set');
+    });
   }
 
   final _$bottomNavBarAtom = Atom(name: '_HomepageStore.bottomNavBar');
 
   @override
   bool get bottomNavBar {
-    _$bottomNavBarAtom.context.enforceReadPolicy(_$bottomNavBarAtom);
-    _$bottomNavBarAtom.reportObserved();
+    _$bottomNavBarAtom.reportRead();
     return super.bottomNavBar;
   }
 
   @override
   set bottomNavBar(bool value) {
-    _$bottomNavBarAtom.context.conditionallyRunInAction(() {
+    _$bottomNavBarAtom.reportWrite(value, super.bottomNavBar, () {
       super.bottomNavBar = value;
-      _$bottomNavBarAtom.reportChanged();
-    }, _$bottomNavBarAtom, name: '${_$bottomNavBarAtom.name}_set');
+    });
   }
 
   final _$_HomepageStoreActionController =
@@ -48,7 +44,8 @@ mixin _$HomepageStore on _HomepageStore, Store {
 
   @override
   void setPageIndex(int i) {
-    final _$actionInfo = _$_HomepageStoreActionController.startAction();
+    final _$actionInfo = _$_HomepageStoreActionController.startAction(
+        name: '_HomepageStore.setPageIndex');
     try {
       return super.setPageIndex(i);
     } finally {
@@ -58,11 +55,20 @@ mixin _$HomepageStore on _HomepageStore, Store {
 
   @override
   void setBottomNavBar(bool b) {
-    final _$actionInfo = _$_HomepageStoreActionController.startAction();
+    final _$actionInfo = _$_HomepageStoreActionController.startAction(
+        name: '_HomepageStore.setBottomNavBar');
     try {
       return super.setBottomNavBar(b);
     } finally {
       _$_HomepageStoreActionController.endAction(_$actionInfo);
     }
+  }
+
+  @override
+  String toString() {
+    return '''
+pageIndex: ${pageIndex},
+bottomNavBar: ${bottomNavBar}
+    ''';
   }
 }

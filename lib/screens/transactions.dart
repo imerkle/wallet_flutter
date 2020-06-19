@@ -46,6 +46,7 @@ class _TransanctionScreenState extends State<TransanctionScreen>
       String base, String rel) {
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
     final configStore = Provider.of<MainStore>(context).configStore;
+    final fabStore = Provider.of<MainStore>(context).fabStore;
     final mainStore = Provider.of<MainStore>(context);
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
@@ -54,7 +55,7 @@ class _TransanctionScreenState extends State<TransanctionScreen>
         context: context,
         builder: (builder) {
           var fees = valueToPrecision(
-              tx.fees.used * tx.fees.price, configStore.configAtom.precision);
+              tx.fees.used * tx.fees.price, fabStore.configAtom.precision);
           return Container(
             height: 500,
             child: SingleChildScrollView(
@@ -103,12 +104,13 @@ class _TransanctionScreenState extends State<TransanctionScreen>
   Widget build(BuildContext context) {
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
     final configStore = Provider.of<MainStore>(context).configStore;
+    final fabStore = Provider.of<MainStore>(context).fabStore;
     final transactionStore = Provider.of<MainStore>(context).transactionStore;
     final walletStore = Provider.of<MainStore>(context).walletStore;
     final mainStore = Provider.of<MainStore>(context);
 
-    var base = configStore.base;
-    var rel = configStore.id;
+    var base = fabStore.base;
+    var rel = fabStore.id;
 
     return Screen(
       header: "Transactions",
@@ -158,7 +160,7 @@ class _TransanctionScreenState extends State<TransanctionScreen>
                         break;
                     }
                     double value = valueToPrecision(
-                        valueRaw, configStore.configAtom.precision);
+                        valueRaw, fabStore.configAtom.precision);
 
                     return MyDataRow(
                         cells: [

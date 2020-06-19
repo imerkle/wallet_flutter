@@ -13,13 +13,21 @@ mixin _$TransactionStore on _TransactionStore, Store {
 
   @override
   List<Transaction> get currentTxs => (_$currentTxsComputed ??=
-          Computed<List<Transaction>>(() => super.currentTxs))
+          Computed<List<Transaction>>(() => super.currentTxs,
+              name: '_TransactionStore.currentTxs'))
       .value;
 
-  final _$refreshTxsAsyncAction = AsyncAction('refreshTxs');
+  final _$refreshTxsAsyncAction = AsyncAction('_TransactionStore.refreshTxs');
 
   @override
   Future<void> refreshTxs() {
     return _$refreshTxsAsyncAction.run(() => super.refreshTxs());
+  }
+
+  @override
+  String toString() {
+    return '''
+currentTxs: ${currentTxs}
+    ''';
   }
 }

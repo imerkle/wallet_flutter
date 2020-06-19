@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:wallet_flutter/stores/sort/sortable.dart';
 
 class SortWidget extends StatelessWidget {
-  SortWidget({this.title, this.direction, this.active, this.onTap});
+  const SortWidget(
+      {@required this.title,
+      this.active = false,
+      this.direction = SortDirection.asc,
+      this.onTap});
 
   final String title;
-  final bool direction;
   final bool active;
+  final SortDirection direction;
+
   final Function onTap;
 
   @override
@@ -21,7 +27,7 @@ class SortWidget extends StatelessWidget {
               Text(title),
               Icon(
                 active
-                    ? direction == true
+                    ? direction == SortDirection.asc
                         ? Icons.arrow_drop_up
                         : Icons.arrow_drop_down
                     : null,

@@ -13,7 +13,7 @@ import '../../google/protobuf/timestamp.pb.dart' as $1;
 
 class Timestamp extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Timestamp', package: const $pb.PackageName('timestamp'), createEmptyInstance: create)
-    ..a<$1.Timestamp>(1, 'timestamp', $pb.PbFieldType.OM, defaultOrMaker: $1.Timestamp.getDefault, subBuilder: $1.Timestamp.create)
+    ..aOM<$1.Timestamp>(1, 'timestamp', subBuilder: $1.Timestamp.create)
     ..hasRequiredFields = false
   ;
 
@@ -28,12 +28,19 @@ class Timestamp extends $pb.GeneratedMessage {
   static Timestamp create() => Timestamp._();
   Timestamp createEmptyInstance() => create();
   static $pb.PbList<Timestamp> createRepeated() => $pb.PbList<Timestamp>();
-  static Timestamp getDefault() => _defaultInstance ??= create()..freeze();
+  @$core.pragma('dart2js:noInline')
+  static Timestamp getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Timestamp>(create);
   static Timestamp _defaultInstance;
 
+  @$pb.TagNumber(1)
   $1.Timestamp get timestamp => $_getN(0);
+  @$pb.TagNumber(1)
   set timestamp($1.Timestamp v) { setField(1, v); }
+  @$pb.TagNumber(1)
   $core.bool hasTimestamp() => $_has(0);
+  @$pb.TagNumber(1)
   void clearTimestamp() => clearField(1);
+  @$pb.TagNumber(1)
+  $1.Timestamp ensureTimestamp() => $_ensure(0);
 }
 

@@ -25,8 +25,6 @@ abstract class _SortStore with Store {
   @observable
   ObservableList<Sortable> sortables;
 
-  ObservableList<SortedViewData> data = ObservableList<SortedViewData>();
-
   @action
   void activate(int index) {
     if (sortables[index].active == true) {
@@ -47,4 +45,9 @@ abstract class _SortStore with Store {
   void changeDirection(int index) {
     sortables[index].toggleDirection();
   }
+
+  @computed
+  int get index => sortables.indexWhere((element) => element.active == true);
+  @computed
+  Sortable get sortable => sortables[index];
 }

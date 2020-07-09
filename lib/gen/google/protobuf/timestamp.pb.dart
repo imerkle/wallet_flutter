@@ -7,7 +7,7 @@
 
 import 'dart:core' as $core;
 
-import 'package:fixnum/fixnum.dart';
+import 'package:fixnum/fixnum.dart' as $fixnum;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'package:protobuf/src/protobuf/mixins/well_known.dart' as $mixin;
@@ -30,17 +30,26 @@ class Timestamp extends $pb.GeneratedMessage with $mixin.TimestampMixin {
   static Timestamp create() => Timestamp._();
   Timestamp createEmptyInstance() => create();
   static $pb.PbList<Timestamp> createRepeated() => $pb.PbList<Timestamp>();
-  static Timestamp getDefault() => _defaultInstance ??= create()..freeze();
+  @$core.pragma('dart2js:noInline')
+  static Timestamp getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Timestamp>(create);
   static Timestamp _defaultInstance;
 
-  Int64 get seconds => $_getI64(0);
-  set seconds(Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
+  $fixnum.Int64 get seconds => $_getI64(0);
+  @$pb.TagNumber(1)
+  set seconds($fixnum.Int64 v) { $_setInt64(0, v); }
+  @$pb.TagNumber(1)
   $core.bool hasSeconds() => $_has(0);
+  @$pb.TagNumber(1)
   void clearSeconds() => clearField(1);
 
-  $core.int get nanos => $_get(1, 0);
+  @$pb.TagNumber(2)
+  $core.int get nanos => $_getIZ(1);
+  @$pb.TagNumber(2)
   set nanos($core.int v) { $_setSignedInt32(1, v); }
+  @$pb.TagNumber(2)
   $core.bool hasNanos() => $_has(1);
+  @$pb.TagNumber(2)
   void clearNanos() => clearField(2);
   /// Creates a new instance from [dateTime].
   ///

@@ -4,16 +4,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:wallet_flutter/screens/fabs.dart';
+import 'package:wallet_flutter/widgets/common_widgets.dart';
 import 'package:wallet_flutter/widgets/screen_header.dart';
 import '../utils/app_localization.dart';
 import '../utils/constants.dart';
 import '../utils/fn.dart';
 import '../stores/main.dart';
 import '../widgets/refresh_footer.dart';
-
-const double tsize = 20;
-const ts1 = TextStyle(fontSize: tsize);
-const ts2 = TextStyle(fontSize: tsize, fontWeight: FontWeight.bold);
+import 'package:flutter_icons/flutter_icons.dart';
 
 class Wallet extends StatefulWidget {
   const Wallet({
@@ -31,6 +31,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
 
   final receivingAddress = TextEditingController();
   final amount = TextEditingController();
+  final double h = 20;
 
   refresh(BuildContext context) async {
     final walletStore = Provider.of<MainStore>(context).walletStore;
@@ -83,81 +84,90 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
               builder: (_) => Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: SingleChildScrollView(
-                  child: Wrap(
-                    runSpacing: 15,
+                  child: Column(
+                    //child: Wrap(
+                    //runSpacing: 15,
+                    //crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       BalanceHeader(
-                        rel: fabStore.configAtom.ticker,
-                        bal: valueToPretty(
-                            balanceStore.currentBalanceNormalized.unlocked,
-                            CRYPTO_PRECISION),
+                        ticker: fabStore.configAtom.ticker,
+                        value: balanceStore.currentBalanceNormalized.unlocked,
                         fiatSymbol: mainStore.fiat.symbol,
-                        fiatBal: valueToPretty(
+                        fiatValue:
                             balanceStore.currentBalanceNormalized.unlocked *
                                 balanceStore.currentPrice,
-                            FIAT_PRECISION),
+                      ),
+                      SizedBox(
+                        height: h,
                       ),
                       AddressHeader(
                         ticker: fabStore.configAtom.ticker,
                         address: walletStore.currentCoinKey.address,
                       ),
-                      Text(
-                        AppLocalizations.of(context)
-                            .tr('send_tx')
-                            .toUpperCase(),
-                        style: Theme.of(context).textTheme.headerGrey1,
+                      SizedBox(
+                        height: h,
+                      ),
+                      Container(
+                        child: Text(
+                          AppLocalizations.of(context)
+                              .tr('send_tx')
+                              .toUpperCase(),
+                          style: Theme.of(context).textTheme.headerGrey1,
+                        ),
+                      ),
+                      SizedBox(
+                        height: h,
                       ),
                       ScanTextField(
                           controller: receivingAddress,
                           onScan: (text) => this.receivingAddress.text = text),
-                      TextField(
-                        keyboardType: TextInputType.number,
+                      SizedBox(
+                        height: h,
+                      ),
+                      NormalTextField(
                         controller: amount,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: this._amountInFiat
-                              ? '${mainStore.fiat.ticker.toUpperCase()} Amount'
-                              : '${fabStore.configAtom.ticker.toUpperCase()} Amount',
-                          prefixIcon: FlatButton(
-                            child: Text("MAX"),
-                            onPressed: () {
-                              if (_amountInFiat) {
-                                amount.text = (balanceStore
-                                            .currentBalanceNormalized.unlocked *
-                                        balanceStore.currentPrice)
-                                    .toString();
-                              } else {
-                                amount.text = balanceStore
-                                    .currentBalanceNormalized.unlocked
-                                    .toString();
-                              }
-                            },
-                          ),
-                          suffixIcon: FlatButton(
-                            child: Text(this._amountInFiat
-                                ? mainStore.fiat.ticker.toUpperCase()
-                                : fabStore.configAtom.ticker.toUpperCase()),
-                            onPressed: () {
-                              setState(() {
-                                _amountInFiat = !this._amountInFiat;
-                              });
-                            },
-                          ),
+                        labelText: this._amountInFiat
+                            ? '${mainStore.fiat.ticker.toUpperCase()} Amount'
+                            : '${fabStore.configAtom.ticker.toUpperCase()} Amount',
+                        prefixIcon: FlatButton(
+                          child: Text("MAX"),
+                          onPressed: () {
+                            if (_amountInFiat) {
+                              amount.text = (balanceStore
+                                          .currentBalanceNormalized.unlocked *
+                                      balanceStore.currentPrice)
+                                  .toString();
+                            } else {
+                              amount.text = balanceStore
+                                  .currentBalanceNormalized.unlocked
+                                  .toString();
+                            }
+                          },
+                        ),
+                        suffixIcon: FlatButton(
+                          child: Text(this._amountInFiat
+                              ? mainStore.fiat.ticker.toUpperCase()
+                              : fabStore.configAtom.ticker.toUpperCase()),
+                          onPressed: () {
+                            setState(() {
+                              _amountInFiat = !this._amountInFiat;
+                            });
+                          },
                         ),
                       ),
                       SizedBox(
+                        height: h,
+                      ),
+                      SizedBox(
                         width: double.infinity,
-                        child: RaisedButton(
+                        child: SimpleButton(
                           onPressed: () async {
                             transactionStore.sendTx(
                                 amount: textToDouble(amount.text),
                                 amountInFiat: _amountInFiat,
                                 receivingAddress: receivingAddress.text);
                           },
-
-                          //padding: EdgeInsets.all(15),
-                          //shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(8.0)),
-                          child: Text('Send', style: TextStyle(fontSize: 20)),
+                          child: Text('Send'),
                         ),
                       ),
                     ],
@@ -178,16 +188,88 @@ class AddressHeader extends StatelessWidget {
   final String ticker;
   final String address;
 
+  void _showModalSheet(context) {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        context: context,
+        builder: (builder) {
+          return Container(
+            color: Theme.of(context).primaryColorDark,
+            height: 500,
+            child: Center(
+              child: Container(
+                height: 300,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.transparent,
+                    width: 0,
+                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Colors.white,
+                ),
+                child: Stack(
+                  alignment: Alignment.center,
+                  overflow: Overflow.visible,
+                  children: [
+                    Positioned(
+                      child: FabCircle(
+                        padding: 5,
+                        bgcolor: Theme.of(context).primaryColorDark,
+                        url: cryptoIconUrl(ticker),
+                        size: 35,
+                      ),
+                      top: -35,
+                    ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            APPNAME,
+                            style: Theme.of(context).textTheme.headerMaster,
+                          ),
+                        ),
+                        QrImage(
+                          data: address,
+                          version: QrVersions.auto,
+                          size: 200,
+                          backgroundColor: Colors.white,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          address,
+                          style: Theme.of(context).textTheme.headerGrey1,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.all(15.0),
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      readOnly: true,
-      controller: TextEditingController(text: address),
-      style: Theme.of(context).textTheme.bodyText2,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Your ${ticker.toUpperCase()} Address',
-        suffixIcon: IconButton(
+    return RoundedContainerDark(
+      child: ListTile(
+        title: Text(
+          "Your ${ticker.toUpperCase()} address",
+          style: Theme.of(context).textTheme.headerGrey1,
+        ),
+        subtitle: Text(
+          address,
+        ),
+        leading: IconButton(
+            icon: Icon(MaterialCommunityIcons.qrcode),
+            onPressed: () {
+              _showModalSheet(context);
+            }),
+        trailing: IconButton(
             icon: Icon(Icons.content_copy),
             onPressed: () {
               Clipboard.setData(ClipboardData(text: address));
@@ -198,60 +280,21 @@ class AddressHeader extends StatelessWidget {
 }
 
 class BalanceHeader extends StatelessWidget {
-  BalanceHeader({this.rel, this.bal, this.fiatSymbol, this.fiatBal});
-  final String rel;
-  final String bal;
-  final String fiatSymbol;
-  final String fiatBal;
+  BalanceHeader({this.ticker, this.value, this.fiatSymbol, this.fiatValue});
+  final String ticker, fiatSymbol;
+  final double value, fiatValue;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("$rel balance".toUpperCase(), style: ts1),
-            Text(bal, style: ts2),
-          ],
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("USD value".toUpperCase(), style: ts1),
-            Text("$fiatSymbol$fiatBal", style: ts2),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class ScanTextField extends StatelessWidget {
-  ScanTextField({this.controller, this.onScan});
-
-  final TextEditingController controller;
-  final Function onScan;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Recieving Address',
-        prefixIcon: IconButton(
-            icon: Icon(Icons.center_focus_weak),
-            onPressed: () {
-              scan(onScan);
-            }),
-        suffixIcon: IconButton(
-            icon: Icon(Icons.content_paste),
-            onPressed: () {
-              writePaste(this.controller);
-            }),
-      ),
+    return Container(
+      margin: const EdgeInsets.all(30),
+      child: Column(children: <Widget>[
+        Text(
+            "${valueToPretty(value, CRYPTO_PRECISION)} ${ticker.toUpperCase()}",
+            style: Theme.of(context).textTheme.headline6),
+        Text("$fiatSymbol${valueToPretty(fiatValue, FIAT_PRECISION)}",
+            style: Theme.of(context).textTheme.headerGrey2),
+      ]),
     );
   }
 }

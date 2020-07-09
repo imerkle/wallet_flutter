@@ -3,20 +3,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/screens/coins.dart';
-import 'package:wallet_flutter/stores/homepage.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/utils/fn.dart';
-import 'package:wallet_flutter/widgets/rounded_container.dart';
 import 'package:wallet_flutter/widgets/screen_header.dart';
-import 'package:wallet_flutter/widgets/sort_widget.dart';
 
-final double iconSize = 45;
+const double ICON_SIZE = 45;
 const double hPad = 10;
-
-String cryptoIconUrl(String ticker, {int size = 128, String color = "color"}) {
-  return 'https://raw.githack.com/atomiclabs/cryptocurrency-icons/master/$size/$color/${ticker.toLowerCase()}.png';
-}
 
 class FabsScreen extends StatelessWidget {
   @override
@@ -55,7 +48,7 @@ class Fabs extends StatelessWidget {
     var keys = fabStore.coinPairs.keys.toList();
     return Container(
       color: Theme.of(context).primaryColorDarker,
-      width: iconSize + 20,
+      width: ICON_SIZE + 20,
       child: ListView.builder(
           itemCount: keys.length,
           itemBuilder: (context, i) {
@@ -94,7 +87,7 @@ class FabTip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: iconSize - 0.2 * iconSize,
+      height: ICON_SIZE - 0.2 * ICON_SIZE,
       decoration: BoxDecoration(
         border: Border.all(
           color: selected ? Theme.of(context).accentColor : Colors.transparent,
@@ -107,22 +100,39 @@ class FabTip extends StatelessWidget {
 }
 
 class FabCircle extends StatelessWidget {
-  FabCircle({this.selected, this.color, this.url});
+  FabCircle({
+    this.selected = false,
+    this.color = Colors.transparent,
+    this.bgcolor,
+    @required this.url,
+    this.size = ICON_SIZE,
+    this.padding = 0.0,
+  });
   final bool selected;
-  final Color color;
+  final Color color, bgcolor;
   final String url;
+  final double size, padding;
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(left: 5),
-      child: Container(
-        height: iconSize,
-        width: iconSize,
-        decoration: BoxDecoration(
-          color: color,
-          image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
-          //shape: BoxShape.circle,
-          borderRadius: BorderRadius.all(Radius.circular(selected ? 10 : 100)),
+      decoration: BoxDecoration(
+        color: bgcolor == null ? Colors.transparent : bgcolor,
+        //shape: BoxShape.circle,
+        borderRadius: BorderRadius.all(Radius.circular(100)),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(padding),
+        child: Container(
+          height: size,
+          width: size,
+          decoration: BoxDecoration(
+            color: color,
+            image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
+            //shape: BoxShape.circle,
+            borderRadius:
+                BorderRadius.all(Radius.circular(selected ? 10 : 100)),
+          ),
         ),
       ),
     );

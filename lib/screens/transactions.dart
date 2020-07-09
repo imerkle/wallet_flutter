@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -7,6 +8,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:wallet_flutter/gen/chains/chain/chain.pb.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'package:wallet_flutter/utils/fn.dart';
+import 'package:wallet_flutter/widgets/common_widgets.dart';
 import 'package:wallet_flutter/widgets/data_table.dart';
 import 'package:wallet_flutter/widgets/screen_header.dart';
 import 'package:wallet_flutter/widgets/transaction/tx_iol.dart';
@@ -203,7 +205,19 @@ class _TransanctionScreenState extends State<TransanctionScreen>
                         });
                   }).toList());
             } else {
-              return Container(child: Text("Transactions will show up here"));
+              return Center(
+                child: IgnorePointer(
+                  child: RoundedContainer(
+                    child: ListTile(
+                      title: Text("No Transactions"),
+                      subtitle: Text("Transactions will show up here"),
+                      leading: Icon(
+                        MaterialCommunityIcons.bank_transfer,
+                      ),
+                    ),
+                  ),
+                ),
+              );
             }
           },
         ),

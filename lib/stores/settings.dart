@@ -8,7 +8,7 @@ class SettingsStore = _SettingsStore with _$SettingsStore;
 
 enum SettingsEnum {
   wallet,
-  connection,
+  config,
 }
 
 abstract class _SettingsStore with Store {

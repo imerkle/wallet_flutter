@@ -37,47 +37,80 @@ class Config extends $pb.GeneratedMessage {
   static Config create() => Config._();
   Config createEmptyInstance() => create();
   static $pb.PbList<Config> createRepeated() => $pb.PbList<Config>();
-  static Config getDefault() => _defaultInstance ??= create()..freeze();
+  @$core.pragma('dart2js:noInline')
+  static Config getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Config>(create);
   static Config _defaultInstance;
 
-  $core.String get id => $_getS(0, '');
+  @$pb.TagNumber(1)
+  $core.String get id => $_getSZ(0);
+  @$pb.TagNumber(1)
   set id($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
   $core.bool hasId() => $_has(0);
+  @$pb.TagNumber(1)
   void clearId() => clearField(1);
 
+  @$pb.TagNumber(2)
   Protocol get protocol => $_getN(1);
+  @$pb.TagNumber(2)
   set protocol(Protocol v) { setField(2, v); }
+  @$pb.TagNumber(2)
   $core.bool hasProtocol() => $_has(1);
+  @$pb.TagNumber(2)
   void clearProtocol() => clearField(2);
 
-  $core.int get code => $_get(2, 0);
+  @$pb.TagNumber(3)
+  $core.int get code => $_getIZ(2);
+  @$pb.TagNumber(3)
   set code($core.int v) { $_setUnsignedInt32(2, v); }
+  @$pb.TagNumber(3)
   $core.bool hasCode() => $_has(2);
+  @$pb.TagNumber(3)
   void clearCode() => clearField(3);
 
-  $core.int get private => $_get(3, 0);
+  @$pb.TagNumber(4)
+  $core.int get private => $_getIZ(3);
+  @$pb.TagNumber(4)
   set private($core.int v) { $_setUnsignedInt32(3, v); }
+  @$pb.TagNumber(4)
   $core.bool hasPrivate() => $_has(3);
+  @$pb.TagNumber(4)
   void clearPrivate() => clearField(4);
 
-  $core.int get public => $_get(4, 0);
+  @$pb.TagNumber(5)
+  $core.int get public => $_getIZ(4);
+  @$pb.TagNumber(5)
   set public($core.int v) { $_setUnsignedInt32(4, v); }
+  @$pb.TagNumber(5)
   $core.bool hasPublic() => $_has(4);
+  @$pb.TagNumber(5)
   void clearPublic() => clearField(5);
 
-  $core.String get prefix => $_getS(5, '');
+  @$pb.TagNumber(6)
+  $core.String get prefix => $_getSZ(5);
+  @$pb.TagNumber(6)
   set prefix($core.String v) { $_setString(5, v); }
+  @$pb.TagNumber(6)
   $core.bool hasPrefix() => $_has(5);
+  @$pb.TagNumber(6)
   void clearPrefix() => clearField(6);
 
+  @$pb.TagNumber(7)
   CurveName get curveName => $_getN(6);
+  @$pb.TagNumber(7)
   set curveName(CurveName v) { setField(7, v); }
+  @$pb.TagNumber(7)
   $core.bool hasCurveName() => $_has(6);
+  @$pb.TagNumber(7)
   void clearCurveName() => clearField(7);
 
-  $core.int get chainId => $_get(7, 0);
+  @$pb.TagNumber(8)
+  $core.int get chainId => $_getIZ(7);
+  @$pb.TagNumber(8)
   set chainId($core.int v) { $_setUnsignedInt32(7, v); }
+  @$pb.TagNumber(8)
   $core.bool hasChainId() => $_has(7);
+  @$pb.TagNumber(8)
   void clearChainId() => clearField(8);
 }
 
@@ -98,9 +131,11 @@ class Configs extends $pb.GeneratedMessage {
   static Configs create() => Configs._();
   Configs createEmptyInstance() => create();
   static $pb.PbList<Configs> createRepeated() => $pb.PbList<Configs>();
-  static Configs getDefault() => _defaultInstance ??= create()..freeze();
+  @$core.pragma('dart2js:noInline')
+  static Configs getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Configs>(create);
   static Configs _defaultInstance;
 
+  @$pb.TagNumber(1)
   $core.List<Config> get list => $_getList(0);
 }
 
@@ -122,17 +157,26 @@ class WebPlatformChannel extends $pb.GeneratedMessage {
   static WebPlatformChannel create() => WebPlatformChannel._();
   WebPlatformChannel createEmptyInstance() => create();
   static $pb.PbList<WebPlatformChannel> createRepeated() => $pb.PbList<WebPlatformChannel>();
-  static WebPlatformChannel getDefault() => _defaultInstance ??= create()..freeze();
+  @$core.pragma('dart2js:noInline')
+  static WebPlatformChannel getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<WebPlatformChannel>(create);
   static WebPlatformChannel _defaultInstance;
 
-  $core.String get methodName => $_getS(0, '');
+  @$pb.TagNumber(1)
+  $core.String get methodName => $_getSZ(0);
+  @$pb.TagNumber(1)
   set methodName($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
   $core.bool hasMethodName() => $_has(0);
+  @$pb.TagNumber(1)
   void clearMethodName() => clearField(1);
 
+  @$pb.TagNumber(2)
   $core.List<$core.int> get input => $_getN(1);
+  @$pb.TagNumber(2)
   set input($core.List<$core.int> v) { $_setBytes(1, v); }
+  @$pb.TagNumber(2)
   $core.bool hasInput() => $_has(1);
+  @$pb.TagNumber(2)
   void clearInput() => clearField(2);
 }
 

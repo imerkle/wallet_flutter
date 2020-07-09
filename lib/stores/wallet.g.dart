@@ -63,8 +63,22 @@ mixin _$WalletStore on _WalletStore, Store {
   final _$addWalletAsyncAction = AsyncAction('_WalletStore.addWallet');
 
   @override
-  Future<void> addWallet() {
-    return _$addWalletAsyncAction.run(() => super.addWallet());
+  Future<void> addWallet({String mnemonic}) {
+    return _$addWalletAsyncAction
+        .run(() => super.addWallet(mnemonic: mnemonic));
+  }
+
+  final _$_WalletStoreActionController = ActionController(name: '_WalletStore');
+
+  @override
+  dynamic removeWallet(dynamic index) {
+    final _$actionInfo = _$_WalletStoreActionController.startAction(
+        name: '_WalletStore.removeWallet');
+    try {
+      return super.removeWallet(index);
+    } finally {
+      _$_WalletStoreActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

@@ -9,6 +9,19 @@ part of 'sort.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$SortStore on _SortStore, Store {
+  Computed<int> _$indexComputed;
+
+  @override
+  int get index => (_$indexComputed ??=
+          Computed<int>(() => super.index, name: '_SortStore.index'))
+      .value;
+  Computed<Sortable> _$sortableComputed;
+
+  @override
+  Sortable get sortable => (_$sortableComputed ??=
+          Computed<Sortable>(() => super.sortable, name: '_SortStore.sortable'))
+      .value;
+
   final _$sortablesAtom = Atom(name: '_SortStore.sortables');
 
   @override
@@ -51,7 +64,9 @@ mixin _$SortStore on _SortStore, Store {
   @override
   String toString() {
     return '''
-sortables: ${sortables}
+sortables: ${sortables},
+index: ${index},
+sortable: ${sortable}
     ''';
   }
 }

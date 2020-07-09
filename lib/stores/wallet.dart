@@ -38,20 +38,33 @@ abstract class _WalletStore with Store {
   }
 
   @action
-  Future<void> addWallet() async {
+  Future<void> addWallet({String mnemonic}) async {
     Configs cnf = Configs()..list.addAll(parent.configStore.configsForWallet);
-    //String mnemonic = bip39.generateMnemonic();
-    String mnemonic =
-        "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
+    if (mnemonic == null) {
+      mnemonic = bip39.generateMnemonic();
+    }
+    /*
+    String mnemonic = "connect ritual news sand rapid scale behind swamp damp brief explain ankle";
+    */
     var input = GetWalletsRequest()
       ..mnemonic = mnemonic
       ..configs = cnf;
     dynamic x =
         await parent.rust.invokeRustMethod(GET_WALLET, input.writeToBuffer());
     Wallet w = Wallet.fromBuffer(x);
+    w
+      ..walletKind = WalletKind.BIP32
+      ..configs = cnf;
     ws.list.add(w);
     ws = ws;
     parent.storage[GET_WALLET] = ws.writeToJson();
+  }
+
+  @action
+  removeWallet(index) {
+    if (ws.list.length > 1) {
+      ws.list.removeAt(index);
+    }
   }
 
   @computed

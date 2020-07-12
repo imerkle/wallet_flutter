@@ -300,3 +300,53 @@ class SimpleButton extends FlatButton {
     );
   }
 }
+
+Future<T> bottomModal<T>(
+    {BuildContext context, String header, Widget child}) async {
+  return await showModalBottomSheet<T>(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return Wrap(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(30),
+                  color: Theme.of(context).primaryColorDarker,
+                  child: Text(
+                    header.toUpperCase(),
+                    style: Theme.of(context).textTheme.headerGrey4,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: child,
+                ),
+              ],
+            ),
+          ],
+        );
+      });
+}
+
+class HeaderGrey1 extends StatelessWidget {
+  HeaderGrey1(this.text);
+  final String text;
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.headerGrey1,
+    );
+  }
+}

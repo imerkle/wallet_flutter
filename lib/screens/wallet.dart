@@ -108,11 +108,10 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
                         height: h,
                       ),
                       Container(
-                        child: Text(
+                        child: HeaderGrey1(
                           AppLocalizations.of(context)
                               .tr('send_tx')
                               .toUpperCase(),
-                          style: Theme.of(context).textTheme.headerGrey1,
                         ),
                       ),
                       SizedBox(
@@ -188,92 +187,89 @@ class AddressHeader extends StatelessWidget {
   final String ticker;
   final String address;
 
-  void _showModalSheet(context) {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        context: context,
-        builder: (builder) {
-          return Container(
-            color: Theme.of(context).primaryColorDark,
-            height: 500,
-            child: Center(
-              child: Container(
-                height: 300,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.transparent,
-                    width: 0,
-                  ),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  color: Colors.white,
-                ),
-                child: Stack(
-                  alignment: Alignment.center,
-                  overflow: Overflow.visible,
-                  children: [
-                    Positioned(
-                      child: FabCircle(
-                        padding: 5,
-                        bgcolor: Theme.of(context).primaryColorDark,
-                        url: cryptoIconUrl(ticker),
-                        size: 35,
-                      ),
-                      top: -35,
-                    ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            APPNAME,
-                            style: Theme.of(context).textTheme.headerMaster,
-                          ),
-                        ),
-                        QrImage(
-                          data: address,
-                          version: QrVersions.auto,
-                          size: 200,
-                          backgroundColor: Colors.white,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          address,
-                          style: Theme.of(context).textTheme.headerGrey1,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.all(15.0),
-              ),
-            ),
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     return RoundedContainerDark(
-      child: ListTile(
-        title: Text(
-          "Your ${ticker.toUpperCase()} address",
-          style: Theme.of(context).textTheme.headerGrey1,
-        ),
-        subtitle: Text(
-          address,
-        ),
-        leading: IconButton(
-            icon: Icon(MaterialCommunityIcons.qrcode),
-            onPressed: () {
-              _showModalSheet(context);
-            }),
-        trailing: IconButton(
-            icon: Icon(Icons.content_copy),
-            onPressed: () {
-              Clipboard.setData(ClipboardData(text: address));
-            }),
+      child: Row(
+        children: [
+          IconButton(
+              icon: Icon(MaterialCommunityIcons.qrcode),
+              onPressed: () {
+                bottomModal(
+                  context: context,
+                  header: "Scan address",
+                  child: Center(
+                    child: Container(
+                      height: 300,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.transparent,
+                          width: 0,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        color: Colors.white,
+                      ),
+                      child: Stack(
+                        alignment: Alignment.center,
+                        overflow: Overflow.visible,
+                        children: [
+                          Positioned(
+                            child: FabCircle(
+                              padding: 5,
+                              bgcolor: Theme.of(context).primaryColorDark,
+                              url: cryptoIconUrl(ticker),
+                              size: 35,
+                            ),
+                            top: -35,
+                          ),
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Text(
+                                  APPNAME,
+                                  style:
+                                      Theme.of(context).textTheme.headerMaster,
+                                ),
+                              ),
+                              QrImage(
+                                data: address,
+                                version: QrVersions.auto,
+                                size: 200,
+                                backgroundColor: Colors.white,
+                              ),
+                              SizedBox(height: 10),
+                              HeaderGrey1(
+                                address,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      padding: EdgeInsets.all(15.0),
+                    ),
+                  ),
+                );
+              }),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HeaderGrey1(
+                  "Your ${ticker.toUpperCase()} address",
+                ),
+                SelectableText(
+                  address,
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+              icon: Icon(Icons.content_copy),
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: address));
+              })
+        ],
       ),
     );
   }

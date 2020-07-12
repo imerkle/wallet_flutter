@@ -72,6 +72,24 @@ class Settings extends StatelessWidget {
   }
 }
 
+class ConfigLabel extends StatelessWidget {
+  ConfigLabel({this.label, this.value});
+  final String value, label;
+  @override
+  Widget build(BuildContext context) {
+    if (value == "0" || value == "") {
+      return Container();
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        HeaderGrey1(label),
+        Text(value),
+      ],
+    );
+  }
+}
+
 class ConfigSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -86,7 +104,54 @@ class ConfigSetting extends StatelessWidget {
                 child: RoundedContainerDark(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(entry.value.ticker),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ConfigLabel(
+                                label: "Ticker",
+                                value: entry.value.ticker,
+                              ),
+                              ConfigLabel(
+                                label: "Precision",
+                                value: entry.value.precision.toString(),
+                              ),
+                              ConfigLabel(
+                                label: "Protocol",
+                                value: entry.value.config.protocol.name,
+                              ),
+                              ConfigLabel(
+                                label: "Code",
+                                value: entry.value.config.code.toString(),
+                              ),
+                              ConfigLabel(
+                                label: "Curve Name",
+                                value: entry.value.config.curveName.name,
+                              ),
+                              ConfigLabel(
+                                label: "Private",
+                                value: entry.value.config.private.toString(),
+                              ),
+                              ConfigLabel(
+                                label: "Public",
+                                value: entry.value.config.public.toString(),
+                              ),
+                              ConfigLabel(
+                                label: "Chain Id",
+                                value: entry.value.config.chainId.toString(),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () => {},
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -98,42 +163,6 @@ class ConfigSetting extends StatelessWidget {
 }
 
 class WalletSetting extends StatelessWidget {
-  Future<String> _askedToLead(context) async {
-    return await showDialog<String>(
-        context: context,
-        builder: (BuildContext context) {
-          TextEditingController mnemonic = TextEditingController();
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text("Restore wallet from Seed",
-                  style: Theme.of(context).textTheme.subtitle1),
-              SimpleDialog(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Column(
-                      children: [
-                        PasteTextField(
-                          labelText: "Paste your mnemonic...",
-                          controller: mnemonic,
-                        ),
-                        SimpleButton(
-                          onPressed: () {
-                            Navigator.pop(context, mnemonic.text);
-                          },
-                          child: const Text('Restore'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        });
-  }
-
   @override
   Widget build(context) {
     final walletStore = Provider.of<MainStore>(context).walletStore;
@@ -183,10 +212,32 @@ class WalletSetting extends StatelessWidget {
                 icon: Icon(Icons.settings_backup_restore),
                 title: "Restore Wallet",
                 onPressed: () async {
-                  String mnemonic = await _askedToLead(context);
-                  if (mnemonic.length > 0) {
-                    await walletStore.addWallet(mnemonic: mnemonic);
-                  }
+                  TextEditingController mnemonic = TextEditingController();
+                  bottomModal(
+                    context: context,
+                    header: "Restore wallet from Seed",
+                    child: Column(
+                      children: [
+                        PasteTextField(
+                          labelText: "Paste your mnemonic...",
+                          controller: mnemonic,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        SimpleButton(
+                          onPressed: () async {
+                            if (mnemonic.text.length > 0) {
+                              await walletStore.addWallet(
+                                  mnemonic: mnemonic.text);
+                              Navigator.pop(context);
+                            }
+                          },
+                          child: const Text('Restore'),
+                        ),
+                      ],
+                    ),
+                  );
                 },
               ),
             ],

@@ -50,6 +50,11 @@ extension CustomColorScheme1 on TextTheme {
         color: const Color(0xff8e9297),
         fontSize: 14,
       );
+  TextStyle get headerGrey4 => TextStyle(
+        color: const Color(0xff8e9297),
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+      );
   TextStyle get headerMaster => TextStyle(
         color: const Color(0xff7289da),
         fontSize: 20,

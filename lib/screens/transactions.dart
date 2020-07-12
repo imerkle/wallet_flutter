@@ -50,56 +50,53 @@ class _TransanctionScreenState extends State<TransanctionScreen>
     final configStore = Provider.of<MainStore>(context).configStore;
     final fabStore = Provider.of<MainStore>(context).fabStore;
     final mainStore = Provider.of<MainStore>(context);
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
+
+    var fees = valueToPrecision(
+        tx.fees.used * tx.fees.price, fabStore.configAtom.precision);
+    bottomModal(
         context: context,
-        builder: (builder) {
-          var fees = valueToPrecision(
-              tx.fees.used * tx.fees.price, fabStore.configAtom.precision);
-          return Container(
-            height: 500,
-            child: SingleChildScrollView(
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Center(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: FractionallySizedBox(
-                          widthFactor: 0.1,
-                          child: Container(
-                            height: 4,
-                            color: Colors.white,
-                          ),
+        header: "Transactions",
+        child: Container(
+          height: 500,
+          child: SingleChildScrollView(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: FractionallySizedBox(
+                        widthFactor: 0.1,
+                        child: Container(
+                          height: 4,
+                          color: Colors.white,
                         ),
                       ),
                     ),
-                    Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                            child: Text("Transaction",
-                                style: TextStyle(fontSize: 28)))),
-                    TxLabels(label: "Id", value: tx.id),
-                    /*TxLabels(
+                  ),
+                  Align(
+                      alignment: Alignment.centerLeft,
+                      child: Container(
+                          child: Text("Transaction",
+                              style: TextStyle(fontSize: 28)))),
+                  TxLabels(label: "Id", value: tx.id),
+                  /*TxLabels(
                         label: "Timestamp",
                         value: DateFormat("MMM-dd-yyyy hh:mm:ss a").format(
                             DateTime.fromMillisecondsSinceEpoch(
                                 tx.timestamp * 1000))),*/
-                    TxLabels(
-                        label: "Fee",
-                        value:
-                            "${valueToPretty(fees, CRYPTO_PRECISION)}${rel.toUpperCase()} (${mainStore.fiat.symbol}${valueToPretty(balanceStore.currentPrice * fees, FIAT_PRECISION)})"),
-                    SizedBox(height: 10),
-                    TxIOL(header: "Inputs", iol: tx.inputs),
-                    SizedBox(height: 10),
-                    TxIOL(header: "Outputs", iol: tx.outputs),
-                  ]),
-            ),
-            padding: EdgeInsets.all(15.0),
-          );
-        });
+                  TxLabels(
+                      label: "Fee",
+                      value:
+                          "${valueToPretty(fees, CRYPTO_PRECISION)}${rel.toUpperCase()} (${mainStore.fiat.symbol}${valueToPretty(balanceStore.currentPrice * fees, FIAT_PRECISION)})"),
+                  SizedBox(height: 10),
+                  TxIOL(header: "Inputs", iol: tx.inputs),
+                  SizedBox(height: 10),
+                  TxIOL(header: "Outputs", iol: tx.outputs),
+                ]),
+          ),
+          padding: EdgeInsets.all(15.0),
+        ));
   }
 
   @override

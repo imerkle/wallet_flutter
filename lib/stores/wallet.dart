@@ -57,6 +57,7 @@ abstract class _WalletStore with Store {
       ..configs = cnf;
     ws.list.add(w);
     ws = ws;
+    index = ws.list.length - 1;
     parent.storage[GET_WALLET] = ws.writeToJson();
   }
 

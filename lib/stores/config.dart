@@ -12,7 +12,7 @@ class ConfigStore = _ConfigStore with _$ConfigStore;
 
 abstract class _ConfigStore with Store {
   @observable
-  Map<String, ConfigAtom> configs = {
+  ObservableMap<String, ConfigAtom> configs = ObservableMap.of({
     "btc": ConfigAtom(
         id: "btc",
         name: "Bitcoin",
@@ -59,9 +59,20 @@ abstract class _ConfigStore with Store {
         ..private = 128
         ..public = 38,
     ),
-  };
+  });
 
   ConfigAtom configAtomById(String i) => configs[i];
+
+  @action
+  setConfig(id, configAtom) {
+    configs[id] = configAtom;
+    configs = configs;
+  }
+
+  @action
+  removeConfig(String key) {
+    configs.remove(key);
+  }
 
   @computed
   Iterable<Config> get configsForWallet =>

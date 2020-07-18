@@ -21,13 +21,13 @@ import 'package:fixnum/fixnum.dart';
 
 RefreshController _refreshController = RefreshController(initialRefresh: false);
 
-class TransanctionScreen extends StatefulWidget {
+class TransactionScreen extends StatefulWidget {
   @override
-  _TransanctionScreenState createState() => _TransanctionScreenState();
+  _TransactionScreenState createState() => _TransactionScreenState();
 }
 
-class _TransanctionScreenState extends State<TransanctionScreen>
-    with AfterInitMixin<TransanctionScreen> {
+class _TransactionScreenState extends State<TransactionScreen>
+    with AfterInitMixin<TransactionScreen> {
   refresh(BuildContext context) async {
     final transactionStore = Provider.of<MainStore>(context).transactionStore;
 

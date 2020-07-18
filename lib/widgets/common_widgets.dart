@@ -67,12 +67,12 @@ class RadioCard extends StatelessWidget {
     @required this.index,
     @required this.data,
     this.onChanged,
-    this.onDismiss,
+    this.onDismissed,
   });
   final int index;
   final List<Widget> data;
   final void Function(int) onChanged;
-  final void Function(int) onDismiss;
+  final void Function(int) onDismissed;
   @override
   Widget build(context) {
     return Column(
@@ -80,36 +80,9 @@ class RadioCard extends StatelessWidget {
             .asMap()
             .entries
             .map(
-              (entry) => Dismissible(
-                background: Align(
-                  alignment: Alignment.centerRight,
-                  child: Icon(Icons.delete),
-                ),
-                direction: DismissDirection.endToStart,
+              (entry) => NormalDismissible(
                 onDismissed: (_) {
-                  onDismiss(entry.key);
-                },
-                key: Key(entry.key.toString()),
-                confirmDismiss: (direction) async {
-                  return await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text("Confirm"),
-                        content: const Text(
-                            "Are you sure you wish to delete this item?"),
-                        actions: <Widget>[
-                          FlatButton(
-                              onPressed: () => Navigator.of(context).pop(true),
-                              child: const Text("DELETE")),
-                          FlatButton(
-                            onPressed: () => Navigator.of(context).pop(false),
-                            child: const Text("CANCEL"),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  onDismissed(entry.key);
                 },
                 child: GestureDetector(
                   onTap: () => {onChanged(entry.key)},
@@ -124,6 +97,45 @@ class RadioCard extends StatelessWidget {
               ),
             )
             .toList());
+  }
+}
+
+class NormalDismissible extends StatelessWidget {
+  NormalDismissible({@required this.onDismissed, @required this.child});
+  final Function(DismissDirection) onDismissed;
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
+    return Dismissible(
+      background: Align(
+        alignment: Alignment.centerRight,
+        child: Icon(Icons.delete),
+      ),
+      direction: DismissDirection.endToStart,
+      onDismissed: onDismissed,
+      key: UniqueKey(),
+      confirmDismiss: (direction) async {
+        return await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Confirm"),
+              content: const Text("Are you sure you wish to delete this item?"),
+              actions: <Widget>[
+                FlatButton(
+                    onPressed: () => Navigator.of(context).pop(true),
+                    child: const Text("DELETE")),
+                FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text("CANCEL"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+      child: child,
+    );
   }
 }
 
@@ -236,16 +248,18 @@ class ScanTextField extends StatelessWidget {
 
 class NormalTextField extends StatelessWidget {
   NormalTextField({
-    this.controller,
-    @required this.labelText,
+    @required this.controller,
+    this.labelText = "",
     this.prefixIcon,
     this.suffixIcon,
+    this.floatingLabelBehavior = FloatingLabelBehavior.never,
   });
 
   final TextEditingController controller;
   final String labelText;
   final Widget prefixIcon;
   final Widget suffixIcon;
+  final FloatingLabelBehavior floatingLabelBehavior;
 
   @override
   Widget build(BuildContext context) {
@@ -257,7 +271,7 @@ class NormalTextField extends StatelessWidget {
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 10),
         hintText: labelText,
-        floatingLabelBehavior: FloatingLabelBehavior.never,
+        floatingLabelBehavior: floatingLabelBehavior,
         filled: true,
         fillColor: Theme.of(context).primaryColorDark,
         enabledBorder: OutlineInputBorder(

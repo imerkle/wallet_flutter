@@ -3,7 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/stores/main.dart';
 
-class BottomNavBar extends StatelessWidget {
+class BottomNavBarLeft extends StatelessWidget {
   @override
   Widget build(context) {
     final homepageStore = Provider.of<MainStore>(context).homepageStore;

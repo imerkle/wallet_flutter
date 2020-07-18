@@ -20,16 +20,40 @@ mixin _$ConfigStore on _ConfigStore, Store {
   final _$configsAtom = Atom(name: '_ConfigStore.configs');
 
   @override
-  Map<String, ConfigAtom> get configs {
+  ObservableMap<String, ConfigAtom> get configs {
     _$configsAtom.reportRead();
     return super.configs;
   }
 
   @override
-  set configs(Map<String, ConfigAtom> value) {
+  set configs(ObservableMap<String, ConfigAtom> value) {
     _$configsAtom.reportWrite(value, super.configs, () {
       super.configs = value;
     });
+  }
+
+  final _$_ConfigStoreActionController = ActionController(name: '_ConfigStore');
+
+  @override
+  dynamic setConfig(dynamic id, dynamic configAtom) {
+    final _$actionInfo = _$_ConfigStoreActionController.startAction(
+        name: '_ConfigStore.setConfig');
+    try {
+      return super.setConfig(id, configAtom);
+    } finally {
+      _$_ConfigStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic removeConfig(String key) {
+    final _$actionInfo = _$_ConfigStoreActionController.startAction(
+        name: '_ConfigStore.removeConfig');
+    try {
+      return super.removeConfig(key);
+    } finally {
+      _$_ConfigStoreActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

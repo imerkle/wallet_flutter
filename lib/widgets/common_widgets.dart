@@ -252,6 +252,7 @@ class NormalTextField extends StatelessWidget {
     this.labelText = "",
     this.prefixIcon,
     this.suffixIcon,
+    this.onChanged,
     this.floatingLabelBehavior = FloatingLabelBehavior.never,
   });
 
@@ -259,11 +260,13 @@ class NormalTextField extends StatelessWidget {
   final String labelText;
   final Widget prefixIcon;
   final Widget suffixIcon;
+  final Function onChanged;
   final FloatingLabelBehavior floatingLabelBehavior;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: onChanged,
       style: TextStyle(
         fontSize: 14.0,
       ),
@@ -319,6 +322,7 @@ Future<T> bottomModal<T>(
     {BuildContext context, String header, Widget child}) async {
   return await showModalBottomSheet<T>(
       context: context,
+      isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),

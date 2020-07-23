@@ -48,6 +48,20 @@ const Configs$json = const {
   ],
 };
 
+const Option$json = const {
+  '1': 'Option',
+  '2': const [
+    const {'1': 'name', '3': 1, '4': 1, '5': 9, '10': 'name'},
+    const {'1': 'ticker', '3': 2, '4': 1, '5': 9, '10': 'ticker'},
+    const {'1': 'config', '3': 3, '4': 1, '5': 11, '6': '.config.Config', '10': 'config'},
+    const {'1': 'precision', '3': 4, '4': 1, '5': 5, '10': 'precision'},
+    const {'1': 'id', '3': 5, '4': 1, '5': 9, '10': 'id'},
+    const {'1': 'brkind', '3': 6, '4': 1, '5': 14, '6': '.chain.GetBalanceRequestKind', '10': 'brkind'},
+    const {'1': 'brhash', '3': 7, '4': 1, '5': 9, '10': 'brhash'},
+    const {'1': 'brurl', '3': 8, '4': 1, '5': 9, '10': 'brurl'},
+  ],
+};
+
 const WebPlatformChannel$json = const {
   '1': 'WebPlatformChannel',
   '2': const [

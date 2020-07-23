@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:wallet_flutter/screens/homepage.dart';
+import 'package:wallet_flutter/ui/homepage/homepage.dart';
 import 'package:wallet_flutter/utils/constants.dart';
 import 'stores/main.dart';
 import 'utils/app_localization.dart';

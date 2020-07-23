@@ -10,6 +10,7 @@ import 'dart:core' as $core;
 import 'package:protobuf/protobuf.dart' as $pb;
 
 import 'config.pbenum.dart';
+import '../chains/chain/chain.pbenum.dart' as $0;
 
 export 'config.pbenum.dart';
 
@@ -137,6 +138,109 @@ class Configs extends $pb.GeneratedMessage {
 
   @$pb.TagNumber(1)
   $core.List<Config> get list => $_getList(0);
+}
+
+class Option extends $pb.GeneratedMessage {
+  static final $pb.BuilderInfo _i = $pb.BuilderInfo('Option', package: const $pb.PackageName('config'), createEmptyInstance: create)
+    ..aOS(1, 'name')
+    ..aOS(2, 'ticker')
+    ..aOM<Config>(3, 'config', subBuilder: Config.create)
+    ..a<$core.int>(4, 'precision', $pb.PbFieldType.O3)
+    ..aOS(5, 'id')
+    ..e<$0.GetBalanceRequestKind>(6, 'brkind', $pb.PbFieldType.OE, defaultOrMaker: $0.GetBalanceRequestKind.BLOCKBOOK, valueOf: $0.GetBalanceRequestKind.valueOf, enumValues: $0.GetBalanceRequestKind.values)
+    ..aOS(7, 'brhash')
+    ..aOS(8, 'brurl')
+    ..hasRequiredFields = false
+  ;
+
+  Option._() : super();
+  factory Option() => create();
+  factory Option.fromBuffer($core.List<$core.int> i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromBuffer(i, r);
+  factory Option.fromJson($core.String i, [$pb.ExtensionRegistry r = $pb.ExtensionRegistry.EMPTY]) => create()..mergeFromJson(i, r);
+  Option clone() => Option()..mergeFromMessage(this);
+  Option copyWith(void Function(Option) updates) => super.copyWith((message) => updates(message as Option));
+  $pb.BuilderInfo get info_ => _i;
+  @$core.pragma('dart2js:noInline')
+  static Option create() => Option._();
+  Option createEmptyInstance() => create();
+  static $pb.PbList<Option> createRepeated() => $pb.PbList<Option>();
+  @$core.pragma('dart2js:noInline')
+  static Option getDefault() => _defaultInstance ??= $pb.GeneratedMessage.$_defaultFor<Option>(create);
+  static Option _defaultInstance;
+
+  @$pb.TagNumber(1)
+  $core.String get name => $_getSZ(0);
+  @$pb.TagNumber(1)
+  set name($core.String v) { $_setString(0, v); }
+  @$pb.TagNumber(1)
+  $core.bool hasName() => $_has(0);
+  @$pb.TagNumber(1)
+  void clearName() => clearField(1);
+
+  @$pb.TagNumber(2)
+  $core.String get ticker => $_getSZ(1);
+  @$pb.TagNumber(2)
+  set ticker($core.String v) { $_setString(1, v); }
+  @$pb.TagNumber(2)
+  $core.bool hasTicker() => $_has(1);
+  @$pb.TagNumber(2)
+  void clearTicker() => clearField(2);
+
+  @$pb.TagNumber(3)
+  Config get config => $_getN(2);
+  @$pb.TagNumber(3)
+  set config(Config v) { setField(3, v); }
+  @$pb.TagNumber(3)
+  $core.bool hasConfig() => $_has(2);
+  @$pb.TagNumber(3)
+  void clearConfig() => clearField(3);
+  @$pb.TagNumber(3)
+  Config ensureConfig() => $_ensure(2);
+
+  @$pb.TagNumber(4)
+  $core.int get precision => $_getIZ(3);
+  @$pb.TagNumber(4)
+  set precision($core.int v) { $_setSignedInt32(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasPrecision() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearPrecision() => clearField(4);
+
+  @$pb.TagNumber(5)
+  $core.String get id => $_getSZ(4);
+  @$pb.TagNumber(5)
+  set id($core.String v) { $_setString(4, v); }
+  @$pb.TagNumber(5)
+  $core.bool hasId() => $_has(4);
+  @$pb.TagNumber(5)
+  void clearId() => clearField(5);
+
+  @$pb.TagNumber(6)
+  $0.GetBalanceRequestKind get brkind => $_getN(5);
+  @$pb.TagNumber(6)
+  set brkind($0.GetBalanceRequestKind v) { setField(6, v); }
+  @$pb.TagNumber(6)
+  $core.bool hasBrkind() => $_has(5);
+  @$pb.TagNumber(6)
+  void clearBrkind() => clearField(6);
+
+  @$pb.TagNumber(7)
+  $core.String get brhash => $_getSZ(6);
+  @$pb.TagNumber(7)
+  set brhash($core.String v) { $_setString(6, v); }
+  @$pb.TagNumber(7)
+  $core.bool hasBrhash() => $_has(6);
+  @$pb.TagNumber(7)
+  void clearBrhash() => clearField(7);
+
+  @$pb.TagNumber(8)
+  $core.String get brurl => $_getSZ(7);
+  @$pb.TagNumber(8)
+  set brurl($core.String v) { $_setString(7, v); }
+  @$pb.TagNumber(8)
+  $core.bool hasBrurl() => $_has(7);
+  @$pb.TagNumber(8)
+  void clearBrurl() => clearField(8);
 }
 
 class WebPlatformChannel extends $pb.GeneratedMessage {

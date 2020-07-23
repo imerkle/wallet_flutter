@@ -5,8 +5,8 @@ enum WalletKind { BIP32 = 0; }
 message Wallet {
   string mnemonic = 1;
   map<string, CoinKey> coinkeys = 2;
-  config.Configs configs = 3;
-  WalletKind wallet_kind = 4;
+  WalletKind wallet_kind = 3;
+  map<string, config.Option> options = 4;
 }
 message CoinKey {
   bytes public_key = 1;

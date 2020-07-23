@@ -19,8 +19,8 @@ class Wallet extends $pb.GeneratedMessage {
   static final $pb.BuilderInfo _i = $pb.BuilderInfo('Wallet', createEmptyInstance: create)
     ..aOS(1, 'mnemonic')
     ..m<$core.String, CoinKey>(2, 'coinkeys', entryClassName: 'Wallet.CoinkeysEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: CoinKey.create)
-    ..aOM<$3.Configs>(3, 'configs', subBuilder: $3.Configs.create)
-    ..e<WalletKind>(4, 'walletKind', $pb.PbFieldType.OE, defaultOrMaker: WalletKind.BIP32, valueOf: WalletKind.valueOf, enumValues: WalletKind.values)
+    ..e<WalletKind>(3, 'walletKind', $pb.PbFieldType.OE, defaultOrMaker: WalletKind.BIP32, valueOf: WalletKind.valueOf, enumValues: WalletKind.values)
+    ..m<$core.String, $3.Option>(4, 'options', entryClassName: 'Wallet.OptionsEntry', keyFieldType: $pb.PbFieldType.OS, valueFieldType: $pb.PbFieldType.OM, valueCreator: $3.Option.create)
     ..hasRequiredFields = false
   ;
 
@@ -52,24 +52,16 @@ class Wallet extends $pb.GeneratedMessage {
   $core.Map<$core.String, CoinKey> get coinkeys => $_getMap(1);
 
   @$pb.TagNumber(3)
-  $3.Configs get configs => $_getN(2);
+  WalletKind get walletKind => $_getN(2);
   @$pb.TagNumber(3)
-  set configs($3.Configs v) { setField(3, v); }
+  set walletKind(WalletKind v) { setField(3, v); }
   @$pb.TagNumber(3)
-  $core.bool hasConfigs() => $_has(2);
+  $core.bool hasWalletKind() => $_has(2);
   @$pb.TagNumber(3)
-  void clearConfigs() => clearField(3);
-  @$pb.TagNumber(3)
-  $3.Configs ensureConfigs() => $_ensure(2);
+  void clearWalletKind() => clearField(3);
 
   @$pb.TagNumber(4)
-  WalletKind get walletKind => $_getN(3);
-  @$pb.TagNumber(4)
-  set walletKind(WalletKind v) { setField(4, v); }
-  @$pb.TagNumber(4)
-  $core.bool hasWalletKind() => $_has(3);
-  @$pb.TagNumber(4)
-  void clearWalletKind() => clearField(4);
+  $core.Map<$core.String, $3.Option> get options => $_getMap(3);
 }
 
 class CoinKey extends $pb.GeneratedMessage {

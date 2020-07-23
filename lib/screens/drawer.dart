@@ -1,11 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:wallet_flutter/screens/fabs.dart';
-import 'package:wallet_flutter/screens/transactions.dart';
-import 'package:wallet_flutter/screens/settings.dart';
 import 'package:wallet_flutter/stores/main.dart';
+import 'package:wallet_flutter/ui/folders/folders.dart';
+import 'package:wallet_flutter/ui/settings/settings.dart';
+import 'package:wallet_flutter/ui/transaction/transactions.dart';
 import 'package:wallet_flutter/widgets/bottom_nav_bar.dart';
 
 enum DrawerPosition {

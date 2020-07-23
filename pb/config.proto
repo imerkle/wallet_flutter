@@ -1,5 +1,7 @@
 syntax = "proto3";
 package config;
+import "chains/chain/chain.proto";
+
 // option java_package = "com.example.wallet_flutter";
 // option java_outer_classname = "Protos";
 // option swift_class_prefix = "Protos";
@@ -31,6 +33,17 @@ message Config {
   uint32 chain_id = 8;
 }
 message Configs { repeated Config list = 1; }
+
+message Option {
+  string name = 1;
+  string ticker = 2;
+  Config config = 3;
+  int32 precision = 4;
+  string id = 5;
+  chain.GetBalanceRequestKind brkind = 6;
+  string brhash = 7;
+  string brurl = 8;
+}
 
 message WebPlatformChannel {
   string method_name = 1;

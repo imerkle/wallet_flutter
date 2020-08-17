@@ -4,12 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
-import 'package:wallet_flutter/screens/drawer.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:wallet_flutter/ui/folders/folders.dart';
+import 'package:wallet_flutter/ui/homepage/bottom_nav_bar.dart';
+import 'package:wallet_flutter/ui/homepage/drawer.dart';
 import 'package:wallet_flutter/ui/settings/settings.dart';
 import 'package:wallet_flutter/ui/wallet/wallet.dart';
-import 'package:wallet_flutter/widgets/bottom_nav_bar.dart';
 
 class HomePage extends StatelessWidget {
   final GlobalKey<InnerDrawerState> _innerDrawerKey =
@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
 
     return Observer(
       builder: (_) {
-        if (walletStore.ws.list.length == 0) {
+        if (walletStore.wallets.length == 0) {
           return Container();
         }
         Widget middleScreen = Container(

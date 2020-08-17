@@ -1,44 +1,50 @@
 // Include generated file
 import 'package:mobx/mobx.dart';
-import 'package:wallet_flutter/gen/pb/config.pb.dart';
-import 'package:wallet_flutter/stores/main.dart';
-import 'package:wallet_flutter/utils/constants.dart';
+import 'package:wallet_flutter/ui/folders/folder.dart';
+import 'package:wallet_flutter/utils/fn.dart';
 
 part 'folder_store.g.dart';
+
+var DEFAULT_FOLDERS = ObservableList.of([
+  Folder(
+    ids: ObservableList.of(["btc", "btg"]),
+    name: "Bitcoin",
+    logo: cryptoIconUrl("btc"),
+  ),
+  Folder(
+    ids: ObservableList.of(["eth"]),
+    name: "Ethereum",
+    logo: cryptoIconUrl("eth"),
+  ),
+]);
 
 // This is the class used by rest of your codebase
 class FolderStore = _FolderStore with _$FolderStore;
 
-class Folder {
-  Folder({this.ids, this.logo, this.name});
-  List<String> ids;
-  String logo, name;
-}
-
 abstract class _FolderStore with Store {
-  _FolderStore({this.parent});
-  final MainStore parent;
+  _FolderStore();
+
+  ObservableList<Folder> folders = DEFAULT_FOLDERS;
 
   @observable
-  List<Folder> folders = DEFAULT_FOLDERS;
-
-  @observable
-  int folderIndex = 0;
-
-  @observable
-  String id = DEFAULT_FOLDERS[0].ids[0];
+  int selectedIndex = 0;
 
   @computed
-  Option get option => parent.configStore.options[id];
+  Folder get folder => folders[selectedIndex];
 
   @computed
-  Folder get folder => folders[folderIndex];
+  String get id => folder.ids[folder.selectedIdIndex];
 
-  @computed
-  List<String> get ids => folders[folderIndex].ids;
-
+  /// set current folder
   @action
-  void setId(String s) {
-    id = s;
+  void setSelectedIndex(int i) {
+    selectedIndex = i;
+  }
+
+  /// set current id in current folder
+  @action
+  void setSelectedId(String s) {
+    folder.selectedIdIndex = folder.ids.indexOf(s);
+    //print(folders[selectedIndex].selectedIdIndex);
   }
 }

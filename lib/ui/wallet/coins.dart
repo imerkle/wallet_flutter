@@ -37,10 +37,11 @@ class _CoinListViewState extends State<CoinListView> {
 
     final configStore = Provider.of<MainStore>(context).configStore;
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
+    final walletStore = Provider.of<MainStore>(context).walletStore;
     final mainStore = Provider.of<MainStore>(context);
 
     return Observer(builder: (_) {
-      var data = folderStore.ids.map((id) {
+      var data = folderStore.folder.ids.map((id) {
         var option = configStore.optionById(id);
         var balance = balanceStore.getBalanceNormalized(option);
         var price = balanceStore.getPrice(option);
@@ -66,7 +67,9 @@ class _CoinListViewState extends State<CoinListView> {
             data: data,
             id: folderStore.id,
             onTap: (d) {
-              folderStore.setId(d.id);
+              folderStore.setSelectedId(d.id);
+              print(d.id);
+              //walletStore.setWallet();
             }),
       );
     });

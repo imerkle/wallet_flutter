@@ -4,7 +4,7 @@ import 'package:wallet_flutter/gen/chains/chain/chain.pb.dart';
 import 'package:wallet_flutter/gen/pb/config.pb.dart';
 import 'package:wallet_flutter/gen/pb/config.pbenum.dart';
 import 'package:wallet_flutter/stores/main.dart';
-import 'package:wallet_flutter/utils/config.dart';
+import 'package:wallet_flutter/ui/settings/config_fn.dart';
 import 'package:wallet_flutter/widgets/common_widgets.dart';
 import 'package:wallet_flutter/widgets/select/select_widget.dart';
 

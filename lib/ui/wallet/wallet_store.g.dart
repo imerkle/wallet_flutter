@@ -15,6 +15,12 @@ mixin _$WalletStore on _WalletStore, Store {
   Wallet get wallet => (_$walletComputed ??=
           Computed<Wallet>(() => super.wallet, name: '_WalletStore.wallet'))
       .value;
+  Computed<Option> _$optionComputed;
+
+  @override
+  Option get option => (_$optionComputed ??=
+          Computed<Option>(() => super.option, name: '_WalletStore.option'))
+      .value;
   Computed<CoinKey> _$currentCoinKeyComputed;
 
   @override
@@ -22,21 +28,6 @@ mixin _$WalletStore on _WalletStore, Store {
           () => super.currentCoinKey,
           name: '_WalletStore.currentCoinKey'))
       .value;
-
-  final _$wsAtom = Atom(name: '_WalletStore.ws');
-
-  @override
-  Wallets get ws {
-    _$wsAtom.reportRead();
-    return super.ws;
-  }
-
-  @override
-  set ws(Wallets value) {
-    _$wsAtom.reportWrite(value, super.ws, () {
-      super.ws = value;
-    });
-  }
 
   final _$indexAtom = Atom(name: '_WalletStore.index');
 
@@ -84,9 +75,9 @@ mixin _$WalletStore on _WalletStore, Store {
   @override
   String toString() {
     return '''
-ws: ${ws},
 index: ${index},
 wallet: ${wallet},
+option: ${option},
 currentCoinKey: ${currentCoinKey}
     ''';
   }

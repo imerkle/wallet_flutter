@@ -25,7 +25,7 @@ abstract class _TransactionStore with Store {
 
   @action
   Future<void> refreshTxs() async {
-    Option option = parent.folderStore.option;
+    Option option = parent.walletStore.option;
     String address = parent.walletStore.currentCoinKey.address;
     GetTransactionsResponse res;
     try {
@@ -50,7 +50,7 @@ abstract class _TransactionStore with Store {
     Outputs os = Outputs();
     Output o = Output()
       ..address = receivingAddress
-      ..value = Int64((amt * parent.folderStore.option.precision).toInt())
+      ..value = Int64((amt * parent.walletStore.option.precision).toInt())
       ..memo = memo;
     o.address = receivingAddress;
     os.list.add(o);
@@ -58,7 +58,7 @@ abstract class _TransactionStore with Store {
     var txOpts = await getTransactionOpts(
         address: parent.walletStore.currentCoinKey.address);
     var input = GenSendTransactionRequest()
-      ..config = parent.folderStore.option.config
+      ..config = parent.walletStore.option.config
       ..privateKey = parent.walletStore.currentCoinKey.privateKey
       ..publicKey = parent.walletStore.currentCoinKey.publicKey
       ..outputs = os

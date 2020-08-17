@@ -9,78 +9,53 @@ part of 'folder_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$FolderStore on _FolderStore, Store {
-  Computed<Option> _$optionComputed;
-
-  @override
-  Option get option => (_$optionComputed ??=
-          Computed<Option>(() => super.option, name: '_FolderStore.option'))
-      .value;
   Computed<Folder> _$folderComputed;
 
   @override
   Folder get folder => (_$folderComputed ??=
           Computed<Folder>(() => super.folder, name: '_FolderStore.folder'))
       .value;
-  Computed<List<String>> _$idsComputed;
+  Computed<String> _$idComputed;
 
   @override
-  List<String> get ids => (_$idsComputed ??=
-          Computed<List<String>>(() => super.ids, name: '_FolderStore.ids'))
+  String get id => (_$idComputed ??=
+          Computed<String>(() => super.id, name: '_FolderStore.id'))
       .value;
 
-  final _$foldersAtom = Atom(name: '_FolderStore.folders');
+  final _$selectedIndexAtom = Atom(name: '_FolderStore.selectedIndex');
 
   @override
-  List<Folder> get folders {
-    _$foldersAtom.reportRead();
-    return super.folders;
+  int get selectedIndex {
+    _$selectedIndexAtom.reportRead();
+    return super.selectedIndex;
   }
 
   @override
-  set folders(List<Folder> value) {
-    _$foldersAtom.reportWrite(value, super.folders, () {
-      super.folders = value;
-    });
-  }
-
-  final _$folderIndexAtom = Atom(name: '_FolderStore.folderIndex');
-
-  @override
-  int get folderIndex {
-    _$folderIndexAtom.reportRead();
-    return super.folderIndex;
-  }
-
-  @override
-  set folderIndex(int value) {
-    _$folderIndexAtom.reportWrite(value, super.folderIndex, () {
-      super.folderIndex = value;
-    });
-  }
-
-  final _$idAtom = Atom(name: '_FolderStore.id');
-
-  @override
-  String get id {
-    _$idAtom.reportRead();
-    return super.id;
-  }
-
-  @override
-  set id(String value) {
-    _$idAtom.reportWrite(value, super.id, () {
-      super.id = value;
+  set selectedIndex(int value) {
+    _$selectedIndexAtom.reportWrite(value, super.selectedIndex, () {
+      super.selectedIndex = value;
     });
   }
 
   final _$_FolderStoreActionController = ActionController(name: '_FolderStore');
 
   @override
-  void setId(String s) {
-    final _$actionInfo =
-        _$_FolderStoreActionController.startAction(name: '_FolderStore.setId');
+  void setSelectedIndex(int i) {
+    final _$actionInfo = _$_FolderStoreActionController.startAction(
+        name: '_FolderStore.setSelectedIndex');
     try {
-      return super.setId(s);
+      return super.setSelectedIndex(i);
+    } finally {
+      _$_FolderStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setSelectedId(String s) {
+    final _$actionInfo = _$_FolderStoreActionController.startAction(
+        name: '_FolderStore.setSelectedId');
+    try {
+      return super.setSelectedId(s);
     } finally {
       _$_FolderStoreActionController.endAction(_$actionInfo);
     }
@@ -89,12 +64,9 @@ mixin _$FolderStore on _FolderStore, Store {
   @override
   String toString() {
     return '''
-folders: ${folders},
-folderIndex: ${folderIndex},
-id: ${id},
-option: ${option},
+selectedIndex: ${selectedIndex},
 folder: ${folder},
-ids: ${ids}
+id: ${id}
     ''';
   }
 }

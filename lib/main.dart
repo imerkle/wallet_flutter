@@ -14,11 +14,6 @@ final mainStore = new MainStore();
 final maxSlideDistance = 0.9;
 final slideDistancePadding = 0.02;
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
 MaterialColor createMaterialColor(Color color) {
   List strengths = <double>[.05];
   Map swatch = <int, Color>{};
@@ -39,6 +34,11 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
@@ -49,28 +49,29 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [Provider<MainStore>(create: (_) => mainStore)],
-        child: MaterialApp(
-          title: 'Wallet',
-          theme: ThemeData(
-            //primarySwatch: Colors.blue,
-            primarySwatch: createMaterialColor(Theme.of(context).masterColor),
-            accentColor: Colors.white,
-            brightness: Brightness.dark,
-            primaryColor: Color(0xff2f3136),
-            primaryColorLight: Color(0xff36393f),
-            primaryColorDark: Color(0xff292B2F),
-          ),
-          home: HomePage(),
-          localizationsDelegates: [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales: [
-            const Locale('en', 'US'),
-            const Locale('sk', 'SK'),
-          ],
-        ));
+      providers: [Provider<MainStore>(create: (_) => mainStore)],
+      child: MaterialApp(
+        title: 'Wallet',
+        theme: ThemeData(
+          //primarySwatch: Colors.blue,
+          primarySwatch: createMaterialColor(Theme.of(context).masterColor),
+          accentColor: Colors.white,
+          brightness: Brightness.dark,
+          primaryColor: Color(0xff2f3136),
+          primaryColorLight: Color(0xff36393f),
+          primaryColorDark: Color(0xff292B2F),
+        ),
+        home: HomePage(),
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'),
+          const Locale('sk', 'SK'),
+        ],
+      ),
+    );
   }
 }

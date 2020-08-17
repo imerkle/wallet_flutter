@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:flutter/foundation.dart';
 import 'package:mobx/mobx.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:plugfox_localstorage/localstorage.dart';
@@ -10,19 +13,30 @@ import 'package:wallet_flutter/utils/rust.dart';
 // Include generated file
 part 'wallet_store.g.dart';
 
-// This is the class used by rest of your codebase
 class WalletStore = _WalletStore with _$WalletStore;
 
 abstract class _WalletStore with Store {
   _WalletStore({this.parent});
   final MainStore parent;
 
-  @observable
-  Wallets ws = Wallets();
+  /// List of wallets
+  ObservableList<Wallet> wallets = ObservableList.of([]);
 
   /// Index of the Current Wallet  in Wallet Array
   @observable
   int index = 0;
+
+  @computed
+  Wallet get wallet => wallets[index];
+
+  @computed
+  Option get option => wallet.options[parent.folderStore.id];
+
+  @computed
+  CoinKey get currentCoinKey =>
+      wallet.coinkeys.containsKey(parent.folderStore.id)
+          ? wallet.coinkeys[parent.folderStore.id]
+          : CoinKey();
 
   @action
   Future<void> init() async {
@@ -31,7 +45,7 @@ abstract class _WalletStore with Store {
     if (walletsJson == null || walletsJson.length == 0) {
       addWallet();
     } else {
-      ws = Wallets.fromJson(walletsJson);
+      //wallets = Wallets.fromJson(walletsJson);
     }
   }
 
@@ -51,27 +65,17 @@ abstract class _WalletStore with Store {
         await parent.rust.invokeRustMethod(GET_WALLET, input.writeToBuffer());
     Wallet w = Wallet.fromBuffer(x);
     w..walletKind = WalletKind.BIP32;
-    w.options.addAll(parent.configStore.options);
+    w..options.addAll(parent.configStore.options);
 
-    ws.list.add(w);
-    ws = ws;
-    index = ws.list.length - 1;
-    parent.storage[GET_WALLET] = ws.writeToJson();
+    wallets.add(w);
+    index = wallets.length - 1;
+    parent.storage[GET_WALLET] = w.writeToJson();
   }
 
   @action
   removeWallet(index) {
-    if (ws.list.length > 1) {
-      ws.list.removeAt(index);
+    if (wallets.length > 1) {
+      wallets.removeAt(index);
     }
   }
-
-  @computed
-  Wallet get wallet => ws.list[index];
-
-  @computed
-  CoinKey get currentCoinKey =>
-      wallet.coinkeys.containsKey(parent.folderStore.id)
-          ? wallet.coinkeys[parent.folderStore.id]
-          : CoinKey();
 }

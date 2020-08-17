@@ -41,8 +41,8 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
 
     await Future.wait([
       balanceStore.fetchBalance(
-          option: folderStore.option, coinKey: walletStore.currentCoinKey),
-      balanceStore.fetchPrice(option: folderStore.option),
+          option: walletStore.option, coinKey: walletStore.currentCoinKey),
+      balanceStore.fetchPrice(option: walletStore.option),
     ]);
     _refreshController.refreshCompleted();
   }
@@ -66,7 +66,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
       children: [
         ScreenHeader(
           child: Text(
-            folderStore.option.name,
+            walletStore.option.name,
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
@@ -90,7 +90,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
                     //crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       BalanceHeader(
-                        ticker: folderStore.option.ticker,
+                        ticker: walletStore.option.ticker,
                         value: balanceStore.currentBalanceNormalized.unlocked,
                         fiatSymbol: mainStore.fiat.symbol,
                         fiatValue:
@@ -101,7 +101,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
                         height: h,
                       ),
                       AddressHeader(
-                        ticker: folderStore.option.ticker,
+                        ticker: walletStore.option.ticker,
                         address: walletStore.currentCoinKey.address,
                       ),
                       SizedBox(
@@ -127,7 +127,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
                         controller: amount,
                         labelText: this._amountInFiat
                             ? '${mainStore.fiat.ticker.toUpperCase()} Amount'
-                            : '${folderStore.option.ticker.toUpperCase()} Amount',
+                            : '${walletStore.option.ticker.toUpperCase()} Amount',
                         prefixIcon: FlatButton(
                           child: Text("MAX"),
                           onPressed: () {
@@ -146,7 +146,7 @@ class _WalletState extends State<Wallet> with AfterInitMixin<Wallet> {
                         suffixIcon: FlatButton(
                           child: Text(this._amountInFiat
                               ? mainStore.fiat.ticker.toUpperCase()
-                              : folderStore.option.ticker.toUpperCase()),
+                              : walletStore.option.ticker.toUpperCase()),
                           onPressed: () {
                             setState(() {
                               _amountInFiat = !this._amountInFiat;

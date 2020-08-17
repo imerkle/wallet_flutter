@@ -13,10 +13,9 @@ class TxIO extends StatelessWidget {
   Widget build(BuildContext context) {
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
     final mainStore = Provider.of<MainStore>(context);
-    final configStore = Provider.of<MainStore>(context).configStore;
-    final folderStore = Provider.of<MainStore>(context).folderStore;
+    final walletStore = Provider.of<MainStore>(context).walletStore;
 
-    var v = valueToPrecision(t.value, folderStore.option.precision);
+    var v = valueToPrecision(t.value, walletStore.option.precision);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

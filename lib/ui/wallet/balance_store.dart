@@ -53,11 +53,11 @@ abstract class _BalanceStore with Store {
   }
 
   @computed
-  double get currentPrice => getPrice(parent.folderStore.option);
+  double get currentPrice => getPrice(parent.walletStore.option);
 
   @computed
   BalanceNormalized get currentBalanceNormalized =>
-      getBalanceNormalized(parent.folderStore.option);
+      getBalanceNormalized(parent.walletStore.option);
 
   BalanceNormalized getBalanceNormalized(Option option) {
     return balances.containsKey(option.id)

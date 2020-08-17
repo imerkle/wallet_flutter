@@ -108,7 +108,7 @@ class WalletSetting extends StatelessWidget {
                   walletStore.index = i;
                 },
                 index: walletStore.index,
-                data: walletStore.ws.list
+                data: walletStore.wallets
                     .asMap()
                     .entries
                     .map(

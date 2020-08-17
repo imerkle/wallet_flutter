@@ -33,8 +33,8 @@ abstract class _MainStore with Store {
         TransactionStore(parent: this, chainServiceClient: chainServiceClient);
     this.balanceStore =
         BalanceStore(parent: this, chainServiceClient: chainServiceClient);
+    this.folderStore = FolderStore();
     this.walletStore = WalletStore(parent: this);
-    this.folderStore = FolderStore(parent: this);
   }
 
   //TransactionStore transactionStore = TransactionStore();

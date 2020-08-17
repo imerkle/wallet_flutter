@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wallet_flutter/stores/main.dart';
 import 'package:wallet_flutter/ui/folders/folders.dart';
+import 'package:wallet_flutter/ui/homepage/bottom_nav_bar.dart';
 import 'package:wallet_flutter/ui/settings/settings.dart';
 import 'package:wallet_flutter/ui/transaction/transactions.dart';
-import 'package:wallet_flutter/widgets/bottom_nav_bar.dart';
 
 enum DrawerPosition {
   left,
@@ -20,7 +20,7 @@ class DrawerScreen extends StatelessWidget {
   Widget build(context) {
     final walletStore = Provider.of<MainStore>(context).walletStore;
 
-    if (walletStore.ws.list.length == 0) {
+    if (walletStore.wallets.length == 0) {
       return Container();
     }
     return Row(

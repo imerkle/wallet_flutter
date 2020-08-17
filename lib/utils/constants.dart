@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:wallet_flutter/ui/folders/folder_store.dart';
 
 import 'fn.dart';
 
@@ -62,8 +61,3 @@ extension CustomColorScheme1 on TextTheme {
         fontWeight: FontWeight.bold,
       );
 }
-
-var DEFAULT_FOLDERS = [
-  Folder(ids: ["btc", "btg"], name: "Bitcoin", logo: cryptoIconUrl("btc")),
-  Folder(ids: ["eth"], name: "Ethereum", logo: cryptoIconUrl("eth")),
-];

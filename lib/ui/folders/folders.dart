@@ -55,7 +55,8 @@ class Fabs extends StatelessWidget {
               builder: (_) => GestureDetector(
                 onTap: () {
                   homepageStore.setPageIndex(0);
-                  folderStore.folderIndex = i;
+                  folderStore.setSelectedIndex(i);
+                  folderStore.setSelectedId(folderStore.folder.ids[0]);
                 },
                 child: Tooltip(
                   message: folderStore.folders[i].name,
@@ -63,10 +64,10 @@ class Fabs extends StatelessWidget {
                     margin: EdgeInsets.symmetric(vertical: 7),
                     child: Row(
                       children: <Widget>[
-                        FabTip(selected: folderStore.folderIndex == i),
+                        FabTip(selected: folderStore.selectedIndex == i),
                         FabCircle(
-                          selected: folderStore.folderIndex == i,
-                          //color: folderStore.option.color,
+                          selected: folderStore.selectedIndex == i,
+                          //color: walletStore.option.color,
                           url: folderStore.folders[i].logo,
                         ),
                       ],

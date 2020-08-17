@@ -46,12 +46,11 @@ class _TransactionScreenState extends State<TransactionScreen>
   void _showModalSheet(Transaction tx, BalanceNormalized balanceNormalized,
       String base, String rel) {
     final balanceStore = Provider.of<MainStore>(context).balanceStore;
-    final configStore = Provider.of<MainStore>(context).configStore;
-    final folderStore = Provider.of<MainStore>(context).folderStore;
+    final walletStore = Provider.of<MainStore>(context).walletStore;
     final mainStore = Provider.of<MainStore>(context);
 
     var fees = valueToPrecision(
-        tx.fees.used * tx.fees.price, folderStore.option.precision);
+        tx.fees.used * tx.fees.price, walletStore.option.precision);
     bottomModal(
         context: context,
         header: "Transactions",
@@ -160,7 +159,7 @@ class _TransactionScreenState extends State<TransactionScreen>
                         break;
                     }
                     double value = valueToPrecision(
-                        valueRaw, folderStore.option.precision);
+                        valueRaw, walletStore.option.precision);
 
                     return MyDataRow(
                         cells: [
